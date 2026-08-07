@@ -1,0 +1,1861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Colorado Title Exam Prep — Liandra's Study Tool</title>
+<style>
+  :root{
+    --navy:#1b2a4a;
+    --navy-light:#2c3e63;
+    --gold:#b8863b;
+    --gold-light:#e8c78a;
+    --bg:#f5f6f9;
+    --card:#ffffff;
+    --text:#222834;
+    --muted:#6b7280;
+    --border:#e2e5ec;
+    --priority:#c0392b;
+    --priority-bg:#fdecea;
+    --review:#b8860b;
+    --review-bg:#fdf6e3;
+    --lighter:#0f766e;
+    --lighter-bg:#e6f5f3;
+    --good:#1e8e5a;
+    --bad:#c0392b;
+    --shadow: 0 1px 3px rgba(20,25,40,.08), 0 1px 2px rgba(20,25,40,.06);
+    --shadow-lg: 0 8px 24px rgba(20,25,40,.12);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.5;
+    padding-bottom:60px;
+  }
+  header.top{
+    background:linear-gradient(135deg, var(--navy), var(--navy-light));
+    color:#fff;
+    padding:22px 20px 18px;
+    text-align:center;
+  }
+  header.top h1{
+    margin:0 0 4px;
+    font-size:1.5rem;
+    font-weight:700;
+    letter-spacing:.2px;
+  }
+  header.top p{
+    margin:0;
+    color:#c9d3ea;
+    font-size:.92rem;
+  }
+  nav.tabs{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:6px;
+    background:var(--navy);
+    padding:8px 10px;
+    position:sticky;
+    top:0;
+    z-index:50;
+    box-shadow:var(--shadow);
+  }
+  nav.tabs button{
+    background:transparent;
+    border:1px solid rgba(255,255,255,.25);
+    color:#dfe6f5;
+    padding:8px 14px;
+    border-radius:20px;
+    cursor:pointer;
+    font-size:.86rem;
+    font-weight:600;
+    transition:.15s;
+    white-space:nowrap;
+  }
+  nav.tabs button:hover{ background:rgba(255,255,255,.12); }
+  nav.tabs button.active{
+    background:var(--gold);
+    border-color:var(--gold);
+    color:#1b2a4a;
+  }
+  main{
+    max-width:920px;
+    margin:0 auto;
+    padding:20px 16px 40px;
+  }
+  .view{ display:none; }
+  .view.active{ display:block; animation:fadeIn .2s ease; }
+  @keyframes fadeIn{ from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:translateY(0);} }
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:18px 20px;
+    margin-bottom:16px;
+    box-shadow:var(--shadow);
+  }
+  h2.section-title{
+    font-size:1.15rem;
+    margin:0 0 6px;
+    color:var(--navy);
+  }
+  p.section-sub{
+    margin:0 0 16px;
+    color:var(--muted);
+    font-size:.92rem;
+  }
+
+  /* ---- Dashboard ---- */
+  .score-banner{
+    display:flex;
+    flex-wrap:wrap;
+    gap:14px;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .score-banner .stat{
+    text-align:center;
+    flex:1;
+    min-width:100px;
+  }
+  .score-banner .stat .n{
+    font-size:1.6rem;
+    font-weight:700;
+    color:var(--navy);
+  }
+  .score-banner .stat.fail .n{ color:var(--bad); }
+  .score-banner .stat .l{
+    font-size:.76rem;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+    color:var(--muted);
+  }
+  .chart-row{
+    display:grid;
+    grid-template-columns: 1fr;
+    gap:10px;
+    margin-top:6px;
+  }
+  .chart-item{
+    display:grid;
+    grid-template-columns: 210px 1fr 46px;
+    align-items:center;
+    gap:10px;
+    font-size:.85rem;
+  }
+  .chart-item .lbl{ color:var(--text); }
+  .chart-item .track{
+    background:#eceff4;
+    border-radius:6px;
+    height:14px;
+    overflow:hidden;
+    position:relative;
+  }
+  .chart-item .fill{
+    height:100%;
+    border-radius:6px;
+  }
+  .chart-item .fill.priority{ background:var(--priority); }
+  .chart-item .fill.review{ background:var(--review); }
+  .chart-item .fill.lighter{ background:var(--lighter); }
+  .chart-item .pct{ text-align:right; color:var(--muted); font-size:.78rem; }
+  .tag{
+    display:inline-block;
+    font-size:.68rem;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.4px;
+    padding:2px 8px;
+    border-radius:20px;
+    margin-left:6px;
+  }
+  .tag.priority{ background:var(--priority-bg); color:var(--priority); }
+  .tag.review{ background:var(--review-bg); color:var(--review); }
+  .tag.lighter{ background:var(--lighter-bg); color:var(--lighter); }
+
+  .legend{ display:flex; flex-wrap:wrap; gap:14px; margin-top:14px; font-size:.8rem; color:var(--muted); }
+  .legend span.dot{ display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:5px; }
+  .dot.priority{ background:var(--priority); }
+  .dot.review{ background:var(--review); }
+  .dot.lighter{ background:var(--lighter); }
+
+  .note{
+    background:#f0f4fb;
+    border-left:3px solid var(--navy-light);
+    padding:10px 14px;
+    border-radius:6px;
+    font-size:.85rem;
+    color:#3a4256;
+    margin-top:10px;
+  }
+
+  .cat-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(230px,1fr));
+    gap:12px;
+  }
+  .cat-card{
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:14px;
+    background:#fff;
+    cursor:pointer;
+    transition:.15s;
+  }
+  .cat-card:hover{ box-shadow:var(--shadow-lg); transform:translateY(-1px); }
+  .cat-card h3{
+    margin:0 0 4px;
+    font-size:.95rem;
+    color:var(--navy);
+  }
+  .cat-card .meta{ font-size:.78rem; color:var(--muted); }
+  .cat-card .actions{ margin-top:10px; display:flex; gap:8px; }
+
+  /* ---- Buttons ---- */
+  button.btn{
+    background:var(--navy);
+    color:#fff;
+    border:none;
+    padding:9px 16px;
+    border-radius:8px;
+    font-size:.85rem;
+    font-weight:600;
+    cursor:pointer;
+    transition:.15s;
+  }
+  button.btn:hover{ background:var(--navy-light); }
+  button.btn.gold{ background:var(--gold); color:#1b2a4a; }
+  button.btn.gold:hover{ background:var(--gold-light); }
+  button.btn.ghost{
+    background:transparent;
+    color:var(--navy);
+    border:1px solid var(--border);
+  }
+  button.btn.ghost:hover{ background:#eef1f7; }
+  button.btn.sm{ padding:6px 12px; font-size:.78rem; }
+  button.btn:disabled{ opacity:.45; cursor:not-allowed; }
+
+  select, .select{
+    padding:8px 10px;
+    border-radius:8px;
+    border:1px solid var(--border);
+    font-size:.85rem;
+    background:#fff;
+  }
+
+  /* ---- Flashcards ---- */
+  .fc-controls{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:14px; }
+  .fc-wrap{ display:flex; flex-direction:column; align-items:center; }
+  .flashcard{
+    width:100%;
+    max-width:560px;
+    height:260px;
+    perspective:1200px;
+    margin:10px 0 16px;
+  }
+  .flashcard .inner{
+    position:relative;
+    width:100%; height:100%;
+    transition:transform .5s;
+    transform-style:preserve-3d;
+    cursor:pointer;
+  }
+  .flashcard.flipped .inner{ transform:rotateY(180deg); }
+  .flashcard .face{
+    position:absolute; width:100%; height:100%;
+    backface-visibility:hidden;
+    border-radius:16px;
+    display:flex; align-items:center; justify-content:center;
+    text-align:center;
+    padding:26px;
+    box-shadow:var(--shadow-lg);
+    font-size:1.05rem;
+  }
+  .flashcard .front{
+    background:linear-gradient(160deg, var(--navy), var(--navy-light));
+    color:#fff;
+    font-weight:600;
+  }
+  .flashcard .back{
+    background:#fff;
+    border:1px solid var(--border);
+    color:var(--text);
+    transform:rotateY(180deg);
+    font-size:.95rem;
+    overflow-y:auto;
+  }
+  .flashcard .hint{
+    position:absolute; bottom:10px; left:0; right:0;
+    font-size:.7rem; letter-spacing:.4px; text-transform:uppercase;
+    opacity:.6;
+  }
+  .fc-nav{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; justify-content:center; }
+  .fc-progress{ font-size:.8rem; color:var(--muted); margin-bottom:4px; }
+  .fc-mark-row{ display:flex; gap:8px; margin-top:12px; }
+  button.btn.know{ background:var(--good); }
+  button.btn.review{ background:var(--bad); }
+
+  /* ---- Quiz ---- */
+  .q-progress-bar{
+    height:8px; background:#eceff4; border-radius:6px; overflow:hidden; margin-bottom:14px;
+  }
+  .q-progress-bar .fill{ height:100%; background:var(--gold); transition:width .25s; }
+  .q-text{ font-size:1.02rem; font-weight:600; margin-bottom:14px; color:var(--navy); }
+  .choices{ display:flex; flex-direction:column; gap:8px; }
+  .choice{
+    text-align:left;
+    padding:11px 14px;
+    border-radius:10px;
+    border:1px solid var(--border);
+    background:#fff;
+    cursor:pointer;
+    font-size:.92rem;
+  }
+  .choice:hover{ background:#f4f6fb; }
+  .choice.correct{ background:#e6f5ec; border-color:var(--good); color:#0d5c34; font-weight:600; }
+  .choice.incorrect{ background:#fdecea; border-color:var(--bad); color:#8f2a20; font-weight:600; }
+  .choice.disabled{ cursor:default; }
+  .explain{
+    margin-top:14px;
+    background:#f7f8fc;
+    border-radius:10px;
+    padding:12px 14px;
+    font-size:.87rem;
+    color:#3a4256;
+    border-left:3px solid var(--gold);
+  }
+  .explain b{ color:var(--navy); }
+  .q-footer{ display:flex; justify-content:space-between; align-items:center; margin-top:16px; }
+
+  .results-summary{ text-align:center; padding:10px 0 4px; }
+  .results-summary .big{ font-size:2.4rem; font-weight:800; color:var(--navy); }
+  .results-summary .pass{ color:var(--good); }
+  .results-summary .fail{ color:var(--bad); }
+  .review-item{
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:12px 14px;
+    margin-bottom:10px;
+    font-size:.88rem;
+  }
+  .review-item.wrong{ border-left:4px solid var(--bad); }
+  .review-item.right{ border-left:4px solid var(--good); }
+
+  /* ---- Exam ---- */
+  .exam-hero{ text-align:center; padding:10px 0; }
+  .exam-stats{ display:flex; justify-content:center; gap:26px; margin:16px 0; flex-wrap:wrap; }
+  .exam-stats .s{ text-align:center; }
+  .exam-stats .s .n{ font-size:1.3rem; font-weight:700; color:var(--navy); }
+  .exam-stats .s .l{ font-size:.74rem; color:var(--muted); text-transform:uppercase; }
+  .timer{
+    position:sticky; top:52px; z-index:40;
+    background:#fff; border:1px solid var(--border); border-radius:10px;
+    padding:8px 14px; margin-bottom:14px;
+    display:flex; justify-content:space-between; align-items:center;
+    font-size:.85rem; box-shadow:var(--shadow);
+  }
+  .timer .clock{ font-weight:700; font-variant-numeric:tabular-nums; color:var(--navy); }
+  .timer .clock.low{ color:var(--bad); }
+
+  /* ---- Exam question navigator (jump to any question, no isolation) ---- */
+  .exam-nav-grid{
+    display:flex; flex-wrap:wrap; gap:5px;
+    padding:10px; margin-bottom:14px;
+    background:#f7f8fc; border:1px solid var(--border); border-radius:10px;
+    max-height:132px; overflow-y:auto;
+  }
+  .exam-nav-grid button{
+    width:28px; height:28px;
+    font-size:.7rem; font-weight:600;
+    border-radius:6px; border:1px solid var(--border);
+    background:#fff; color:var(--muted);
+    cursor:pointer;
+  }
+  .exam-nav-grid button:hover{ background:#eef1f7; }
+  .exam-nav-grid button.answered{ background:#e6f0ff; border-color:#9db8e6; color:var(--navy); }
+  .exam-nav-grid button.current{ background:var(--navy); border-color:var(--navy); color:#fff; }
+  .exam-nav-legend{ display:flex; gap:14px; font-size:.7rem; color:var(--muted); margin:-8px 0 14px; flex-wrap:wrap; }
+  .exam-nav-legend span.sw{ display:inline-block; width:9px; height:9px; border-radius:2px; margin-right:4px; vertical-align:middle; border:1px solid var(--border); }
+  .sw.answered{ background:#e6f0ff; border-color:#9db8e6; }
+  .sw.current{ background:var(--navy); border-color:var(--navy); }
+  .sw.blank{ background:#fff; }
+
+  /* ---- Progress ---- */
+  table.progress-table{ width:100%; border-collapse:collapse; font-size:.86rem; }
+  table.progress-table th, table.progress-table td{
+    text-align:left; padding:9px 8px; border-bottom:1px solid var(--border);
+  }
+  table.progress-table th{ color:var(--muted); font-weight:600; font-size:.75rem; text-transform:uppercase; }
+
+  footer.foot{
+    text-align:center;
+    color:var(--muted);
+    font-size:.75rem;
+    padding:30px 16px 10px;
+  }
+
+  /* ---- Search ---- */
+  .search-bar{ display:flex; gap:8px; align-items:center; margin-bottom:12px; }
+  .search-bar input{
+    flex:1; min-width:0;
+    padding:12px 14px;
+    border:1px solid var(--border);
+    border-radius:10px;
+    font-size:1rem;
+    font-family:inherit;
+    background:#fff;
+    color:var(--navy);
+  }
+  .search-bar input:focus{ outline:none; border-color:var(--gold); box-shadow:0 0 0 3px rgba(197,160,79,.18); }
+  .search-chips{ display:flex; flex-wrap:wrap; gap:6px; margin-bottom:14px; }
+  .search-chips .chip{
+    background:#f0f3fa; border:1px solid var(--border); color:var(--navy);
+    border-radius:14px; padding:6px 12px; font-size:.76rem; cursor:pointer; font-weight:600;
+  }
+  .search-chips .chip:hover{ background:#e3e9f6; }
+  .search-summary{ font-size:.82rem; color:var(--muted); margin-bottom:12px; }
+  .sr-group-title{
+    font-size:.74rem; text-transform:uppercase; letter-spacing:.6px; color:var(--muted);
+    font-weight:700; margin:18px 0 8px; padding-bottom:5px; border-bottom:1px solid var(--border);
+  }
+  .sr-item{
+    border:1px solid var(--border); border-left:3px solid var(--gold);
+    border-radius:10px; padding:12px 14px; margin-bottom:10px; background:#fff;
+  }
+  .sr-meta{ font-size:.7rem; text-transform:uppercase; letter-spacing:.5px; color:var(--muted); margin-bottom:6px; }
+  .sr-q{ font-weight:600; color:var(--navy); font-size:.92rem; margin-bottom:8px; }
+  .sr-body{ font-size:.87rem; color:#3a4256; line-height:1.5; }
+  .sr-choice{
+    font-size:.83rem; padding:6px 10px; border-radius:7px; margin:4px 0;
+    background:#f7f8fc; color:#525a6e;
+  }
+  .sr-choice.right{ background:#e6f5ec; color:#0d5c34; font-weight:600; }
+  .sr-exp{
+    margin-top:8px; background:#f7f8fc; border-radius:8px; padding:9px 12px;
+    font-size:.83rem; color:#3a4256; border-left:3px solid var(--border);
+  }
+  .sr-actions{ margin-top:10px; display:flex; gap:8px; flex-wrap:wrap; }
+  mark{ background:#ffe9a8; color:#5a4300; padding:0 2px; border-radius:3px; font-weight:600; }
+  .search-empty{ color:var(--muted); font-size:.88rem; padding:16px 0; line-height:1.6; }
+
+  /* ---- Mobile ---- */
+  button, .choice, .tab-btn{ touch-action:manipulation; -webkit-tap-highlight-color:rgba(27,42,74,.15); }
+
+  @media (max-width:600px){
+    header.top{ padding:16px 14px 13px; }
+    header.top h1{ font-size:1.12rem; }
+    header.top p{ font-size:.8rem; }
+
+    /* Tab bar: one scrollable row, thumb-sized */
+    nav.tabs{
+      flex-wrap:nowrap;
+      justify-content:flex-start;
+      overflow-x:auto;
+      -webkit-overflow-scrolling:touch;
+      scrollbar-width:none;
+      padding:8px 12px;
+    }
+    nav.tabs::-webkit-scrollbar{ display:none; }
+    nav.tabs button{ padding:12px 16px; font-size:.85rem; flex:0 0 auto; min-height:44px; }
+
+    main{ padding:14px 10px 40px; }
+    .card{ padding:16px 14px; }
+
+    /* Thumb-sized tap targets everywhere */
+    button.btn{ padding:12px 18px; font-size:.9rem; }
+    button.btn.sm{ padding:10px 14px; font-size:.82rem; }
+    .choice{ padding:14px; font-size:.95rem; min-height:48px; }
+    select, .search-bar input{ font-size:16px; padding:12px; max-width:100%; } /* 16px stops iOS auto-zoom on focus */
+    .sr-item{ padding:11px 12px; }
+    .sr-q{ font-size:.9rem; }
+    .search-chips .chip{ padding:8px 13px; font-size:.78rem; }
+    .sr-actions .btn{ min-height:44px; }
+
+    /* Flashcards */
+    .flashcard{ height:300px; }
+    .fc-nav{ width:100%; }
+    .fc-nav .btn{ flex:1; }
+    .fc-mark-row{ width:100%; }
+    .fc-mark-row .btn{ flex:1; padding:13px 10px; }
+
+    /* Quiz / exam footer buttons */
+    .q-footer{ gap:8px; }
+    .q-footer .btn{ min-height:44px; }
+    .q-text{ font-size:1rem; }
+
+    /* Exam navigator: bigger tap targets */
+    .exam-nav-grid{ gap:6px; padding:8px; max-height:120px; }
+    .exam-nav-grid button{ width:36px; height:36px; font-size:.74rem; }
+    .exam-nav-legend{ gap:10px; font-size:.66rem; }
+
+    /* Timer row */
+    .timer{ font-size:.8rem; }
+
+    /* Results */
+    .chart-item{ grid-template-columns: 108px 1fr 44px; font-size:.74rem; }
+    .results-summary .big{ font-size:2rem; }
+
+    /* Tables: tighter, scroll sideways only if truly needed */
+    .table-scroll{ overflow-x:auto; -webkit-overflow-scrolling:touch; }
+    table.progress-table{ font-size:.78rem; }
+    table.progress-table th, table.progress-table td{ padding:8px 6px; }
+
+    /* Dashboard stat banner */
+    .score-banner{ gap:10px; }
+    .score-banner .stat .n{ font-size:1.7rem; }
+  }
+
+  @media (max-width:380px){
+    nav.tabs button{ padding:11px 13px; font-size:.8rem; min-height:42px; }
+    .chart-item{ grid-template-columns: 92px 1fr 40px; font-size:.7rem; }
+    table.progress-table{ font-size:.72rem; }
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <h1>Colorado Title Insurance Exam — Study Tool</h1>
+  <p>Built for Liandra · From your 07/24/2026 Pearson VUE diagnostic (Score 40, need 70 to pass)</p>
+</header>
+
+<nav class="tabs">
+  <button class="tab-btn active" data-view="dashboard">Dashboard</button>
+  <button class="tab-btn" data-view="flashcards">Flashcards</button>
+  <button class="tab-btn" data-view="quiz">Quizzes</button>
+  <button class="tab-btn" data-view="exam">Practice Exam</button>
+  <button class="tab-btn" data-view="progress">Progress</button>
+  <button class="tab-btn" data-view="search">🔍 Search</button>
+</nav>
+
+<main>
+
+  <!-- DASHBOARD -->
+  <section id="view-dashboard" class="view active">
+    <div class="card">
+      <h2 class="section-title">Your diagnostic, decoded</h2>
+      <p class="section-sub">Straight from your actual Pearson VUE score report. Passing score is 70 — you scored 40, so the plan below is to close that gap, not just the categories that look worst on the bar chart.</p>
+      <div class="score-banner">
+        <div class="stat fail"><div class="n">40</div><div class="l">Your Score</div></div>
+        <div class="stat"><div class="n">70</div><div class="l">Passing Score</div></div>
+        <div class="stat"><div class="n">7</div><div class="l">Content Areas</div></div>
+        <div class="stat"><div class="n">75</div><div class="l">Scored Questions</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2 class="section-title">Relative performance by category</h2>
+      <p class="section-sub">Bar length matches the relative length of the bars on your printed report (I measured them directly from your photo). This shows where you're relatively weaker vs. stronger — it does <b>not</b> mean any category individually "passed."</p>
+      <div class="chart-row" id="dashboard-chart"></div>
+      <div class="legend">
+        <span><span class="dot priority"></span>Priority focus (weakest)</span>
+        <span><span class="dot review"></span>Also review</span>
+        <span><span class="dot lighter"></span>Lighter review</span>
+      </div>
+      <div class="note">Pearson VUE's own report says it best: "It is recommended that you study all content areas before retaking the examination." This tool weights <b>Title Insurance Terms &amp; Concepts</b>, <b>Title Insurance Policies</b>, and <b>Colorado Laws &amp; Regulations</b> the heaviest since those measured weakest — but every category below has real flashcards and quiz questions, and the full practice exam pulls from all seven every time.</div>
+    </div>
+
+    <div class="card">
+      <h2 class="section-title">Jump into a category</h2>
+      <p class="section-sub">Priority categories are marked — start there if you're short on time.</p>
+      <div class="cat-grid" id="dashboard-cats"></div>
+    </div>
+
+    <div class="card">
+      <h2 class="section-title">Day-by-day plan — retake is Friday, August 7</h2>
+      <p class="section-sub">8 study days, built around the priority weighting above. If she doesn't pass Friday, upload the new score report and I'll rebuild this against her new numbers.</p>
+      <table class="progress-table">
+        <thead><tr><th style="width:110px;">Date</th><th>Focus</th><th>Do this</th></tr></thead>
+        <tbody>
+          <tr><td><b>Thu 7/30</b><br><span style="color:var(--muted); font-size:.75rem;">Today</span></td><td>I. Terms &amp; Concepts<br>II. Title Policies</td><td>Full flashcard deck on both, then the category quiz on each — repeat until 90%+.</td></tr>
+          <tr><td><b>Fri 7/31</b></td><td>Colorado Law — Part 1</td><td>Flashcards: Definitions, Rates, Prohibited Practices, Consumer Protections. Then the Colorado Law quiz (missed questions only, re-check explanations).</td></tr>
+          <tr><td><b>Sat 8/1</b></td><td>Colorado Law — Part 2</td><td>Flashcards: Commissioner of Insurance, Licensing &amp; Producer Responsibility, Unfair Competition. Full Colorado Law quiz again — this section alone is ~40 of 75 real exam questions, worth the extra day.</td></tr>
+          <tr><td><b>Sun 8/2</b></td><td>III. Real Estate Ownership<br>IV. Rights &amp; Interests</td><td>Flashcards + quiz on both.</td></tr>
+          <tr><td><b>Mon 8/3</b></td><td>V. Legal Descriptions<br>VI. Methods of Transfer</td><td>Flashcards + quiz on both.</td></tr>
+          <tr><td><b>Tue 8/4</b></td><td>All 7 categories</td><td>Re-take every category quiz once. Anything under 80% gets a same-day repeat plus another flashcard pass.</td></tr>
+          <tr><td><b>Wed 8/5</b></td><td>Full-length run-through</td><td>Practice Exam → <b>Just Studying</b> mode (untimed, all 76 questions, explanations after every answer). Review every single miss.</td></tr>
+          <tr><td><b>Thu 8/6</b></td><td>Real conditions</td><td>Practice Exam → <b>Simulate Pearson VUE</b> mode (70 min, no feedback until the end). Review the results report afterward. Light review only after that — no new material the night before.</td></tr>
+          <tr><td><b>Fri 8/7</b><br><span style="color:var(--priority); font-size:.75rem; font-weight:700;">EXAM DAY</span></td><td>—</td><td>Quick flashcard skim on the 2 weakest categories only. Nothing new. Get there early.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- FLASHCARDS -->
+  <section id="view-flashcards" class="view">
+    <div class="card">
+      <h2 class="section-title">Flashcards</h2>
+      <p class="section-sub">Click a card to flip it. Mark each one "I know this" or "Review again" — that's tracked on the Progress tab for this session.</p>
+      <div class="fc-controls">
+        <select id="fc-cat-select"></select>
+        <button class="btn ghost sm" id="fc-shuffle">Shuffle</button>
+        <button class="btn ghost sm" id="fc-restart">Restart deck</button>
+      </div>
+      <div class="fc-progress" id="fc-progress-label"></div>
+      <div class="fc-wrap">
+        <div class="flashcard" id="flashcard">
+          <div class="inner">
+            <div class="face front" id="fc-front"></div>
+            <div class="face back" id="fc-back"></div>
+          </div>
+        </div>
+        <div class="fc-nav">
+          <button class="btn ghost sm" id="fc-prev">&larr; Prev</button>
+          <button class="btn gold sm" id="fc-flip">Flip card</button>
+          <button class="btn ghost sm" id="fc-next">Next &rarr;</button>
+        </div>
+        <div class="fc-mark-row">
+          <button class="btn know sm" id="fc-know">✓ I know this</button>
+          <button class="btn review sm" id="fc-reviewagain">↻ Review again</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUIZ -->
+  <section id="view-quiz" class="view">
+    <div class="card" id="quiz-setup-card">
+      <h2 class="section-title">Category Quizzes</h2>
+      <p class="section-sub">Multiple choice, instant feedback, and a plain-English explanation after every answer. Pick a category to begin.</p>
+      <div class="fc-controls">
+        <select id="quiz-cat-select"></select>
+        <button class="btn gold" id="quiz-start">Start Quiz</button>
+      </div>
+      <div class="note" id="quiz-cat-note"></div>
+    </div>
+
+    <div class="card" id="quiz-play-card" style="display:none;">
+      <div class="q-progress-bar"><div class="fill" id="quiz-progress-fill"></div></div>
+      <div class="fc-progress" id="quiz-progress-label"></div>
+      <div class="q-text" id="quiz-question"></div>
+      <div class="choices" id="quiz-choices"></div>
+      <div class="explain" id="quiz-explain" style="display:none;"></div>
+      <div class="q-footer">
+        <button class="btn ghost sm" id="quiz-quit">Quit quiz</button>
+        <button class="btn gold" id="quiz-next" style="display:none;">Next question &rarr;</button>
+      </div>
+    </div>
+
+    <div class="card" id="quiz-results-card" style="display:none;">
+      <div class="results-summary">
+        <div class="l" style="color:var(--muted); text-transform:uppercase; font-size:.78rem;">Quiz Result</div>
+        <div class="big" id="quiz-score-big"></div>
+        <div id="quiz-score-sub" style="color:var(--muted); margin-top:4px;"></div>
+      </div>
+      <div style="text-align:center; margin:16px 0;">
+        <button class="btn gold" id="quiz-retry">Retry this category</button>
+        <button class="btn ghost" id="quiz-back">Back to quizzes</button>
+      </div>
+      <h3 style="font-size:.95rem; color:var(--navy);">Review your answers</h3>
+      <div id="quiz-review-list"></div>
+    </div>
+  </section>
+
+  <!-- EXAM -->
+  <section id="view-exam" class="view">
+    <div class="card" id="exam-intro-card">
+      <div class="exam-hero">
+        <h2 class="section-title">Full Practice Exam</h2>
+        <p class="section-sub">A condensed simulation of the real Colorado Title exam — same 7 categories, same rough category weighting (Colorado Law is the largest single section, just like on the real test), and a results page styled like your actual Pearson VUE report.</p>
+        <div class="exam-stats">
+          <div class="s"><div class="n" id="exam-qcount">76</div><div class="l">Questions</div></div>
+          <div class="s"><div class="n" id="exam-minutes-stat">70</div><div class="l">Minutes</div></div>
+          <div class="s"><div class="n">70%</div><div class="l">Passing Score</div></div>
+        </div>
+        <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:6px;">
+          <button class="btn ghost" id="exam-start-study" style="padding:12px 22px; font-size:.92rem;">📖 Just Studying</button>
+          <button class="btn gold" id="exam-start-sim" style="padding:12px 22px; font-size:.92rem;">⏱ Simulate Pearson VUE</button>
+        </div>
+        <div style="display:flex; gap:22px; justify-content:center; flex-wrap:wrap; margin-top:16px; font-size:.82rem; color:var(--muted); text-align:left;">
+          <div style="max-width:260px;"><b style="color:var(--navy);">Just Studying</b> — untimed. See whether you're right and read the explanation right after each question, same as the category quizzes, but pulling from all 7 categories in real-exam proportions.</div>
+          <div style="max-width:260px;"><b style="color:var(--navy);">Simulate Pearson VUE</b> — 70-minute timer, no feedback until you submit, results page styled like your real score report. Use this closer to test day.</div>
+        </div>
+        <p class="note" style="text-align:left; margin-top:18px;">This is <b>not</b> a leaked or verbatim copy of the real licensing exam — Pearson VUE doesn't publish its bank. It's built from the official Colorado Title exam content outline plus real study material, weighted the same way the real exam is weighted, so the experience (pacing, category mix, scoring, and the results report) closely mirrors what you'll see on retake day.</p>
+      </div>
+    </div>
+
+    <div class="card" id="exam-play-card" style="display:none;">
+      <div class="timer" id="exam-timer">
+        <span id="exam-timer-label">Question 1 of 76</span>
+        <span class="clock" id="exam-clock">70:00</span>
+      </div>
+      <div class="q-progress-bar"><div class="fill" id="exam-progress-fill"></div></div>
+      <div class="exam-nav-grid" id="exam-nav-grid"></div>
+      <div class="exam-nav-legend"><span><span class="sw current"></span>Current</span><span><span class="sw answered"></span>Answered</span><span><span class="sw blank"></span>Not answered yet — click any number to jump straight there</span></div>
+      <div style="font-size:.75rem; color:var(--muted); margin-bottom:8px;" id="exam-section-label"></div>
+      <div class="q-text" id="exam-question"></div>
+      <div class="choices" id="exam-choices"></div>
+      <div class="explain" id="exam-explain" style="display:none;"></div>
+      <div class="q-footer">
+        <button class="btn ghost sm" id="exam-prev">&larr; Back</button>
+        <div>
+          <button class="btn ghost sm" id="exam-skip">Skip &rarr;</button>
+          <button class="btn gold" id="exam-next" style="display:none;">Next &rarr;</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" id="exam-review-gate-card" style="display:none;">
+      <h2 class="section-title">Ready to submit?</h2>
+      <p class="section-sub" id="exam-unanswered-note"></p>
+      <button class="btn gold" id="exam-submit">Submit Exam</button>
+      <button class="btn ghost" id="exam-resume">Back to exam</button>
+    </div>
+
+    <div class="card" id="exam-results-card" style="display:none;">
+      <div style="text-align:center;">
+        <div style="font-size:.78rem; letter-spacing:1px; text-transform:uppercase; color:var(--muted);">Colorado Title — Practice Exam Report</div>
+        <div class="results-summary">
+          <div class="big" id="exam-result-word"></div>
+          <div id="exam-result-score" style="margin-top:6px; font-size:1rem;"></div>
+        </div>
+      </div>
+      <div class="chart-row" id="exam-result-chart" style="margin-top:18px;"></div>
+      <div style="text-align:center; margin:20px 0 6px;">
+        <button class="btn gold" id="exam-download">Download results (.txt)</button>
+        <button class="btn ghost" id="exam-retry">Take again (same mode)</button>
+        <button class="btn ghost" id="exam-change-mode">Choose a different mode</button>
+        <button class="btn ghost" id="exam-back-dash">Back to dashboard</button>
+      </div>
+      <h3 style="font-size:.95rem; color:var(--navy); margin-top:20px;">Review every question</h3>
+      <div id="exam-review-list"></div>
+    </div>
+  </section>
+
+  <!-- PROGRESS -->
+  <section id="view-progress" class="view">
+    <div class="card">
+      <h2 class="section-title">Your progress</h2>
+      <p class="section-sub">Flashcard and quiz stats below cover <b>this session only</b> (they reset when you close the tab). Your <b>practice exam history is saved automatically</b> on this computer and will still be here next time you open this file in the same browser.</p>
+      <div class="table-scroll"><table class="progress-table">
+        <thead><tr><th>Category</th><th>Flashcards reviewed</th><th>Marked "know it"</th><th>Best quiz score</th></tr></thead>
+        <tbody id="progress-table-body"></tbody>
+      </table></div>
+      <h3 style="font-size:.9rem; color:var(--navy); margin-top:22px;">Practice exam history <span style="font-weight:400; color:var(--muted); font-size:.78rem;">(saved on this computer)</span></h3>
+      <div id="exam-history-summary" style="font-size:.82rem; color:var(--muted); margin:6px 0 10px;"></div>
+      <div class="table-scroll"><table class="progress-table">
+        <thead><tr><th>#</th><th>Date</th><th>Mode</th><th>Score</th><th>Result</th></tr></thead>
+        <tbody id="progress-exam-body"><tr><td colspan="5" style="color:var(--muted);">No exam attempts recorded yet.</td></tr></tbody>
+      </table></div>
+      <div style="margin-top:14px; display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+        <button class="btn ghost sm" id="history-export">Save history to file</button>
+        <button class="btn ghost sm" id="history-import">Load history from file</button>
+        <button class="btn ghost sm" id="history-clear" style="color:var(--bad);">Clear history</button>
+        <input type="file" id="history-file-input" accept=".json,application/json" style="display:none;">
+      </div>
+      <p class="note" style="margin-top:10px;">"Save history to file" downloads a small backup file of every attempt. Use "Load history from file" to bring your record onto a different computer or browser — it merges with what's already here, so nothing gets overwritten or double-counted.</p>
+    </div>
+  </section>
+
+  <!-- SEARCH -->
+  <section id="view-search" class="view">
+    <div class="card">
+      <h2 class="section-title">Search everything</h2>
+      <p class="section-sub">Type any term — a person, a law, a deadline, a concept — and see every flashcard and exam question that mentions it, with the answer and explanation right there. Great for drilling one topic at a time.</p>
+      <div class="search-bar">
+        <input type="search" id="search-input" placeholder="Try: Commissioner of Insurance" autocomplete="off" autocapitalize="none" spellcheck="false">
+        <button class="btn ghost sm" id="search-clear" title="Clear">Clear</button>
+      </div>
+      <div class="search-chips" id="search-chips"></div>
+      <div id="search-summary" class="search-summary"></div>
+      <div id="search-results"></div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  Built from the official Pearson VUE Colorado Title exam content outline and Liandra's own licensing class materials. Not affiliated with Pearson VUE or the Colorado Division of Insurance. Study all categories — the pass/fail line is on your overall score, not any single content area.
+</footer>
+
+<script>
+/* =========================================================
+   DATA
+   Sourced from: the official Pearson VUE Colorado Title exam
+   content outline, Liandra's "Licensing Class Review - Statutes
+   and Regs" notes, and a legacy Colorado title practice test.
+   ========================================================= */
+
+const CATS = [
+  {
+    key:'terms', section:'General Knowledge', code:'I',
+    name:'Title Insurance Terms & Concepts', tier:'priority', barPx:162,
+    flashcards:[
+      {f:'Commitment', b:'A title insurer\'s conditional promise to issue a specified policy once certain requirements are met and subject to certain exceptions. It is NOT itself a policy and creates no liability until the transaction closes and the policy is issued.'},
+      {f:'Policy', b:'The final contract of indemnity issued at closing, insuring the owner or lender against covered title defects up to the policy amount, as of the policy date.'},
+      {f:'Exception', b:'An item listed in Schedule B of a commitment or policy that the insurer excludes from coverage (e.g., a specific easement, lien, or CC&R) because it showed up in the title search.'},
+      {f:'Requirement', b:'An item on Schedule B-I of a commitment that must be satisfied before the title company will issue the policy — e.g., pay off an existing lien, record a release.'},
+      {f:'Endorsement', b:'A form attached to a policy that modifies its coverage — usually expanding or clarifying it — for an additional premium.'},
+      {f:'Insurer / Underwriter', b:'The title insurance company that assumes the risk and stands behind the policy. The underwriter also sets the guidelines for what risks its agents may insure.'},
+      {f:'Chain of Title', b:'The chronological sequence of recorded documents (deeds, liens, releases) showing how ownership of a parcel has passed from one party to the next over time.'},
+      {f:'Closing and Settlement', b:'The process of finalizing a real estate transaction: signing documents, disbursing funds, and recording the conveyance so title passes to the buyer.'},
+      {f:'Title Agent', b:'A person or agency authorized by a title insurance company to solicit business, examine title, and issue policies on the underwriter\'s behalf.'},
+      {f:'Fiduciary Responsibilities', b:'The title agent\'s legal duty to handle client funds (earnest money, closing funds) with the highest good faith — keeping them separate from the agent\'s own money and using them only as instructed.'},
+      {f:'Search and Examination', b:'The two-step process of pulling every recorded document affecting a parcel (the search), then analyzing it to determine the state of title and what must be cleared before insuring (the examination).'}
+    ],
+    quiz:[
+      {q:'What is a "commitment" for title insurance?', choices:['The final insurance contract issued at closing','A conditional promise to issue a policy once stated requirements are met and subject to listed exceptions','A guarantee that title is free of all defects','A recorded document transferring ownership'], correct:1, exp:'A commitment is preliminary and conditional — it becomes a binding policy only after closing, once the Schedule B-I requirements are satisfied.'},
+      {q:'On a title commitment, Schedule B-I items are best described as:', choices:['Matters the company refuses to ever insure','Requirements that must be satisfied before the policy can be issued','A list of prior owners','The legal description of the property'], correct:1, exp:'Requirements are the to-do list — pay off a lien, record a release — that must happen before closing so the company will issue the policy.'},
+      {q:'An "exception" on a title policy refers to:', choices:['A defect the title company will pay to cure','A specific matter of record that is excluded from coverage','An endorsement that adds coverage','A clerical error in the policy'], correct:1, exp:'Exceptions carve specific known matters out of coverage — the policy won\'t pay a claim based on something it excepted.'},
+      {q:'An endorsement to a title policy:', choices:['Cancels the policy','Modifies the policy\'s coverage, often expanding it, for an additional premium','Is only ever used on commitments, never policies','Replaces the need for a title search'], correct:1, exp:'Endorsements attach to a policy to broaden, clarify, or restrict coverage for a specific risk.'},
+      {q:'The "chain of title" is:', choices:['The sequence of physical keys handed to each owner','The chronological record of recorded documents showing how title has passed between owners','A synonym for the legal description','The list of liens only'], correct:1, exp:'Every recorded deed, lien, and release forms a link — together they make up the chain of title.'},
+      {q:'Which best describes the role of an "underwriter" in title insurance?', choices:['The buyer\'s real estate agent','The title insurance company that assumes the risk and sets guidelines for what its agents may insure','The county clerk and recorder','The escrow officer only'], correct:1, exp:'The underwriter is the actual insurance company standing behind the policy — the agent works within the underwriter\'s guidelines.'},
+      {q:'A title agent\'s fiduciary responsibility means the agent must:', choices:['Invest client funds for maximum return','Hold and handle client funds with the highest good faith, keeping them separate and using them only as directed','Share client funds with the underwriter','Only worry about this on loan policies, not owner\'s policies'], correct:1, exp:'Fiduciary duty applies to any funds the agent holds for a client — separate accounts, used only as instructed, no exceptions.'},
+      {q:'"Search and examination" refers to:', choices:['Verifying a buyer\'s credit score','Pulling every recorded document affecting a parcel, then analyzing it to determine the state of title','A background check on the seller','The appraisal process'], correct:1, exp:'Search = gathering the documents. Examination = analyzing what they mean for insurability.'},
+      {q:'Closing and settlement includes all of the following EXCEPT:', choices:['Signing the transaction documents','Disbursing funds to the appropriate parties','Recording the conveyance','Setting the property\'s assessed tax value'], correct:3, exp:'Assessed tax value is set by the county assessor, not part of the closing/settlement process.'},
+      {q:'Which statement about a title commitment is TRUE?', choices:['It creates the same liability as an issued policy','It is binding on the insurer only through the policy later issued once requirements are met','It cannot list any exceptions','It is issued only after closing'], correct:1, exp:'A commitment itself insures nothing — the liability only attaches once the policy is actually issued at/after closing.'}
+    ]
+  },
+  {
+    key:'policies', section:'General Knowledge', code:'II',
+    name:'Title Insurance Policies', tier:'priority', barPx:180,
+    flashcards:[
+      {f:'Owner\'s Policy (ALTA)', b:'Insures the buyer/owner\'s title interest for as long as they (or their heirs) own the property. The policy amount is typically the purchase price.'},
+      {f:'Loan Policy', b:'Insures the lender\'s security interest in the property up to the loan amount. Coverage generally decreases as the loan is paid down and ends when the loan is satisfied.'},
+      {f:'Construction Loan Policy', b:'A loan policy issued during construction financing, often updated with endorsements ("date-downs") as construction draws are disbursed, to protect the lender\'s priority at each stage.'},
+      {f:'Insuring Clause', b:'The section of a policy stating exactly what the insurer promises to cover — e.g., loss from title being vested other than as stated, or from liens/encumbrances.'},
+      {f:'Conditions and Stipulations', b:'The policy\'s operating rules: how to file a claim, the insurer\'s duty to defend, subrogation rights, and what limits or voids coverage.'},
+      {f:'Exclusions from Coverage', b:'Standard, pre-printed risks every ALTA policy leaves uninsured no matter what the search shows — e.g., zoning/governmental police power, eminent domain, and matters created by or known to the insured but not disclosed to the insurer.'},
+      {f:'Schedule A', b:'The part of a policy/commitment identifying the insured, the policy amount, the estate insured, and the vested owner.'},
+      {f:'Schedule B', b:'The part of a policy/commitment listing exceptions to coverage — Part I: requirements to close; Part II: standing exceptions that remain even after closing.'},
+      {f:'Deed of Trust = Mortgage (for insuring purposes)', b:'In all forms of title evidence approved for use by title insurers, a real property security instrument identified on its face as a "deed of trust" is defined the same as a mortgage.'},
+      {f:'Unmarketability of Title Coverage', b:'Protection against title so clouded by defects that a reasonable buyer would refuse it. An ALTA Owner\'s Policy insures against this — a bare Commitment for Title Insurance does not.'}
+    ],
+    quiz:[
+      {q:'An ALTA Owner\'s Policy primarily protects:', choices:['The lender\'s security interest','The buyer/owner\'s interest in the property, generally for as long as they or their heirs hold title','The title company from third-party claims','The real estate agent\'s commission'], correct:1, exp:'The Owner\'s Policy runs with ownership — it protects the person who owns the property, not the lender.'},
+      {q:'A Loan Policy\'s coverage amount typically:', choices:['Stays fixed at the original purchase price','Decreases as the underlying loan balance is paid down','Increases every year','Has no relationship to the loan balance'], correct:1, exp:'Loan policy coverage tracks the outstanding loan balance and ends when the loan is paid off.'},
+      {q:'A Construction Loan Policy is most commonly used:', choices:['After the property has been sold to a third party','During construction financing, often updated as draws are disbursed','Only for owner-occupied single-family resale','In place of an Owner\'s Policy at final closing'], correct:1, exp:'Construction lenders need continuous priority protection as they release funds in stages — that\'s what a construction loan policy (with date-down endorsements) provides.'},
+      {q:'The "insuring clause" of a title policy:', choices:['Lists exceptions to coverage','States exactly what risks the insurer promises to cover','Identifies the notary who acknowledged the deed','Sets the closing date'], correct:1, exp:'The insuring clause is the affirmative promise of coverage — what the company IS agreeing to pay for.'},
+      {q:'Standard exclusions found in virtually every ALTA policy include:', choices:['Fraud by the seller only','Governmental police power/zoning and eminent domain','Any lien recorded before closing','The buyer\'s own negligence in reviewing the commitment'], correct:1, exp:'Zoning/police-power matters and eminent domain are excluded on every standard ALTA form regardless of what the search shows.'},
+      {q:'Which schedule of a title policy identifies the insured party, the policy amount, and the estate being insured?', choices:['Schedule A','Schedule B-I','Schedule B-II','The exclusions page'], correct:0, exp:'Schedule A is the "who, how much, and what estate" page. Schedule B is where exceptions live.'},
+      {q:'In evidence-of-title forms, a real property security instrument labeled a "deed of trust" is defined as:', choices:['A financing statement','A mortgage','A condition or stipulation','A type of easement'], correct:1, exp:'Even though Colorado uses deeds of trust with a public trustee rather than a classic mortgage, title practice defines/treats a deed of trust the same as a mortgage for insuring purposes.'},
+      {q:'Which form of title evidence does NOT insure against unmarketability of title?', choices:['An ALTA Owner\'s Policy','A Commitment for Title Insurance','A Loan Policy','All of the above insure against it equally'], correct:1, exp:'A commitment is only a conditional promise to issue a policy — it doesn\'t itself insure anything, including marketability.'},
+      {q:'Schedule B-II of a policy/commitment contains:', choices:['Requirements that must be met before closing','Standing exceptions to coverage that remain even after closing (e.g., recorded easements, CC&Rs)','The legal description only','The insured amount'], correct:1, exp:'B-I = to-do items to clear before closing. B-II = permanent exceptions that survive closing.'},
+      {q:'A lender requires title insurance mainly because:', choices:['It replaces the need for a survey','It protects the lender\'s security interest against undiscovered title defects that could impair repayment','It is required by the buyer\'s homeowner\'s association','It guarantees the property\'s market value'], correct:1, exp:'The lender\'s collateral is only as good as the title behind it — a loan policy protects that security interest.'}
+    ]
+  },
+  {
+    key:'ownership', section:'General Knowledge', code:'III',
+    name:'Real Estate Ownership', tier:'review', barPx:385,
+    flashcards:[
+      {f:'Fee Simple', b:'The most complete form of ownership — the owner holds all rights to the property indefinitely, subject only to governmental powers (taxation, eminent domain, police power, escheat) and any recorded encumbrances.'},
+      {f:'Joint Tenancy', b:'Co-ownership with an automatic right of survivorship — when one joint tenant dies, their share passes directly to the surviving joint tenant(s), not through probate. Traditionally requires unity of time, title, interest, and possession.'},
+      {f:'Tenancy in Common', b:'Co-ownership where each owner holds an undivided (possibly unequal) interest with NO right of survivorship — a deceased owner\'s share passes through their estate/will, not automatically to co-owners.'},
+      {f:'Life Estate', b:'An ownership interest that lasts only for the life of a named person (the "life tenant"). Upon that person\'s death, the property passes automatically to the remainderman named in the deed.'},
+      {f:'Leasehold Estate', b:'A tenant\'s right to possess and use real property for a defined term under a lease — distinguished from a "freehold" (ownership) estate.'},
+      {f:'Four Unities of Joint Tenancy', b:'Time, Title, Interest, and Possession — all joint tenants must acquire their interest at the same time, by the same document, with equal shares, and equal right to possess the whole property. Break one unity and it becomes a tenancy in common.'},
+      {f:'Severing a Joint Tenancy', b:'A joint tenant can unilaterally break the joint tenancy — e.g., by conveying their interest to a third party — which converts that share into a tenancy-in-common interest.'},
+      {f:'Colorado & Marital Property', b:'Colorado is a common-law / equitable-distribution state, NOT a community property state — spousal ownership follows title and equitable division rules rather than automatic 50/50 community property rules.'}
+    ],
+    quiz:[
+      {q:'Which form of ownership includes an automatic right of survivorship?', choices:['Tenancy in common','Joint tenancy','Leasehold','Life estate (for the life tenant\'s heirs)'], correct:1, exp:'Survivorship is the defining feature of joint tenancy — no probate needed for that share.'},
+      {q:'A deed conveys property "to M and N as joint tenants." M later dies. What happens to M\'s interest?', choices:['It passes to M\'s heirs through probate','It automatically vests in N, the surviving joint tenant','It becomes a tenancy in common with M\'s estate','It reverts to the original grantor'], correct:1, exp:'That\'s the whole point of joint tenancy — the surviving joint tenant takes the deceased\'s share automatically, outside of probate.'},
+      {q:'Which of the four unities is required to create a valid joint tenancy?', choices:['Unity of financing','Unity of time, title, interest, and possession','Unity of marital status','Unity of insurance coverage'], correct:1, exp:'Time, Title, Interest, Possession — all four must be equal and simultaneous.'},
+      {q:'If a joint tenant conveys their interest to a third party without the other joint tenants\' involvement, the effect is generally to:', choices:['Void the entire joint tenancy for everyone','Sever that interest, so the new owner holds as a tenant in common with the remaining joint tenants','Automatically make the third party a joint tenant with survivorship','Have no legal effect'], correct:1, exp:'Conveying away breaks the unities for that share — the buyer steps in as a tenant in common, not a joint tenant.'},
+      {q:'A life estate automatically ends:', choices:['When the property is sold','Upon the death of the measuring life (the life tenant, or another named person)','After 21 years','When the remainderman turns 18'], correct:1, exp:'A life estate is tied to a specific life — once that life ends, the estate ends and the remainderman takes over.'},
+      {q:'A tenant occupying an apartment under a signed lease holds what kind of estate?', choices:['Fee simple','Life estate','Leasehold estate','Joint tenancy'], correct:2, exp:'A lease creates a leasehold — a possessory, non-ownership interest for a defined term.'},
+      {q:'Which is the broadest, most complete estate a person can hold in real property?', choices:['Leasehold','Life estate','Fee simple','Easement'], correct:2, exp:'Fee simple is full, indefinite ownership — the benchmark every other estate is measured against.'},
+      {q:'Two unmarried co-owners hold title as tenants in common, one owning 70% and the other 30%. One dies. What happens to their 70% share?', choices:['It automatically passes to the surviving co-owner','It passes according to the deceased owner\'s will or the laws of intestacy, through their estate','It reverts to the state','It splits evenly regardless of the original percentages'], correct:1, exp:'Tenancy in common has no survivorship — each owner\'s share passes through their own estate, exactly per their percentage of ownership.'}
+    ]
+  },
+  {
+    key:'rights', section:'General Knowledge', code:'IV',
+    name:'Rights and Interests', tier:'lighter', barPx:515,
+    flashcards:[
+      {f:'Easement', b:'A non-possessory right to use another\'s land for a specific purpose (e.g., access, utilities) — it does not transfer ownership, only a right of use.'},
+      {f:'Right of Way', b:'A specific type of easement granting the right to pass over another\'s land.'},
+      {f:'Voluntary Lien', b:'A lien the property owner agrees to, such as a deed of trust securing a mortgage loan.'},
+      {f:'Involuntary Lien', b:'A lien created by law or by a creditor\'s action without the owner\'s consent — such as a judgment lien, tax lien, or mechanic\'s lien.'},
+      {f:'Mechanic\'s Lien (Colorado)', b:'A lien for unpaid labor or materials on a property. Under Colorado\'s curative statute (C.R.S. 38-22-109(8)), an unenforced mechanic\'s lien is generally cured/unenforceable of record after about 13 months.'},
+      {f:'Judgment Lien (Colorado)', b:'Under Colorado\'s curative statute (C.R.S. 13-52-102), a general judgment lien is generally cured after about 6 years if not renewed — but liens tied to certain federal judgments or child support run much longer (around 20 years).'},
+      {f:'Federal Tax Lien', b:'A lien the IRS can file against a taxpayer\'s property, generally cured after about 10 years under the curative statute framework. Importantly, an unfiled/unindexed general federal tax lien can still be valid as a "secret lien" against the heirs/devisees of the owner.'},
+      {f:'Covenants, Conditions & Restrictions (CC&Rs)', b:'Private contractual restrictions on how property may be used, typically recorded by a developer or HOA. They run with the land and bind future owners — but they are classified as an "encumbrance," not a "lien," since they don\'t secure a debt.'}
+    ],
+    quiz:[
+      {q:'An easement is best described as:', choices:['Full ownership of a strip of land','A non-possessory right to use another\'s land for a specific purpose','A type of lien','A form of joint tenancy'], correct:1, exp:'An easement grants a right of use, not ownership — the underlying land still belongs to the landowner.'},
+      {q:'A deed of trust securing a purchase loan is an example of:', choices:['An involuntary lien','A voluntary lien, because the owner agreed to it','An easement','A CC&R'], correct:1, exp:'The borrower voluntarily signs the deed of trust to secure the loan — that consent makes it a voluntary lien.'},
+      {q:'A judgment lien recorded against a property owner without their agreement is an example of:', choices:['A voluntary lien','An involuntary lien','An easement','A leasehold'], correct:1, exp:'Judgment liens are imposed by a court, not agreed to by the owner — classic involuntary lien.'},
+      {q:'Under Colorado\'s curative statutes, an unenforced mechanic\'s lien generally becomes unenforceable of record after approximately:', choices:['6 years','13 months','20 years','90 days'], correct:1, exp:'C.R.S. 38-22-109(8) sets the mechanic\'s lien curative period at roughly 13 months if not enforced by legal action.'},
+      {q:'Which of the following is generally classified as an "encumbrance on title" rather than a "lien on title"?', choices:['A recorded judgment for the payment of money','A deed of trust','Covenants, conditions, and restrictions limiting use of the property','A federal tax lien'], correct:2, exp:'Liens secure a monetary debt. CC&Rs restrict use but don\'t secure a debt, so they\'re classified as an encumbrance rather than a lien.'},
+      {q:'A general federal tax lien can be valid as a "secret lien" (without filing or indexing) against which of the following?', choices:['A bona fide mortgagee','A judgment lien creditor','The heirs and/or devisees of the owner','A subsequent purchaser for value'], correct:2, exp:'Heirs/devisees take subject to the decedent\'s debts — a federal tax lien can bind them even without being separately filed or indexed.'},
+      {q:'Which of the following best distinguishes a voluntary lien from an involuntary lien?', choices:['Voluntary liens are always larger in amount','A voluntary lien is one the owner agrees to (like a deed of trust); an involuntary lien is imposed by law or a creditor without consent','Involuntary liens can never be released','There is no meaningful legal distinction'], correct:1, exp:'The dividing line is consent — did the owner agree to it, or was it imposed on them.'},
+      {q:'CC&Rs recorded by a developer against a subdivision:', choices:['Only bind the original developer, not future buyers','Run with the land and bind future owners of lots in the subdivision','Automatically expire after one sale','Are the same thing as a mechanic\'s lien'], correct:1, exp:'CC&Rs are designed to bind every future owner of the lots in the subdivision, not just the original parties.'}
+    ]
+  },
+  {
+    key:'legal', section:'General Knowledge', code:'V',
+    name:'Legal Descriptions', tier:'review', barPx:385,
+    flashcards:[
+      {f:'Metes and Bounds', b:'A legal description using compass directions and distances from a defined point of beginning, tracing the boundary until it closes back on itself. Common for irregular parcels.'},
+      {f:'Section, Township, and Range', b:'The rectangular government survey system dividing land into 6-mile-square townships, each split into 36 one-mile-square sections (640 acres each) — used to describe unplatted rural land.'},
+      {f:'Lot and Block', b:'A legal description that refers to a recorded subdivision plat by lot number, block number, and the plat\'s filing information — used for platted (subdivided) property.'},
+      {f:'Platted vs. Unplatted Land', b:'Platted land has been formally subdivided and recorded on a plat map (described by lot and block). Unplatted land has not, and is typically described by metes and bounds or section/township/range.'},
+      {f:'Point of Beginning (POB)', b:'The fixed starting/ending point in a metes and bounds description. The description must return to this exact point for the description to "close."'},
+      {f:'Essential Elements of a Good Legal Description', b:'Concise and clear, with a locatable point of beginning and definite tie-points, so the parcel it describes can be found and distinguished from every other parcel.'},
+      {f:'"Lots 1 to 6 inclusive"', b:'"Inclusive" means both endpoints are included — so "Lots 1 to 6 inclusive" means Lots 1, 2, 3, 4, 5, AND 6 (six lots total), not five.'},
+      {f:'Describing a Lot Plus Part of Another', b:'When combining an entire lot with only part of another (e.g., the N½ of Lot 3 and all of Lot 4), each portion must be described separately and precisely — a vague combined reference like "the N½ of Lots 3 and 4" is wrong and ambiguous.'}
+    ],
+    quiz:[
+      {q:'A legal description that begins at a defined point, uses compass bearings and distances, and returns to that same point is a:', choices:['Lot and block description','Metes and bounds description','Government survey description','Street address'], correct:1, exp:'That "start, trace, and close back to the same point" pattern is the signature of a metes and bounds description.'},
+      {q:'The government (rectangular) survey system divides townships into how many sections, and how large is each section?', choices:['6 sections of 100 acres each','36 sections of 640 acres each','12 sections of 40 acres each','4 sections of 1,000 acres each'], correct:1, exp:'Each township is 36 square miles, split into 36 one-square-mile sections — and one square mile equals 640 acres.'},
+      {q:'A "lot and block" legal description is used for:', choices:['Unplatted rural land','Land that has been formally subdivided and recorded on a plat map','Mineral rights only','Riparian water rights'], correct:1, exp:'Lot and block only works once a subdivision plat has been recorded — otherwise there\'s no lot/block to reference.'},
+      {q:'"Lots 1 to 6 inclusive" refers to:', choices:['Lots 1, 2, 3, 4, and 5 only','Lots 1, 2, 3, 4, 5, and 6','Only Lots 1 and 6','An indefinite number of lots'], correct:1, exp:'"Inclusive" means both endpoints count — six lots total, not five.'},
+      {q:'In a metes and bounds description, the "point of beginning":', choices:['Can be anywhere and doesn\'t need to be located precisely','Is the fixed point the description starts and must return to for the boundary to close','Is only used for lot and block descriptions','Refers to the county courthouse'], correct:1, exp:'If a metes and bounds description doesn\'t close back to its point of beginning, it\'s defective.'},
+      {q:'Which of the following would correctly describe "the north half of Lot 3 together with all of Lot 4"?', choices:['Lot 4 and the N½ of Lot 3','The N½ of Lots 3 and 4','Lots 3 and 4, north half','All are equally correct and unambiguous'], correct:0, exp:'"The N½ of Lots 3 and 4" wrongly implies only the north half of BOTH lots. Since the intent is all of Lot 4 plus just the north half of Lot 3, each must be stated separately, as in "Lot 4 and the N½ of Lot 3."'},
+      {q:'The two essential qualities every good legal description must have are:', choices:['A street address and a ZIP code','A concise, clear description with a locatable point of beginning and definite tie-points that close the description','A notarized signature and a witness','A tax parcel number only'], correct:1, exp:'Clarity plus closure — a reader must be able to locate the parcel and the boundary lines must mathematically close.'},
+      {q:'Unplatted land in a rural area is most commonly described using:', choices:['Lot and block','Metes and bounds or section/township/range','Condominium unit numbers','Street address only'], correct:1, exp:'Without a recorded plat, metes and bounds or the section/township/range system is used instead.'}
+    ]
+  },
+  {
+    key:'transfer', section:'General Knowledge', code:'VI',
+    name:'Methods of Transfer / Conveyances', tier:'review', barPx:384,
+    flashcards:[
+      {f:'Warranty Deed', b:'A deed in which the grantor makes formal guarantees (covenants of title) about the property\'s title, promising to defend the grantee against title claims — including those arising before the grantor owned the property.'},
+      {f:'Quitclaim Deed', b:'A deed that conveys whatever interest the grantor has (if any), with no warranties or guarantees about the quality of title — often used to clear a title cloud or transfer between family members.'},
+      {f:'Deed of Trust', b:'Colorado\'s primary security instrument for real estate loans (used instead of a mortgage). Involves three parties — borrower (trustor), lender (beneficiary), and a public trustee — who holds legal title as security until the debt is paid.'},
+      {f:'Foreclosure', b:'The legal process by which a lender or lienholder forces the sale of property to satisfy an unpaid debt after default. In Colorado, deed of trust foreclosures are typically handled through the county Public Trustee\'s office.'},
+      {f:'Probate', b:'The court-supervised process of administering a deceased person\'s estate — validating a will (if any) and distributing assets, including real property, to heirs or beneficiaries. Under Colorado\'s Uniform Probate Code, it can proceed as informal or formal proceedings.'},
+      {f:'Power of Attorney (POA) in a Conveyance', b:'A document authorizing someone (the attorney-in-fact) to sign documents, including deeds, on another\'s behalf. For title insurance purposes, the attorney-in-fact\'s authority to convey real property should be evidenced/recorded in the chain of title.'},
+      {f:'Acknowledgment', b:'A notary\'s certification that the person signing a document appeared before them and confirmed they signed it voluntarily — required for most deeds to be recordable.'},
+      {f:'Requirements to Record a Deed in Colorado', b:'Generally a deed must be signed and acknowledged (notarized) and contain a legal description and the grantee\'s mailing address. Colorado does NOT require witnesses or a seal on a deed.'}
+    ],
+    quiz:[
+      {q:'Which deed type provides the grantee the strongest protection because the grantor warrants against title defects, even those predating their ownership?', choices:['Quitclaim deed','Warranty deed','Deed of trust','Trustee\'s deed'], correct:1, exp:'A (general) warranty deed carries the broadest covenants — the grantor is on the hook even for defects from before they owned it.'},
+      {q:'A quitclaim deed:', choices:['Guarantees clear title','Conveys only whatever interest the grantor actually has, without any warranty','Can only be used by lenders','Automatically clears all liens'], correct:1, exp:'A quitclaim makes no promises about the quality of title — it just passes along whatever the grantor happens to hold, if anything.'},
+      {q:'In Colorado, the security instrument typically used for a real estate loan (instead of a mortgage) is a:', choices:['Warranty deed','Deed of trust, involving a public trustee','Quitclaim deed','Lease'], correct:1, exp:'Colorado uses deeds of trust with a public trustee rather than the classic two-party mortgage used in some other states.'},
+      {q:'In Colorado, foreclosure of a deed of trust is typically administered through:', choices:['The county assessor\'s office','The county Public Trustee\'s office','The Secretary of State','The Division of Insurance'], correct:1, exp:'The public trustee handles the foreclosure sale process under a deed of trust in Colorado.'},
+      {q:'Which of the following is NOT required to execute a valid deed conveying Colorado real property?', choices:['The grantor\'s signature','Acknowledgment before a notary','Witnesses','A legal description of the property'], correct:2, exp:'Colorado does not require witnesses (or a seal) on a deed — but it must be signed, acknowledged, and contain a legal description.'},
+      {q:'When an attorney-in-fact signs a deed on behalf of the property owner under a power of attorney, for title insurance purposes:', choices:['No documentation of the authority is ever needed','The attorney-in-fact\'s authority to convey should be evidenced/recorded in the chain of title','Only the notary needs to verify authority verbally','The power of attorney is presumed automatically without any recorded evidence'], correct:1, exp:'Title companies want the POA (or a memorandum of it) in the chain of title so the authority to sign is documented, not assumed.'},
+      {q:'Probate is best defined as:', choices:['The recording of a deed','The court-supervised process of administering a deceased person\'s estate and distributing assets to heirs or beneficiaries','A type of title insurance endorsement','The process of curing a mechanic\'s lien'], correct:1, exp:'Probate is the court process that clears the way for a deceased owner\'s real property to pass to the right people.'},
+      {q:'Under Colorado\'s Uniform Probate Code, administration of a deceased Colorado resident\'s estate may proceed as:', choices:['Only formal proceedings','Only informal proceedings','Either informal or formal proceedings','Neither — Colorado has no probate process'], correct:2, exp:'Colorado\'s Uniform Probate Code allows for both informal (less court involvement) and formal (more court supervision) proceedings, depending on the situation.'}
+    ]
+  },
+  {
+    key:'colaw', section:'State Law Specific', code:'I',
+    name:'Colorado Laws and Regulations', tier:'priority', barPx:236,
+    flashcards:[
+      {f:'Title Insurance (CO definition)', b:'Insuring, guaranteeing, or indemnifying owners of real property against loss or damage from liens or encumbrances upon, defects in, or the unmarketability of, the title to that property.'},
+      {f:'Title Insurance Agent', b:'A person authorized by a title insurance company to solicit insurance, collect premiums, or issue/countersign policies on its behalf.'},
+      {f:'Title Entity', b:'Collectively refers to title insurance agents, title insurance agencies, AND title insurance companies.'},
+      {f:'TBD Commitment', b:'A report, in the form of a commitment, furnished PRIOR to receiving an application for title insurance — before the buyer, sales amount, and loan amount are known.'},
+      {f:'Gap Coverage', b:'Insures against loss from matters appearing of record in the clerk & recorder\'s office between the date of the title commitment and the date the closing documents are actually recorded.'},
+      {f:'Rate Filing Requirement', b:'Title insurance rates/fees must be filed electronically with the Commissioner, supported by justification (data), and cannot take effect earlier than 30 days after the Commissioner receives them.'},
+      {f:'Volume Discounts', b:'Different title insurance rates may be filed for different counties, but NOT for different risks within the same county.'},
+      {f:'Prohibited: Commingling', b:'A title entity may never commingle fiduciary funds with its own operating or personal accounts.'},
+      {f:'Prohibited: Waiving the Rate', b:'A title entity cannot charge less than its filed/scheduled rate or fee, or waive it, for any client.'},
+      {f:'Permitted: Business Meals/Events', b:'A title entity MAY pay for business meals or sporting events with a settlement producer only when at least one title insurance producer attends for every four settlement producers present.'},
+      {f:'Title Commitment Requirements', b:'Must disclose the record vested owner, may NOT contain generic exceptions in an Owner\'s Policy commitment, and must be updated before closing.'},
+      {f:'Policy Issuance Deadline', b:'A title entity must record closing documents within 7 days of closing and issue the final policy within 90 calendar days of closing.'},
+      {f:'Mineral Estate Disclosure', b:'A title commitment for an Owner\'s Policy must disclose, in the commitment itself, if the mineral estate has been severed, leased, or conveyed from the surface estate.'},
+      {f:'Record Retention', b:'Closing/settlement/escrow files must be retained for 7 years. A title entity must respond to a Division examination request within 10 calendar days, and to a Division inquiry within 20 calendar days.'},
+      {f:'Good Funds Law', b:'Closing funds must be available for immediate withdrawal before they can be disbursed at closing.'},
+      {f:'Insurance Commissioner', b:'Heads the Division of Insurance. Appointed by the Governor and confirmed by the Senate. Conducts financial exams of insurers at least once every 5 years, and market conduct exams as often as deemed appropriate.'},
+      {f:'Commissioner\'s Core Powers', b:'Supervises the business of insurance; issues certificates of authority to title insurance companies; examines all license requests/applications; reviews insurers\' annual statements; conducts examinations and investigations; disseminates general insurance information to the public; and adopts rules to ensure financial solvency and a competitive marketplace.'},
+      {f:'Market Conduct Exams vs. Financial Exams', b:'Market conduct exams happen as often as the Commissioner deems appropriate (no fixed schedule). Financial exams of insurers must happen at least once every 5 years, following NAIC and the Colorado insurance examiner\'s handbook guidelines.'},
+      {f:'Commissioner: Hearings & Producer Discipline', b:'Before the Commissioner can place a producer on probation, suspend, revoke, or refuse to issue/continue/renew a license, the producer is entitled to notice and a hearing. The Commissioner\'s final action is subject to judicial review.'},
+      {f:'Cease-and-Desist Penalties', b:'Violating a Commissioner\'s cease-and-desist order carries a civil penalty of up to $10,000 per violation for an insurer, and up to $500 per violation for an individual.'},
+      {f:'Civil Penalties for Violations', b:'Generally up to $3,000 per violation (capped at $30,000) — but if the insurer/producer knew or reasonably should have known the conduct violated the law, the penalty rises to up to $30,000 per violation, capped at $750,000.'},
+      {f:'License Suspension/Revocation Grounds', b:'Includes misrepresentation or fraud in the application, misappropriating client funds, a felony or moral-turpitude misdemeanor conviction, cheating on the licensing exam, and failing to pay court-ordered child support or income tax.'},
+      {f:'Title Producer Licensing Requirement', b:'Colorado requires NO prelicensing education AND NO continuing education for a title insurance producer license — unlike most other insurance license lines. A frequently tested distinction.'},
+      {f:'Fiduciary Fund Timing', b:'A title agent must deposit fiduciary funds within 3 business days of receipt, remit premiums to the insurer within 45 days, and reconcile the escrow account at least every 45 days.'},
+      {f:'Change of Address / Assumed Names', b:'A producer must notify the Commissioner of an address change within 30 days. Any assumed/fictitious business name must be registered with the Commissioner before it\'s used.'},
+      {f:'Firm Naming Rule', b:'No title insurance agency may use "title insurance," "title guaranty," or "title guarantee" in its name unless followed by the word "agent" or "agency."'},
+      {f:'Controlled Business', b:'A producer\'s license cannot be used chiefly to write "controlled business" — defined as when premiums from the producer\'s own/family/employer business exceed premiums from all other business written in a 12-month period.'},
+      {f:'Affiliated Business Arrangements (ABAs)', b:'Distinct from controlled business. Permitted when a referring investor\'s payment is only a legitimate return on investment (not tied to referral volume), with equal ownership costs for all investors, a formal business plan, and required disclosure.'},
+      {f:'Curative Statutes (concept)', b:'Colorado law sets specific time periods after which certain title defects (old liens, defective acknowledgments, adverse possession claims) are cured/extinguished of record even without a formal release — e.g., a defective acknowledgment cures after 10 years; adverse possession by mere possession (no color of title) requires 18 years.'}
+    ],
+    quiz:[
+      {q:'Under Colorado law, "Title Entity" refers to:', choices:['Only title insurance companies','Title insurance agents, title insurance agencies, and title insurance companies collectively','Only licensed producers','The Division of Insurance'], correct:1, exp:'"Title Entity" is the umbrella term covering agents, agencies, and companies together.'},
+      {q:'A "TBD Commitment" is:', choices:['Issued only after closing','A commitment report furnished before an application for title insurance is received, when the buyer/sales amount/loan amount aren\'t yet known','A type of endorsement','Only used for commercial transactions'], correct:1, exp:'TBD = "to be determined" — it\'s an early-stage commitment used before the deal specifics are locked in.'},
+      {q:'"Gap coverage" insures against loss from matters appearing of record:', choices:['Before the commitment is issued','Between the date of the commitment and the date the closing documents are actually recorded','After the policy has expired','Only for construction loans'], correct:1, exp:'Gap coverage protects against the risk that something gets recorded in that window between commitment and recording of the closing docs.'},
+      {q:'Colorado title insurance rates and fees must be filed with the Commissioner:', choices:['By mail only, once a year','Electronically, supported by justification, and cannot take effect sooner than 30 days after receipt','Verbally, upon request','Only if requested by a consumer'], correct:1, exp:'Electronic filing, justified by data, with a 30-day minimum lead time before the rate can be used.'},
+      {q:'Under Colorado law, volume discounts on title insurance rates may vary by:', choices:['Different risks within the same county','Different counties','The customer\'s income level','The producer\'s years of experience'], correct:1, exp:'Rates can differ county-to-county, but not risk-to-risk within the same county — that would be discriminatory rating.'},
+      {q:'Which of the following is a prohibited practice for a title insurance company or agent?', choices:['Issuing a TBD Commitment for the filed charge','Commingling fiduciary funds with the entity\'s operating accounts','Providing one free copy of the last recorded vesting deed','Sponsoring an educational course at least one hour long'], correct:1, exp:'Commingling fiduciary funds with operating funds is squarely prohibited — the other three are all things a title entity IS allowed to do.'},
+      {q:'A title entity may pay for a business meal with settlement producers only when:', choices:['No title insurance producer is present','At least one title insurance producer attends for every four settlement producers present','The meal costs under $10 per person','It occurs on a weekday'], correct:1, exp:'The 1-producer-per-4-settlement-producers ratio is the specific rule that keeps this from becoming a disguised referral fee.'},
+      {q:'A title commitment for an Owner\'s Policy must NOT contain:', choices:['The record vested owner','Generic exceptions','A legal description','The commitment\'s effective date'], correct:1, exp:'Generic (vague, boilerplate) exceptions that don\'t reference a specific document or recorded matter are prohibited in an Owner\'s Policy commitment — every exception must be specific.'},
+      {q:'Under Colorado consumer protection rules, a title entity must issue the final policy within how many days of closing?', choices:['7 calendar days','30 calendar days','90 calendar days','1 year'], correct:2, exp:'90 calendar days is the outer deadline for issuing the final policy after closing (recording of closing docs is the tighter 7-day deadline).'},
+      {q:'A title commitment for an Owner\'s Policy must disclose in the commitment itself:', choices:['The producer\'s commission','Whether the mineral estate has been severed, leased, or conveyed from the surface estate','The buyer\'s credit score','The seller\'s original purchase price'], correct:1, exp:'The mineral estate disclosure requirement is a Colorado-specific consumer protection under the title insurance code.'},
+      {q:'Colorado title entities must retain closing, settlement, and escrow files for:', choices:['1 year','3 years','7 years','25 years'], correct:2, exp:'7 years is the record retention period for closing/settlement/escrow files.'},
+      {q:'A title entity that receives a Division examination request must respond within:', choices:['5 calendar days','10 calendar days','30 calendar days','90 calendar days'], correct:1, exp:'10 calendar days for an examination request; 20 calendar days for a general inquiry — don\'t mix these two up.'},
+      {q:'Colorado\'s Insurance Commissioner is:', choices:['Elected directly by voters','Appointed by the Governor and confirmed by the Senate','Appointed by title insurance companies','A federal position'], correct:1, exp:'Gubernatorial appointment with Senate confirmation — a state, not federal or elected, position.'},
+      {q:'Which of the following is NOT a power or duty of Colorado\'s Insurance Commissioner?', choices:['Issuing certificates of authority to title insurance companies','Setting the sale price of real estate transactions','Conducting examinations and investigations','Adopting rules to ensure financial solvency and a competitive marketplace'], correct:1, exp:'The Commissioner regulates the business of insurance — certificates of authority, exams, rulemaking — but has no role in setting real estate sale prices. That\'s outside the Division of Insurance entirely.'},
+      {q:'At minimum, how often must the Commissioner conduct a financial examination of an insurer?', choices:['Every year','At least once every 5 years','Every 10 years','Only upon a consumer complaint'], correct:1, exp:'Financial exams run on a fixed minimum schedule (at least every 5 years) — market conduct exams, by contrast, happen "as often as the Commissioner deems appropriate," with no fixed interval.'},
+      {q:'Before the Commissioner suspends, revokes, or refuses to renew a producer\'s license, the producer is entitled to:', choices:['Nothing — the Commissioner can act immediately','Notice and a hearing', 'A jury trial only','Automatic reimbursement of legal fees'], correct:1, exp:'Due process applies — notice and a hearing come before license discipline, and the Commissioner\'s final action is subject to judicial review after that.'},
+      {q:'Violating a Commissioner\'s cease-and-desist order carries a civil penalty of up to how much for an individual (as opposed to an insurer)?', choices:['$500','$3,000','$10,000','$30,000'], correct:0, exp:'Cease-and-desist violations are $10,000 per violation for an insurer, but only $500 per violation for an individual — a distinct, smaller number worth memorizing separately from the general civil penalty tiers.'},
+      {q:'If a title producer\'s violation of insurance law is one they knew or reasonably should have known about, the civil penalty can rise to:', choices:['$500 per violation, capped at $5,000','$3,000 per violation, capped at $30,000','$30,000 per violation, capped at $750,000','Unlimited with no cap'], correct:2, exp:'Knowing/should-have-known violations carry the steepest penalty tier: up to $30,000 per violation, capped at $750,000 total.'},
+      {q:'Which of the following is TRUE about Colorado title insurance producer licensing?', choices:['Prelicensing education is required, but continuing education is not','Both prelicensing and continuing education are required','Neither prelicensing education nor continuing education is required','Only continuing education is required, not prelicensing'], correct:2, exp:'This is a distinctive, frequently tested fact — Colorado title producers need neither prelicensing nor continuing education, unlike most other insurance license lines.'},
+      {q:'A title insurance agent must remit collected premiums to the insurer within how many days of receipt (absent a different contracted time)?', choices:['3 days','15 days','45 days','90 days'], correct:2, exp:'45 days is the default remittance deadline (or the contracted time, if different).'},
+      {q:'A title insurance agent must deposit fiduciary funds within how many business days of receipt?', choices:['1 business day','3 business days','10 business days','30 business days'], correct:1, exp:'3 business days for deposit; 45 days for remittance and for reconciling escrow — three different numbers to keep straight.'},
+      {q:'A title insurance agency\'s business name may include the words "title insurance" only if immediately followed by:', choices:['"Company" or "Corp"','"Agent" or "agency"','Nothing else is required','The Commissioner\'s approval number'], correct:1, exp:'The naming rule exists so the public isn\'t misled into thinking a title agency IS the underwriter itself.'},
+      {q:'"Controlled business" under Colorado law refers to a situation where:', choices:['A producer only writes commercial policies','Premiums from the producer\'s own, family\'s, or employer\'s business exceed premiums from all other business written in a 12-month period','A producer works for only one title insurance company','A producer\'s office is controlled by an out-of-state parent company'], correct:1, exp:'It\'s about where the business actually comes from — if most of it is self-referred, that license can be at risk.'},
+      {q:'An Affiliated Business Arrangement (ABA) is permitted under Colorado law when:', choices:['Referral volume directly determines an investor\'s payment','The referring investor\'s payment is only a legitimate return on investment, ownership costs are equal for all investors, and the arrangement is disclosed','No disclosure is required as long as it\'s a family business','It is never permitted under any circumstances'], correct:1, exp:'ABAs are allowed, but only if the payment is a genuine investment return (not a disguised referral fee) and everything is disclosed.'}
+    ]
+  }
+];
+
+const TIER_LABEL = {priority:'Priority focus', review:'Also review', lighter:'Lighter review'};
+const MAX_BAR = Math.max(...CATS.map(c=>c.barPx));
+
+/* =========================================================
+   STATE (in-memory only, for this session)
+   ========================================================= */
+const state = {
+  progress: {}, // key -> {reviewed:Set, known:Set, bestQuiz: pct}
+  fc: { catKey:null, deck:[], idx:0, flipped:false },
+  quiz: { catKey:null, order:[], idx:0, answers:[], answered:false },
+  exam: { active:false, questions:[], idx:0, answers:[], secondsLeft:0, timerId:null, submitted:false, resultChart:null, score:0 }
+};
+CATS.forEach(c => state.progress[c.key] = { reviewed:new Set(), known:new Set(), bestQuiz:null });
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+/* =========================================================
+   NAV / TABS
+   ========================================================= */
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=> showView(btn.dataset.view));
+});
+function showView(view){
+  document.querySelectorAll('.tab-btn').forEach(b=> b.classList.toggle('active', b.dataset.view===view));
+  document.querySelectorAll('.view').forEach(v=> v.classList.remove('active'));
+  document.getElementById('view-'+view).classList.add('active');
+  if(view==='progress') renderProgress();
+}
+
+/* =========================================================
+   DASHBOARD
+   ========================================================= */
+function renderDashboard(){
+  const chartWrap = document.getElementById('dashboard-chart');
+  chartWrap.innerHTML = CATS.map(c=>{
+    const pct = Math.round((c.barPx/MAX_BAR)*100);
+    return `<div class="chart-item">
+      <div class="lbl">${c.code}. ${c.name}<span class="tag ${c.tier}">${TIER_LABEL[c.tier]}</span></div>
+      <div class="track"><div class="fill ${c.tier}" style="width:${pct}%"></div></div>
+      <div class="pct">${pct}%</div>
+    </div>`;
+  }).join('');
+
+  const catsWrap = document.getElementById('dashboard-cats');
+  catsWrap.innerHTML = CATS.map(c=>{
+    return `<div class="cat-card" data-key="${c.key}">
+      <h3>${c.code}. ${c.name} <span class="tag ${c.tier}">${TIER_LABEL[c.tier]}</span></h3>
+      <div class="meta">${c.section} · ${c.flashcards.length} flashcards · ${c.quiz.length} quiz questions</div>
+      <div class="actions">
+        <button class="btn ghost sm" data-act="fc" data-key="${c.key}">Flashcards</button>
+        <button class="btn gold sm" data-act="quiz" data-key="${c.key}">Quiz</button>
+      </div>
+    </div>`;
+  }).join('');
+  catsWrap.querySelectorAll('button[data-act]').forEach(btn=>{
+    btn.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      const key = btn.dataset.key;
+      if(btn.dataset.act==='fc'){ showView('flashcards'); startFlashcards(key); }
+      else { showView('quiz'); document.getElementById('quiz-cat-select').value = key; updateQuizNote(); }
+    });
+  });
+}
+
+/* =========================================================
+   FLASHCARDS
+   ========================================================= */
+const fcSelect = document.getElementById('fc-cat-select');
+fcSelect.innerHTML = CATS.map(c=>`<option value="${c.key}">${c.code}. ${c.name}</option>`).join('');
+fcSelect.addEventListener('change', ()=> startFlashcards(fcSelect.value));
+document.getElementById('fc-shuffle').addEventListener('click', ()=>{
+  state.fc.deck = shuffle(state.fc.deck);
+  state.fc.idx = 0; state.fc.flipped = false;
+  renderFlashcard();
+});
+document.getElementById('fc-restart').addEventListener('click', ()=> startFlashcards(state.fc.catKey));
+document.getElementById('fc-flip').addEventListener('click', flipCard);
+document.getElementById('flashcard').addEventListener('click', flipCard);
+document.getElementById('fc-prev').addEventListener('click', ()=> stepCard(-1));
+document.getElementById('fc-next').addEventListener('click', ()=> stepCard(1));
+document.getElementById('fc-know').addEventListener('click', ()=> markCard(true));
+document.getElementById('fc-reviewagain').addEventListener('click', ()=> markCard(false));
+
+function startFlashcards(key){
+  fcSelect.value = key;
+  const cat = CATS.find(c=>c.key===key);
+  state.fc.catKey = key;
+  state.fc.deck = cat.flashcards.map((card,i)=>({...card, id:key+'-'+i}));
+  state.fc.idx = 0;
+  state.fc.flipped = false;
+  renderFlashcard();
+}
+function flipCard(){
+  state.fc.flipped = !state.fc.flipped;
+  document.getElementById('flashcard').classList.toggle('flipped', state.fc.flipped);
+}
+function stepCard(dir){
+  const n = state.fc.deck.length;
+  state.fc.idx = (state.fc.idx + dir + n) % n;
+  state.fc.flipped = false;
+  renderFlashcard();
+}
+function markCard(knowIt){
+  const card = state.fc.deck[state.fc.idx];
+  const p = state.progress[state.fc.catKey];
+  p.reviewed.add(card.id);
+  if(knowIt) p.known.add(card.id); else p.known.delete(card.id);
+  stepCard(1);
+}
+function renderFlashcard(){
+  const deck = state.fc.deck;
+  const card = deck[state.fc.idx];
+  document.getElementById('fc-front').textContent = card.f;
+  document.getElementById('fc-back').innerHTML = card.b + '<div class="hint"></div>';
+  document.getElementById('flashcard').classList.remove('flipped');
+  state.fc.flipped = false;
+  document.getElementById('fc-progress-label').textContent = `Card ${state.fc.idx+1} of ${deck.length}`;
+}
+
+/* =========================================================
+   QUIZ
+   ========================================================= */
+const quizSelect = document.getElementById('quiz-cat-select');
+quizSelect.innerHTML = CATS.map(c=>`<option value="${c.key}">${c.code}. ${c.name}</option>`).join('');
+quizSelect.addEventListener('change', updateQuizNote);
+function updateQuizNote(){
+  const cat = CATS.find(c=>c.key===quizSelect.value);
+  const best = state.progress[cat.key].bestQuiz;
+  document.getElementById('quiz-cat-note').textContent =
+    `${cat.quiz.length} questions · Section: ${cat.section}` + (best!==null ? ` · Your best score so far: ${best}%` : '');
+}
+updateQuizNote();
+
+document.getElementById('quiz-start').addEventListener('click', ()=> startQuiz(quizSelect.value));
+document.getElementById('quiz-quit').addEventListener('click', ()=> resetQuizToSetup());
+document.getElementById('quiz-back').addEventListener('click', ()=> resetQuizToSetup());
+document.getElementById('quiz-retry').addEventListener('click', ()=> startQuiz(state.quiz.catKey));
+document.getElementById('quiz-next').addEventListener('click', nextQuizQuestion);
+
+function resetQuizToSetup(){
+  document.getElementById('quiz-setup-card').style.display='';
+  document.getElementById('quiz-play-card').style.display='none';
+  document.getElementById('quiz-results-card').style.display='none';
+  updateQuizNote();
+}
+function startQuiz(key){
+  const cat = CATS.find(c=>c.key===key);
+  state.quiz.catKey = key;
+  state.quiz.order = shuffle(cat.quiz.map((q,i)=>i));
+  state.quiz.idx = 0;
+  state.quiz.answers = [];
+  state.quiz.answered = false;
+  document.getElementById('quiz-setup-card').style.display='none';
+  document.getElementById('quiz-results-card').style.display='none';
+  document.getElementById('quiz-play-card').style.display='';
+  renderQuizQuestion();
+}
+function renderQuizQuestion(){
+  const cat = CATS.find(c=>c.key===state.quiz.catKey);
+  const qi = state.quiz.order[state.quiz.idx];
+  const q = cat.quiz[qi];
+  const choiceOrder = shuffle(q.choices.map((c,i)=>i));
+  state.quiz._choiceOrder = choiceOrder;
+  document.getElementById('quiz-progress-fill').style.width = `${(state.quiz.idx/cat.quiz.length)*100}%`;
+  document.getElementById('quiz-progress-label').textContent = `Question ${state.quiz.idx+1} of ${cat.quiz.length}`;
+  document.getElementById('quiz-question').textContent = q.q;
+  document.getElementById('quiz-explain').style.display='none';
+  document.getElementById('quiz-next').style.display='none';
+  state.quiz.answered = false;
+  const wrap = document.getElementById('quiz-choices');
+  wrap.innerHTML = choiceOrder.map(ci=>{
+    return `<button class="choice" data-ci="${ci}">${q.choices[ci]}</button>`;
+  }).join('');
+  wrap.querySelectorAll('.choice').forEach(btn=>{
+    btn.addEventListener('click', ()=> answerQuiz(parseInt(btn.dataset.ci,10)));
+  });
+}
+function answerQuiz(chosenIdx){
+  if(state.quiz.answered) return;
+  state.quiz.answered = true;
+  const cat = CATS.find(c=>c.key===state.quiz.catKey);
+  const qi = state.quiz.order[state.quiz.idx];
+  const q = cat.quiz[qi];
+  const correct = chosenIdx === q.correct;
+  state.quiz.answers.push({qi, chosenIdx, correct});
+  document.querySelectorAll('#quiz-choices .choice').forEach(btn=>{
+    const ci = parseInt(btn.dataset.ci,10);
+    btn.classList.add('disabled');
+    if(ci===q.correct) btn.classList.add('correct');
+    else if(ci===chosenIdx) btn.classList.add('incorrect');
+  });
+  const exp = document.getElementById('quiz-explain');
+  exp.style.display='';
+  exp.innerHTML = `<b>${correct?'Correct. ':'Not quite. '}</b>${q.exp}`;
+  document.getElementById('quiz-next').style.display='';
+  document.getElementById('quiz-next').textContent = (state.quiz.idx === cat.quiz.length-1) ? 'See results →' : 'Next question →';
+}
+function nextQuizQuestion(){
+  const cat = CATS.find(c=>c.key===state.quiz.catKey);
+  if(state.quiz.idx < cat.quiz.length-1){
+    state.quiz.idx++;
+    renderQuizQuestion();
+  } else {
+    finishQuiz();
+  }
+}
+function finishQuiz(){
+  const cat = CATS.find(c=>c.key===state.quiz.catKey);
+  const correctCount = state.quiz.answers.filter(a=>a.correct).length;
+  const pct = Math.round((correctCount/cat.quiz.length)*100);
+  const p = state.progress[state.quiz.catKey];
+  if(p.bestQuiz===null || pct>p.bestQuiz) p.bestQuiz = pct;
+
+  document.getElementById('quiz-play-card').style.display='none';
+  document.getElementById('quiz-results-card').style.display='';
+  const big = document.getElementById('quiz-score-big');
+  big.textContent = `${correctCount} / ${cat.quiz.length} (${pct}%)`;
+  big.className = 'big ' + (pct>=70?'pass':'fail');
+  document.getElementById('quiz-score-sub').textContent = `${cat.code}. ${cat.name}` + (pct>=70 ? ' — nice, that clears the 70% pass line.' : ' — under 70%, worth another pass before moving on.');
+
+  const list = document.getElementById('quiz-review-list');
+  list.innerHTML = state.quiz.answers.map(a=>{
+    const q = cat.quiz[a.qi];
+    return `<div class="review-item ${a.correct?'right':'wrong'}">
+      <div style="font-weight:600; margin-bottom:4px;">${q.q}</div>
+      <div style="color:var(--muted); font-size:.85rem;">Your answer: ${q.choices[a.chosenIdx]}${a.correct?'':`<br>Correct answer: ${q.choices[q.correct]}`}</div>
+      <div style="margin-top:6px; font-size:.85rem;">${q.exp}</div>
+    </div>`;
+  }).join('');
+}
+
+/* =========================================================
+   PRACTICE EXAM
+   ========================================================= */
+document.getElementById('exam-start-study').addEventListener('click', ()=> startExam('study'));
+document.getElementById('exam-start-sim').addEventListener('click', ()=> startExam('sim'));
+document.getElementById('exam-prev').addEventListener('click', ()=> examStep(-1));
+document.getElementById('exam-skip').addEventListener('click', ()=> examStep(1));
+document.getElementById('exam-resume').addEventListener('click', ()=>{
+  document.getElementById('exam-review-gate-card').style.display='none';
+  document.getElementById('exam-play-card').style.display='';
+});
+document.getElementById('exam-submit').addEventListener('click', submitExam);
+document.getElementById('exam-retry').addEventListener('click', ()=> startExam(state.exam.mode));
+document.getElementById('exam-change-mode').addEventListener('click', resetExamToIntro);
+document.getElementById('exam-back-dash').addEventListener('click', ()=>{ resetExamToIntro(); showView('dashboard'); });
+
+function resetExamToIntro(){
+  if(state.exam.timerId) clearInterval(state.exam.timerId);
+  document.getElementById('exam-intro-card').style.display='';
+  document.getElementById('exam-play-card').style.display='none';
+  document.getElementById('exam-review-gate-card').style.display='none';
+  document.getElementById('exam-results-card').style.display='none';
+}
+document.getElementById('exam-download').addEventListener('click', downloadExamResults);
+
+const EXAM_SECONDS = 70*60;
+
+function buildExamQuestions(){
+  // Full bank, tagged with category, presented in category (real-exam) order,
+  // shuffled within each category.
+  let all = [];
+  CATS.forEach(cat=>{
+    const idxs = shuffle(cat.quiz.map((q,i)=>i));
+    idxs.forEach(i=> all.push({catKey:cat.key, qi:i}));
+  });
+  return all;
+}
+
+function startExam(mode){
+  state.exam.mode = mode || 'sim';
+  state.exam.active = true;
+  state.exam.questions = buildExamQuestions();
+  state.exam.idx = 0;
+  state.exam.answers = new Array(state.exam.questions.length).fill(null);
+  state.exam.secondsLeft = EXAM_SECONDS;
+  state.exam.submitted = false;
+  document.getElementById('exam-qcount').textContent = state.exam.questions.length;
+  document.getElementById('exam-intro-card').style.display='none';
+  document.getElementById('exam-results-card').style.display='none';
+  document.getElementById('exam-review-gate-card').style.display='none';
+  document.getElementById('exam-play-card').style.display='';
+  if(state.exam.timerId) clearInterval(state.exam.timerId);
+  const clock = document.getElementById('exam-clock');
+  if(state.exam.mode==='sim'){
+    state.exam.timerId = setInterval(tickExamTimer, 1000);
+    clock.style.display='';
+    tickExamTimer(true);
+  } else {
+    clock.style.display='';
+    clock.textContent = 'Untimed';
+    clock.classList.remove('low');
+  }
+  renderExamQuestion();
+}
+function tickExamTimer(skipDecrement){
+  if(state.exam.mode!=='sim') return;
+  if(!skipDecrement) state.exam.secondsLeft--;
+  const m = Math.floor(state.exam.secondsLeft/60);
+  const s = state.exam.secondsLeft%60;
+  const clock = document.getElementById('exam-clock');
+  clock.textContent = `${m}:${s.toString().padStart(2,'0')}`;
+  clock.classList.toggle('low', state.exam.secondsLeft<=300);
+  if(state.exam.secondsLeft<=0){
+    clearInterval(state.exam.timerId);
+    submitExam();
+  }
+}
+function renderExamQuestion(){
+  const total = state.exam.questions.length;
+  const item = state.exam.questions[state.exam.idx];
+  const cat = CATS.find(c=>c.key===item.catKey);
+  const q = cat.quiz[item.qi];
+  const isStudy = state.exam.mode==='study';
+  document.getElementById('exam-timer-label').textContent = `Question ${state.exam.idx+1} of ${total}` + (isStudy ? ' · Study Mode' : '');
+  document.getElementById('exam-progress-fill').style.width = `${(state.exam.idx/total)*100}%`;
+  document.getElementById('exam-section-label').textContent = `${cat.section} — ${cat.code}. ${cat.name}`;
+  document.getElementById('exam-question').textContent = q.q;
+
+  let existing = state.exam.answers[state.exam.idx];
+  if(!existing){
+    existing = { order: shuffle(q.choices.map((c,i)=>i)), chosenIdx: null };
+    state.exam.answers[state.exam.idx] = existing;
+  }
+  const answered = existing.chosenIdx !== null;
+  const wrap = document.getElementById('exam-choices');
+  wrap.innerHTML = existing.order.map(ci=>{
+    let cls = 'choice';
+    let styleAttr = '';
+    if(isStudy && answered){
+      cls += ' disabled';
+      if(ci===q.correct) cls += ' correct';
+      else if(ci===existing.chosenIdx) cls += ' incorrect';
+    } else if(existing.chosenIdx===ci){
+      styleAttr = ' style="border-color:var(--navy); background:#eef1f7;"';
+    }
+    return `<button class="${cls}" data-ci="${ci}"${styleAttr}>${q.choices[ci]}</button>`;
+  }).join('');
+  wrap.querySelectorAll('.choice').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      if(isStudy && existing.chosenIdx!==null) return; // locked once revealed in Study Mode
+      existing.chosenIdx = parseInt(btn.dataset.ci,10);
+      renderExamQuestion();
+    });
+  });
+
+  const explainEl = document.getElementById('exam-explain');
+  if(isStudy && answered){
+    explainEl.style.display='';
+    explainEl.innerHTML = `<b>${existing.chosenIdx===q.correct?'Correct. ':'Not quite. '}</b>${q.exp}`;
+  } else {
+    explainEl.style.display='none';
+  }
+
+  document.getElementById('exam-prev').disabled = state.exam.idx===0;
+  const isLast = state.exam.idx===total-1;
+  document.getElementById('exam-skip').style.display = isLast ? 'none' : '';
+  document.getElementById('exam-next').style.display = isLast ? 'none' : (existing.chosenIdx!==null ? '' : 'none');
+  if(isLast){
+    document.getElementById('exam-next').style.display = '';
+    document.getElementById('exam-next').textContent = 'Review & submit →';
+    document.getElementById('exam-next').onclick = openExamReviewGate;
+  } else {
+    document.getElementById('exam-next').textContent = 'Next →';
+    document.getElementById('exam-next').onclick = ()=> examStep(1);
+  }
+  renderExamNavGrid();
+}
+function renderExamNavGrid(){
+  const total = state.exam.questions.length;
+  const grid = document.getElementById('exam-nav-grid');
+  let html = '';
+  for(let i=0;i<total;i++){
+    const ans = state.exam.answers[i];
+    const isAnswered = ans && ans.chosenIdx!==null;
+    const isCurrent = i===state.exam.idx;
+    let cls = 'nav-q';
+    if(isCurrent) cls='current'; else if(isAnswered) cls='answered';
+    html += `<button class="${cls}" data-jump="${i}" title="Question ${i+1}${isAnswered?' — answered':''}">${i+1}</button>`;
+  }
+  grid.innerHTML = html;
+  grid.querySelectorAll('button[data-jump]').forEach(btn=>{
+    btn.addEventListener('click', ()=> jumpToExam(parseInt(btn.dataset.jump,10)));
+  });
+}
+function jumpToExam(i){
+  const total = state.exam.questions.length;
+  if(i<0 || i>=total) return;
+  state.exam.idx = i;
+  renderExamQuestion();
+}
+function examStep(dir){
+  const total = state.exam.questions.length;
+  const next = state.exam.idx + dir;
+  if(next<0 || next>=total) return;
+  state.exam.idx = next;
+  renderExamQuestion();
+}
+function openExamReviewGate(){
+  const unanswered = state.exam.answers.filter(a=>!a || a.chosenIdx===null).length;
+  document.getElementById('exam-unanswered-note').textContent = unanswered>0
+    ? `You have ${unanswered} unanswered question${unanswered>1?'s':''}. You can still submit — unanswered questions count as incorrect, just like the real exam.`
+    : 'All questions answered. Submit whenever you\'re ready.';
+  document.getElementById('exam-play-card').style.display='none';
+  document.getElementById('exam-review-gate-card').style.display='';
+}
+function submitExam(){
+  if(state.exam.submitted) return;
+  state.exam.submitted = true;
+  if(state.exam.timerId) clearInterval(state.exam.timerId);
+
+  const perCat = {};
+  CATS.forEach(c=> perCat[c.key] = {correct:0, total:0});
+  let totalCorrect = 0;
+  state.exam.questions.forEach((item,i)=>{
+    const cat = CATS.find(c=>c.key===item.catKey);
+    const q = cat.quiz[item.qi];
+    const ans = state.exam.answers[i];
+    const correct = ans && ans.chosenIdx===q.correct;
+    perCat[item.catKey].total++;
+    if(correct){ perCat[item.catKey].correct++; totalCorrect++; }
+  });
+  const totalQ = state.exam.questions.length;
+  const scorePct = Math.round((totalCorrect/totalQ)*100);
+  state.exam.score = scorePct;
+  state.exam.resultChart = perCat;
+  recordAttempt({
+    id: Date.now() + '-' + Math.random().toString(36).slice(2,8),
+    date: new Date().toISOString(),
+    mode: state.exam.mode,
+    score: scorePct,
+    correct: totalCorrect,
+    total: totalQ,
+    pass: scorePct>=70,
+    perCat: perCat
+  });
+
+  document.getElementById('exam-play-card').style.display='none';
+  document.getElementById('exam-review-gate-card').style.display='none';
+  document.getElementById('exam-results-card').style.display='';
+
+  const pass = scorePct>=70;
+  const word = document.getElementById('exam-result-word');
+  word.textContent = pass ? 'PASS' : 'FAIL';
+  word.className = 'big ' + (pass?'pass':'fail');
+  const modeLabel = state.exam.mode==='study' ? 'Just Studying (untimed)' : 'Simulate Pearson VUE (timed)';
+  document.getElementById('exam-result-score').textContent = `${modeLabel}   ·   Passing Score: 70   ·   Your Score: ${scorePct}   (${totalCorrect} of ${totalQ} correct)`;
+
+  const chartWrap = document.getElementById('exam-result-chart');
+  chartWrap.innerHTML = CATS.map(c=>{
+    const d = perCat[c.key];
+    const pctc = d.total ? Math.round((d.correct/d.total)*100) : 0;
+    const tier = pctc>=70 ? 'lighter' : (pctc>=45 ? 'review' : 'priority');
+    return `<div class="chart-item">
+      <div class="lbl">${c.code}. ${c.name}</div>
+      <div class="track"><div class="fill ${tier}" style="width:${pctc}%"></div></div>
+      <div class="pct">${d.correct}/${d.total}</div>
+    </div>`;
+  }).join('');
+
+  const list = document.getElementById('exam-review-list');
+  list.innerHTML = state.exam.questions.map((item,i)=>{
+    const cat = CATS.find(c=>c.key===item.catKey);
+    const q = cat.quiz[item.qi];
+    const ans = state.exam.answers[i];
+    const chosenIdx = ans ? ans.chosenIdx : null;
+    const correct = chosenIdx===q.correct;
+    const chosenText = chosenIdx===null ? '(no answer)' : q.choices[chosenIdx];
+    return `<div class="review-item ${correct?'right':'wrong'}">
+      <div style="font-size:.72rem; color:var(--muted); text-transform:uppercase;">${cat.code}. ${cat.name}</div>
+      <div style="font-weight:600; margin:3px 0 4px;">${i+1}. ${q.q}</div>
+      <div style="color:var(--muted); font-size:.85rem;">Your answer: ${chosenText}${correct?'':`<br>Correct answer: ${q.choices[q.correct]}`}</div>
+      <div style="margin-top:6px; font-size:.85rem;">${q.exp}</div>
+    </div>`;
+  }).join('');
+
+  renderProgress();
+}
+function downloadExamResults(){
+  const perCat = state.exam.resultChart;
+  let lines = [];
+  lines.push('COLORADO TITLE — PRACTICE EXAM RESULTS');
+  lines.push('Mode: ' + (state.exam.mode==='study' ? 'Just Studying (untimed)' : 'Simulate Pearson VUE (timed)'));
+  lines.push('Result: ' + (state.exam.score>=70 ? 'PASS' : 'FAIL'));
+  lines.push('Passing Score: 70   Your Score: ' + state.exam.score);
+  lines.push('');
+  lines.push('Performance by category:');
+  CATS.forEach(c=>{
+    const d = perCat[c.key];
+    lines.push(`  ${c.code}. ${c.name}: ${d.correct}/${d.total}`);
+  });
+  lines.push('');
+  lines.push('Generated by the Colorado Title Exam Study Tool.');
+  const blob = new Blob([lines.join('\n')], {type:'text/plain'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'practice-exam-results.txt';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+/* =========================================================
+   PROGRESS
+   ========================================================= */
+function renderProgress(){
+  const body = document.getElementById('progress-table-body');
+  body.innerHTML = CATS.map(c=>{
+    const p = state.progress[c.key];
+    return `<tr>
+      <td>${c.code}. ${c.name}</td>
+      <td>${p.reviewed.size} / ${c.flashcards.length}</td>
+      <td>${p.known.size} / ${c.flashcards.length}</td>
+      <td>${p.bestQuiz===null ? '—' : p.bestQuiz+'%'}</td>
+    </tr>`;
+  }).join('');
+  renderExamHistory();
+}
+
+/* =========================================================
+   PERSISTENT EXAM HISTORY
+   Auto-saved to this browser's storage; survives closing the
+   file. Export/import as a .json backup to move machines.
+   ========================================================= */
+const HISTORY_KEY = 'coTitleExamHistory_v1';
+let examHistory = loadHistory();
+
+function loadHistory(){
+  try {
+    const raw = localStorage.getItem(HISTORY_KEY);
+    if(!raw) return [];
+    const arr = JSON.parse(raw);
+    return Array.isArray(arr) ? arr.filter(a => a && typeof a.score==='number' && a.date) : [];
+  } catch(e){ return []; }
+}
+function saveHistory(){
+  try { localStorage.setItem(HISTORY_KEY, JSON.stringify(examHistory)); }
+  catch(e){ /* storage unavailable — history still works for this session */ }
+}
+function recordAttempt(attempt){
+  examHistory.push(attempt);
+  examHistory.sort((a,b)=> new Date(a.date) - new Date(b.date));
+  saveHistory();
+}
+function fmtDate(iso){
+  const d = new Date(iso);
+  if(isNaN(d)) return '—';
+  const sameYear = d.getFullYear() === new Date().getFullYear();
+  const day = d.toLocaleDateString(undefined, sameYear ? {month:'short',day:'numeric'} : {month:'short',day:'numeric',year:'numeric'});
+  return `${day}, ${d.toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'})}`;
+}
+function renderExamHistory(){
+  const examBody = document.getElementById('progress-exam-body');
+  const summary = document.getElementById('exam-history-summary');
+  if(examHistory.length){
+    examBody.innerHTML = examHistory.map((a,i)=>{
+      const modeLabel = a.mode==='study' ? 'Just Studying' : 'Timed Simulation';
+      const prev = i>0 ? examHistory[i-1].score : null;
+      const delta = prev===null ? '' :
+        (a.score>prev ? ` <span style="color:var(--good); font-size:.72rem;">▲${a.score-prev}</span>` :
+         a.score<prev ? ` <span style="color:var(--bad); font-size:.72rem;">▼${prev-a.score}</span>` : '');
+      return `<tr><td>#${i+1}</td><td>${fmtDate(a.date)}</td><td>${modeLabel}</td><td>${a.score}%${delta}</td><td style="color:${a.pass?'var(--good)':'var(--bad)'}; font-weight:600;">${a.pass?'PASS':'FAIL'}</td></tr>`;
+    }).join('');
+    const best = Math.max(...examHistory.map(a=>a.score));
+    const latest = examHistory[examHistory.length-1].score;
+    summary.textContent = `${examHistory.length} attempt${examHistory.length===1?'':'s'} · Best: ${best}% · Most recent: ${latest}% · Passing: 70%`;
+  } else {
+    examBody.innerHTML = '<tr><td colspan="5" style="color:var(--muted);">No exam attempts recorded yet.</td></tr>';
+    summary.textContent = '';
+  }
+}
+document.getElementById('history-export').addEventListener('click', ()=>{
+  const blob = new Blob([JSON.stringify({ app:'CO_Title_Exam_History', version:1, exported:new Date().toISOString(), attempts:examHistory }, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'lia-exam-history.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+});
+document.getElementById('history-import').addEventListener('click', ()=> document.getElementById('history-file-input').click());
+document.getElementById('history-file-input').addEventListener('change', function(){
+  const file = this.files[0];
+  this.value = '';
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = ()=>{
+    try {
+      const data = JSON.parse(reader.result);
+      const incoming = Array.isArray(data) ? data : (Array.isArray(data.attempts) ? data.attempts : null);
+      if(!incoming) throw new Error('bad format');
+      const valid = incoming.filter(a => a && typeof a.score==='number' && a.date);
+      const existingIds = new Set(examHistory.map(a=>a.id));
+      let added = 0;
+      valid.forEach(a=>{ if(!a.id || !existingIds.has(a.id)){ examHistory.push(a); added++; } });
+      examHistory.sort((x,y)=> new Date(x.date) - new Date(y.date));
+      saveHistory();
+      renderExamHistory();
+      alert(added ? `Loaded ${added} attempt${added===1?'':'s'} from the file. Your history now shows ${examHistory.length} total.` : 'That file didn\'t contain any new attempts — everything in it is already in your history.');
+    } catch(e){
+      alert('That doesn\'t look like a history file from this study tool. Use "Save history to file" first, then load that same .json file here.');
+    }
+  };
+  reader.readAsText(file);
+});
+document.getElementById('history-clear').addEventListener('click', ()=>{
+  if(!examHistory.length){ alert('No history to clear.'); return; }
+  if(confirm(`Delete all ${examHistory.length} recorded exam attempt${examHistory.length===1?'':'s'}? Consider "Save history to file" first — this can't be undone.`)){
+    examHistory = [];
+    saveHistory();
+    renderExamHistory();
+  }
+});
+
+/* =========================================================
+   SEARCH — indexes every flashcard and every exam question
+   (question text, all four answer choices, and the
+   explanation) plus category names.
+   ========================================================= */
+const SEARCH_INDEX = [];
+CATS.forEach(cat=>{
+  cat.flashcards.forEach((c,i)=>{
+    SEARCH_INDEX.push({
+      type:'flashcard', catKey:cat.key, catCode:cat.code, catName:cat.name, idx:i,
+      front:c.f, back:c.b,
+      hay:(c.f+' '+c.b+' '+cat.name+' '+cat.code).toLowerCase()
+    });
+  });
+  cat.quiz.forEach((q,i)=>{
+    SEARCH_INDEX.push({
+      type:'quiz', catKey:cat.key, catCode:cat.code, catName:cat.name, idx:i,
+      q:q.q, choices:q.choices, correct:q.correct, exp:q.exp,
+      hay:(q.q+' '+q.choices.join(' ')+' '+q.exp+' '+cat.name+' '+cat.code).toLowerCase()
+    });
+  });
+});
+
+function escHtml(s){
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function escRe(s){ return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'); }
+
+/* Escapes first, then wraps matches — safe against odd characters in the query. */
+function highlight(text, terms){
+  text = String(text);
+  if(!terms.length) return escHtml(text);
+  const re = new RegExp('(' + terms.map(escRe).join('|') + ')', 'gi');
+  let out = '', last = 0, m;
+  while((m = re.exec(text)) !== null){
+    if(m[0].length === 0){ re.lastIndex++; continue; }
+    out += escHtml(text.slice(last, m.index)) + '<mark>' + escHtml(m[0]) + '</mark>';
+    last = m.index + m[0].length;
+  }
+  return out + escHtml(text.slice(last));
+}
+function countOcc(hay, needle){
+  if(!needle) return 0;
+  let n = 0, i = 0;
+  while((i = hay.indexOf(needle, i)) !== -1){ n++; i += needle.length; }
+  return n;
+}
+
+function runSearch(rawQuery){
+  const query = String(rawQuery||'').trim().replace(/\s+/g,' ');
+  const resultsEl = document.getElementById('search-results');
+  const summaryEl = document.getElementById('search-summary');
+
+  if(query.length < 2){
+    resultsEl.innerHTML = '';
+    summaryEl.innerHTML = query.length === 1
+      ? '<span class="search-empty">Keep typing — enter at least 2 characters.</span>' : '';
+    return;
+  }
+
+  const phrase = query.toLowerCase();
+  // Ignore tiny connector words when they are not the whole query, so
+  // "commissioner of insurance" isn't dragged down by "of".
+  const STOP = new Set(['of','the','a','an','to','in','on','is','for','and','or','by']);
+  const allTerms = phrase.split(' ').filter(Boolean);
+  let terms = allTerms.filter(t => !STOP.has(t));
+  if(!terms.length) terms = allTerms;
+
+  const scoreOf = (rec)=>{
+    let score = 0;
+    if(rec.hay.includes(phrase)) score += 100 + countOcc(rec.hay, phrase) * 25;
+    terms.forEach(t=>{ score += countOcc(rec.hay, t) * 4; });
+    const head = (rec.type === 'flashcard' ? rec.front : rec.q).toLowerCase();
+    if(head.includes(phrase)) score += 60;          // term is in the headline
+    if(rec.type === 'flashcard') score += 3;        // definitions read first
+    return score;
+  };
+
+  const hits = [];
+  SEARCH_INDEX.forEach(rec=>{
+    const matchesAll = terms.every(t => rec.hay.includes(t));
+    if(!matchesAll && !rec.hay.includes(phrase)) return;
+    hits.push({rec, score: scoreOf(rec)});
+  });
+  hits.sort((a,b)=> b.score - a.score);
+
+  /* A multi-word search uses AND logic, which can hide cards that are
+     clearly on-topic but happen not to repeat every word (e.g. a card
+     about the Commissioner that never says "insurance"). Find the most
+     distinctive word in the query and offer those as a second pass. */
+  const hitSet = new Set(hits.map(h=>h.rec));
+  let broaden = null;
+  if(terms.length > 1){
+    let best = null;
+    terms.forEach(t=>{
+      const recs = SEARCH_INDEX.filter(r => r.hay.includes(t));
+      if(recs.length && (!best || recs.length < best.recs.length)) best = {term:t, recs};
+    });
+    if(best){
+      const extras = best.recs.filter(r => !hitSet.has(r)).map(r=>({rec:r, score:scoreOf(r)}));
+      extras.sort((a,b)=> b.score - a.score);
+      if(extras.length) broaden = {term: best.term, extras};
+    }
+  }
+  pendingBroaden = broaden;
+
+  if(!hits.length){
+    summaryEl.innerHTML = '';
+    if(broaden){
+      resultsEl.innerHTML = `<div class="search-empty">Nothing matches all of <b>${escHtml(query)}</b> together.<br>
+        But <b>${broaden.extras.length}</b> item${broaden.extras.length===1?'':'s'} mention <b>“${escHtml(broaden.term)}”</b>.</div>
+        <div class="sr-actions"><button class="btn gold sm" id="search-broaden">Show those ${broaden.extras.length} →</button></div>
+        <div id="search-extra"></div>`;
+      bindBroaden(terms);
+    } else {
+      resultsEl.innerHTML = `<div class="search-empty">No flashcards or questions mention <b>${escHtml(query)}</b>.<br>
+        Try a shorter or more general word — for example "commissioner" instead of "commissioner of insurance division", or "escrow" instead of "escrow account rules".</div>`;
+    }
+    return;
+  }
+
+  const cards = hits.filter(h=>h.rec.type==='flashcard');
+  const quizzes = hits.filter(h=>h.rec.type==='quiz');
+  const catsHit = new Set(hits.map(h=>h.rec.catKey));
+  summaryEl.innerHTML = `<b>${hits.length}</b> match${hits.length===1?'':'es'} for “${escHtml(query)}” — ` +
+    `${cards.length} flashcard${cards.length===1?'':'s'}, ${quizzes.length} exam question${quizzes.length===1?'':'s'}, ` +
+    `across ${catsHit.size} categor${catsHit.size===1?'y':'ies'}.`;
+
+  let html = renderHits(cards, quizzes, terms);
+  if(broaden){
+    html += `<div class="sr-actions" style="margin-top:18px;">
+      <button class="btn ghost sm" id="search-broaden">＋ Show ${broaden.extras.length} more that mention “${escHtml(broaden.term)}”</button>
+    </div><div id="search-extra"></div>`;
+  }
+  resultsEl.innerHTML = html;
+  bindResultActions(resultsEl);
+  if(broaden) bindBroaden(terms);
+}
+
+function renderCardItem(r, terms){
+  return `<div class="sr-item">
+    <div class="sr-meta">${escHtml(r.catCode)}. ${escHtml(r.catName)} · Card ${r.idx+1}</div>
+    <div class="sr-q">${highlight(r.front, terms)}</div>
+    <div class="sr-body">${highlight(r.back, terms)}</div>
+    <div class="sr-actions"><button class="btn ghost sm" data-go="fc" data-key="${escHtml(r.catKey)}" data-idx="${r.idx}">Open this card in the deck →</button></div>
+  </div>`;
+}
+function renderQuizItem(r, terms){
+  const choices = r.choices.map((c,ci)=>
+    `<div class="sr-choice${ci===r.correct?' right':''}">${ci===r.correct?'✓ ':''}${highlight(c, terms)}</div>`
+  ).join('');
+  return `<div class="sr-item">
+    <div class="sr-meta">${escHtml(r.catCode)}. ${escHtml(r.catName)} · Question ${r.idx+1}</div>
+    <div class="sr-q">${highlight(r.q, terms)}</div>
+    ${choices}
+    <div class="sr-exp"><b>Why:</b> ${highlight(r.exp, terms)}</div>
+    <div class="sr-actions"><button class="btn ghost sm" data-go="quiz" data-key="${escHtml(r.catKey)}">Quiz this category →</button></div>
+  </div>`;
+}
+function renderHits(cards, quizzes, terms, prefix){
+  let html = '';
+  const tag = prefix ? prefix + ' — ' : '';
+  if(cards.length){
+    html += `<div class="sr-group-title">${tag}Flashcards (${cards.length})</div>`;
+    html += cards.map(h=> renderCardItem(h.rec, terms)).join('');
+  }
+  if(quizzes.length){
+    html += `<div class="sr-group-title">${tag}Exam questions (${quizzes.length})</div>`;
+    html += quizzes.map(h=> renderQuizItem(h.rec, terms)).join('');
+  }
+  return html;
+}
+let pendingBroaden = null;
+function bindBroaden(terms){
+  const btn = document.getElementById('search-broaden');
+  if(!btn) return;
+  btn.addEventListener('click', ()=>{
+    if(!pendingBroaden) return;
+    const bTerms = [pendingBroaden.term];
+    const cards = pendingBroaden.extras.filter(h=>h.rec.type==='flashcard');
+    const quizzes = pendingBroaden.extras.filter(h=>h.rec.type==='quiz');
+    const wrap = document.getElementById('search-extra');
+    wrap.innerHTML = renderHits(cards, quizzes, bTerms, `Also mentions “${escHtml(pendingBroaden.term)}”`);
+    bindResultActions(wrap);
+    btn.style.display = 'none';
+  });
+}
+function bindResultActions(container){
+  container.querySelectorAll('button[data-go]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const key = btn.dataset.key;
+      if(btn.dataset.go === 'fc'){
+        showView('flashcards');
+        startFlashcards(key);
+        state.fc.idx = parseInt(btn.dataset.idx,10) || 0;
+        state.fc.flipped = false;
+        renderFlashcard();
+      } else {
+        showView('quiz');
+        document.getElementById('quiz-cat-select').value = key;
+        updateQuizNote();
+      }
+      window.scrollTo(0,0);
+    });
+  });
+}
+
+const searchInput = document.getElementById('search-input');
+let searchDebounce = null;
+searchInput.addEventListener('input', ()=>{
+  clearTimeout(searchDebounce);
+  searchDebounce = setTimeout(()=> runSearch(searchInput.value), 120);
+});
+searchInput.addEventListener('keydown', e=>{
+  if(e.key === 'Enter'){ e.preventDefault(); clearTimeout(searchDebounce); runSearch(searchInput.value); searchInput.blur(); }
+});
+document.getElementById('search-clear').addEventListener('click', ()=>{
+  searchInput.value = '';
+  runSearch('');
+  searchInput.focus();
+});
+const SEARCH_SUGGESTIONS = ['Commissioner of Insurance','escrow','good funds','deed','easement','encumbrance','legal description','commitment','endorsement','recording'];
+document.getElementById('search-chips').innerHTML =
+  SEARCH_SUGGESTIONS.map(s=>`<button class="chip" data-term="${escHtml(s)}">${escHtml(s)}</button>`).join('');
+document.getElementById('search-chips').querySelectorAll('.chip').forEach(chip=>{
+  chip.addEventListener('click', ()=>{
+    searchInput.value = chip.dataset.term;
+    runSearch(chip.dataset.term);
+  });
+});
+
+/* =========================================================
+   INIT
+   ========================================================= */
+renderDashboard();
+startFlashcards(CATS[0].key);
+document.getElementById('exam-qcount').textContent = CATS.reduce((s,c)=>s+c.quiz.length,0);
+</script>
+</body>
+</html>
+
+
