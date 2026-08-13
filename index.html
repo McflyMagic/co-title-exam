@@ -2,8 +2,6 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="robots" content="noindex, nofollow">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Colorado Title Exam Prep — Liandra's Study Tool</title>
 <style>
@@ -334,6 +332,16 @@
   .explain b{ color:var(--navy); }
   .q-footer{ display:flex; justify-content:space-between; align-items:center; margin-top:16px; }
 
+  /* ---- Mini-quiz (used for "similar question" practice items) ---- */
+  .mini-quiz{ margin-top:16px; padding-top:14px; border-top:1px dashed var(--border); }
+  .mini-quiz .mini-label{ font-size:.72rem; text-transform:uppercase; letter-spacing:.5px; color:var(--muted); font-weight:700; margin-bottom:8px; }
+  .mini-quiz .q-text{ font-size:.92rem; margin-bottom:10px; }
+  .mini-quiz .choice{ padding:9px 12px; font-size:.85rem; }
+  .confidence-badge{ display:inline-block; font-size:.7rem; font-weight:700; padding:3px 10px; border-radius:20px; white-space:nowrap; }
+  .lia-numbers{ display:grid; grid-template-columns:repeat(auto-fit, minmax(150px,1fr)); gap:8px; margin-top:10px; }
+  .lia-numbers .num-card{ background:#f7f8fc; border:1px solid var(--border); border-radius:8px; padding:8px 10px; font-size:.78rem; }
+  .lia-numbers .num-card b{ display:block; color:var(--navy); font-size:.95rem; }
+
   .results-summary{ text-align:center; padding:10px 0 4px; }
   .results-summary .big{ font-size:2.4rem; font-weight:800; color:var(--navy); }
   .results-summary .pass{ color:var(--good); }
@@ -523,7 +531,7 @@
 
 <header class="top">
   <h1>Colorado Title Insurance Exam — Study Tool</h1>
-  <p>Built for Liandra · From your 07/24/2026 Pearson VUE diagnostic (Score 40, need 70 to pass)</p>
+  <p>Built for Liandra · Updated from her 08/10/2026 Pearson VUE retake (Score 47, need 70 to pass) · First attempt 07/24/2026 scored 40</p>
 </header>
 
 <nav class="tabs">
@@ -531,6 +539,8 @@
   <button class="tab-btn" data-view="flashcards">Flashcards</button>
   <button class="tab-btn" data-view="quiz">Quizzes</button>
   <button class="tab-btn" data-view="exam">Practice Exam</button>
+  <button class="tab-btn" data-view="lia">Lia's Notes</button>
+  <button class="tab-btn" data-view="pdfgk">General Knowledge</button>
   <button class="tab-btn" data-view="progress">Progress</button>
   <button class="tab-btn" data-view="search">🔍 Search</button>
 </nav>
@@ -541,9 +551,9 @@
   <section id="view-dashboard" class="view active">
     <div class="card">
       <h2 class="section-title">Your diagnostic, decoded</h2>
-      <p class="section-sub">Straight from your actual Pearson VUE score report. Passing score is 70 — you scored 40, so the plan below is to close that gap, not just the categories that look worst on the bar chart.</p>
+      <p class="section-sub">Straight from Liandra's actual Pearson VUE score reports. Passing score is 70 — her 08/10/2026 retake scored 47 (up from 40 on 07/24/2026, still a fail), so the plan below closes that gap, not just the categories that look worst on the bar chart.</p>
       <div class="score-banner">
-        <div class="stat fail"><div class="n">40</div><div class="l">Your Score</div></div>
+        <div class="stat fail"><div class="n">47</div><div class="l">Latest Score (8/10)</div></div>
         <div class="stat"><div class="n">70</div><div class="l">Passing Score</div></div>
         <div class="stat"><div class="n">7</div><div class="l">Content Areas</div></div>
         <div class="stat"><div class="n">75</div><div class="l">Scored Questions</div></div>
@@ -552,14 +562,14 @@
 
     <div class="card">
       <h2 class="section-title">Relative performance by category</h2>
-      <p class="section-sub">Bar length matches the relative length of the bars on your printed report (I measured them directly from your photo). This shows where you're relatively weaker vs. stronger — it does <b>not</b> mean any category individually "passed."</p>
+      <p class="section-sub">Bar length matches the relative length of the bars on her 08/10/2026 printed report (measured directly from the photo). This shows where she's relatively weaker vs. stronger — it does <b>not</b> mean any category individually "passed."</p>
       <div class="chart-row" id="dashboard-chart"></div>
       <div class="legend">
         <span><span class="dot priority"></span>Priority focus (weakest)</span>
         <span><span class="dot review"></span>Also review</span>
         <span><span class="dot lighter"></span>Lighter review</span>
       </div>
-      <div class="note">Pearson VUE's own report says it best: "It is recommended that you study all content areas before retaking the examination." This tool weights <b>Title Insurance Terms &amp; Concepts</b>, <b>Title Insurance Policies</b>, and <b>Colorado Laws &amp; Regulations</b> the heaviest since those measured weakest — but every category below has real flashcards and quiz questions, and the full practice exam pulls from all seven every time.</div>
+      <div class="note">Pearson VUE's own report says it best: "It is recommended that you study all content areas before retaking the examination." This tool now weights <b>Real Estate Ownership</b>, <b>Rights &amp; Interests</b>, and <b>Title Policies</b> the heaviest since those measured weakest on the 8/10 report — a shift from the first diagnostic, where Terms &amp; Concepts and Colorado Law were the biggest gaps. Every category below has real flashcards and quiz questions, and the full practice exam pulls from all seven every time.</div>
     </div>
 
     <div class="card">
@@ -569,20 +579,20 @@
     </div>
 
     <div class="card">
-      <h2 class="section-title">Day-by-day plan — retake is Friday, August 7</h2>
-      <p class="section-sub">8 study days, built around the priority weighting above. If she doesn't pass Friday, upload the new score report and I'll rebuild this against her new numbers.</p>
+      <h2 class="section-title">Day-by-day plan — rebuilt after the 8/10 retake</h2>
+      <p class="section-sub">The old plan was built around an August 7 retake date and her first (7/24) diagnostic — both now out of date. This is a fresh 8-day cycle built around the new priority weighting above. We don't have her next scheduled retake date yet, so it's labeled Day 1–8; tell Claude the date once it's booked and this can be pinned to real calendar days again.</p>
       <table class="progress-table">
-        <thead><tr><th style="width:110px;">Date</th><th>Focus</th><th>Do this</th></tr></thead>
+        <thead><tr><th style="width:80px;">Day</th><th>Focus</th><th>Do this</th></tr></thead>
         <tbody>
-          <tr><td><b>Thu 7/30</b><br><span style="color:var(--muted); font-size:.75rem;">Today</span></td><td>I. Terms &amp; Concepts<br>II. Title Policies</td><td>Full flashcard deck on both, then the category quiz on each — repeat until 90%+.</td></tr>
-          <tr><td><b>Fri 7/31</b></td><td>Colorado Law — Part 1</td><td>Flashcards: Definitions, Rates, Prohibited Practices, Consumer Protections. Then the Colorado Law quiz (missed questions only, re-check explanations).</td></tr>
-          <tr><td><b>Sat 8/1</b></td><td>Colorado Law — Part 2</td><td>Flashcards: Commissioner of Insurance, Licensing &amp; Producer Responsibility, Unfair Competition. Full Colorado Law quiz again — this section alone is ~40 of 75 real exam questions, worth the extra day.</td></tr>
-          <tr><td><b>Sun 8/2</b></td><td>III. Real Estate Ownership<br>IV. Rights &amp; Interests</td><td>Flashcards + quiz on both.</td></tr>
-          <tr><td><b>Mon 8/3</b></td><td>V. Legal Descriptions<br>VI. Methods of Transfer</td><td>Flashcards + quiz on both.</td></tr>
-          <tr><td><b>Tue 8/4</b></td><td>All 7 categories</td><td>Re-take every category quiz once. Anything under 80% gets a same-day repeat plus another flashcard pass.</td></tr>
-          <tr><td><b>Wed 8/5</b></td><td>Full-length run-through</td><td>Practice Exam → <b>Just Studying</b> mode (untimed, all 76 questions, explanations after every answer). Review every single miss.</td></tr>
-          <tr><td><b>Thu 8/6</b></td><td>Real conditions</td><td>Practice Exam → <b>Simulate Pearson VUE</b> mode (70 min, no feedback until the end). Review the results report afterward. Light review only after that — no new material the night before.</td></tr>
-          <tr><td><b>Fri 8/7</b><br><span style="color:var(--priority); font-size:.75rem; font-weight:700;">EXAM DAY</span></td><td>—</td><td>Quick flashcard skim on the 2 weakest categories only. Nothing new. Get there early.</td></tr>
+          <tr><td><b>Day 1</b></td><td>III. Real Estate Ownership<br>IV. Rights &amp; Interests</td><td>These two scored weakest on the 8/10 report. Full flashcard deck on both, then the category quiz on each — repeat until 90%+.</td></tr>
+          <tr><td><b>Day 2</b></td><td>II. Title Policies</td><td>Flashcards + quiz until 90%+. Also do a General Knowledge flashcard pass on Schedule A/B and endorsement-related definitions, since Policies leans on those.</td></tr>
+          <tr><td><b>Day 3</b></td><td>Colorado Law — Part 1</td><td>Flashcards: Definitions, Rates, Prohibited Practices, Consumer Protections. Then the Colorado Law quiz (missed questions only, re-check explanations).</td></tr>
+          <tr><td><b>Day 4</b></td><td>Colorado Law — Part 2</td><td>Flashcards: Commissioner of Insurance, Licensing &amp; Producer Responsibility, Unfair Competition. Full Colorado Law quiz again — this section alone is ~40 of 75 real exam questions. Then the General Knowledge (PDF) quiz — it's the same subject from her class handout, in her own class's wording.</td></tr>
+          <tr><td><b>Day 5</b></td><td>I. Terms &amp; Concepts<br>V. Legal Descriptions<br>VI. Methods of Transfer</td><td>Flashcards + quiz on all three — these measured strongest on 8/10, but Pearson VUE's own advice is to study every content area before retaking.</td></tr>
+          <tr><td><b>Day 6</b></td><td>Lia's Notes + all 7 categories</td><td>Work through every question in <b>Lia's Notes</b> (checking the explanation and Colorado rule each time), then re-take every category quiz once. Anything under 80% gets a same-day repeat plus another flashcard pass.</td></tr>
+          <tr><td><b>Day 7</b></td><td>Full-length run-through</td><td>Practice Exam → <b>Just Studying</b> mode (untimed, all 76 questions, explanations after every answer). Review every single miss.</td></tr>
+          <tr><td><b>Day 8</b></td><td>Real conditions</td><td>Practice Exam → <b>Simulate Pearson VUE</b> mode (70 min, no feedback until the end). Review the results report afterward.</td></tr>
+          <tr><td><b>Exam day</b><br><span style="color:var(--priority); font-size:.75rem; font-weight:700;">once scheduled</span></td><td>—</td><td>Quick flashcard skim on the 2 weakest categories only. Nothing new. Get there early.</td></tr>
         </tbody>
       </table>
     </div>
@@ -729,6 +739,110 @@
     </div>
   </section>
 
+  <!-- LIA'S NOTE QUESTIONS -->
+  <section id="view-lia" class="view">
+    <div class="card">
+      <h2 class="section-title">Lia's Note Questions</h2>
+      <p class="section-sub">24 questions rebuilt from the ones you actually remembered off your Pearson VUE attempt, cross-checked against the official Colorado Title exam outline, Colorado statutes, and Division of Insurance regulations. This is <b>not</b> a locked exam — jump to any question in any order, check your answer immediately, and change it any time. Where a choice had to be reconstructed rather than remembered, that's noted in the explanation.</p>
+      <div class="note">
+        <b>Numbers worth memorizing from this set:</b>
+        <div class="lia-numbers">
+          <div class="num-card"><b>18</b>min. producer age</div>
+          <div class="num-card"><b>36</b>sections/township</div>
+          <div class="num-card"><b>15 yrs</b>mortgage/DOT lien</div>
+          <div class="num-card"><b>6 mo.</b>mechanic's lien enforcement</div>
+          <div class="num-card"><b>3 yrs</b>treasurer's deed wait</div>
+          <div class="num-card"><b>3 days</b>public rate/fee copy</div>
+          <div class="num-card"><b>7 yrs</b>title file retention</div>
+          <div class="num-card"><b>10 days</b>producer-change notice</div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="exam-nav-grid" id="lia-nav-grid"></div>
+      <div class="exam-nav-legend"><span><span class="sw current"></span>Current</span><span><span class="sw answered"></span>Answered</span><span><span class="sw blank"></span>Not answered yet — click any number to jump straight there</span></div>
+      <div class="fc-progress" id="lia-progress-label"></div>
+      <div class="q-text" id="lia-question"></div>
+      <div class="choices" id="lia-choices"></div>
+      <div class="explain" id="lia-explain" style="display:none;"></div>
+      <div class="q-footer">
+        <button class="btn ghost sm" id="lia-prev">&larr; Prev</button>
+        <span id="lia-confidence"></span>
+        <button class="btn gold sm" id="lia-next">Next &rarr;</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- GENERAL KNOWLEDGE (from the Licensing Class Review PDF) -->
+  <section id="view-pdfgk" class="view">
+    <div class="card">
+      <h2 class="section-title">General Knowledge</h2>
+      <p class="section-sub">Straight from Liandra's "Licensing Class Review — Statutes &amp; Regs" handout: definitions, rate and consumer-protection rules, standards of conduct, and the full A–Z curative statutes table. Pick flashcards or a quiz below.</p>
+      <div class="fc-controls">
+        <button class="btn gold sm" id="gk-mode-fc">📇 Flashcards</button>
+        <button class="btn ghost sm" id="gk-mode-quiz">✅ Quiz</button>
+      </div>
+    </div>
+
+    <!-- GK Flashcards -->
+    <div class="card" id="gk-fc-card">
+      <div class="fc-controls">
+        <select id="gk-fc-deck-select"></select>
+        <button class="btn ghost sm" id="gk-fc-shuffle">Shuffle</button>
+        <button class="btn ghost sm" id="gk-fc-restart">Restart deck</button>
+      </div>
+      <div class="fc-progress" id="gk-fc-progress-label"></div>
+      <div class="fc-wrap">
+        <div class="flashcard" id="gk-flashcard">
+          <div class="inner">
+            <div class="face front" id="gk-fc-front"></div>
+            <div class="face back" id="gk-fc-back"></div>
+          </div>
+        </div>
+        <div class="fc-nav">
+          <button class="btn ghost sm" id="gk-fc-prev">&larr; Prev</button>
+          <button class="btn gold sm" id="gk-fc-flip">Flip card</button>
+          <button class="btn ghost sm" id="gk-fc-next">Next &rarr;</button>
+        </div>
+        <div class="fc-mark-row">
+          <button class="btn know sm" id="gk-fc-know">✓ I know this</button>
+          <button class="btn review sm" id="gk-fc-reviewagain">↻ Review again</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- GK Quiz -->
+    <div class="card" id="gk-quiz-setup-card" style="display:none;">
+      <h2 class="section-title">General Knowledge Quiz</h2>
+      <p class="section-sub" id="gk-quiz-note"></p>
+      <button class="btn gold" id="gk-quiz-start">Start Quiz</button>
+    </div>
+    <div class="card" id="gk-quiz-play-card" style="display:none;">
+      <div class="q-progress-bar"><div class="fill" id="gk-quiz-progress-fill"></div></div>
+      <div class="fc-progress" id="gk-quiz-progress-label"></div>
+      <div class="q-text" id="gk-quiz-question"></div>
+      <div class="choices" id="gk-quiz-choices"></div>
+      <div class="explain" id="gk-quiz-explain" style="display:none;"></div>
+      <div class="q-footer">
+        <button class="btn ghost sm" id="gk-quiz-quit">Quit quiz</button>
+        <button class="btn gold" id="gk-quiz-next" style="display:none;">Next question &rarr;</button>
+      </div>
+    </div>
+    <div class="card" id="gk-quiz-results-card" style="display:none;">
+      <div class="results-summary">
+        <div class="l" style="color:var(--muted); text-transform:uppercase; font-size:.78rem;">Quiz Result</div>
+        <div class="big" id="gk-quiz-score-big"></div>
+        <div id="gk-quiz-score-sub" style="color:var(--muted); margin-top:4px;"></div>
+      </div>
+      <div style="text-align:center; margin:16px 0;">
+        <button class="btn gold" id="gk-quiz-retry">Retry this quiz</button>
+        <button class="btn ghost" id="gk-quiz-back">Back</button>
+      </div>
+      <h3 style="font-size:.95rem; color:var(--navy);">Review your answers</h3>
+      <div id="gk-quiz-review-list"></div>
+    </div>
+  </section>
+
   <!-- PROGRESS -->
   <section id="view-progress" class="view">
     <div class="card">
@@ -786,7 +900,7 @@
 const CATS = [
   {
     key:'terms', section:'General Knowledge', code:'I',
-    name:'Title Insurance Terms & Concepts', tier:'priority', barPx:162,
+    name:'Title Insurance Terms & Concepts', tier:'review', barPx:498,
     flashcards:[
       {f:'Commitment', b:'A title insurer\'s conditional promise to issue a specified policy once certain requirements are met and subject to certain exceptions. It is NOT itself a policy and creates no liability until the transaction closes and the policy is issued.'},
       {f:'Policy', b:'The final contract of indemnity issued at closing, insuring the owner or lender against covered title defects up to the policy amount, as of the policy date.'},
@@ -815,7 +929,7 @@ const CATS = [
   },
   {
     key:'policies', section:'General Knowledge', code:'II',
-    name:'Title Insurance Policies', tier:'priority', barPx:180,
+    name:'Title Insurance Policies', tier:'priority', barPx:428,
     flashcards:[
       {f:'Owner\'s Policy (ALTA)', b:'Insures the buyer/owner\'s title interest for as long as they (or their heirs) own the property. The policy amount is typically the purchase price.'},
       {f:'Loan Policy', b:'Insures the lender\'s security interest in the property up to the loan amount. Coverage generally decreases as the loan is paid down and ends when the loan is satisfied.'},
@@ -843,7 +957,7 @@ const CATS = [
   },
   {
     key:'ownership', section:'General Knowledge', code:'III',
-    name:'Real Estate Ownership', tier:'review', barPx:385,
+    name:'Real Estate Ownership', tier:'priority', barPx:388,
     flashcards:[
       {f:'Fee Simple', b:'The most complete form of ownership — the owner holds all rights to the property indefinitely, subject only to governmental powers (taxation, eminent domain, police power, escheat) and any recorded encumbrances.'},
       {f:'Joint Tenancy', b:'Co-ownership with an automatic right of survivorship — when one joint tenant dies, their share passes directly to the surviving joint tenant(s), not through probate. Traditionally requires unity of time, title, interest, and possession.'},
@@ -867,7 +981,7 @@ const CATS = [
   },
   {
     key:'rights', section:'General Knowledge', code:'IV',
-    name:'Rights and Interests', tier:'lighter', barPx:515,
+    name:'Rights and Interests', tier:'priority', barPx:392,
     flashcards:[
       {f:'Easement', b:'A non-possessory right to use another\'s land for a specific purpose (e.g., access, utilities) — it does not transfer ownership, only a right of use.'},
       {f:'Right of Way', b:'A specific type of easement granting the right to pass over another\'s land.'},
@@ -891,7 +1005,7 @@ const CATS = [
   },
   {
     key:'legal', section:'General Knowledge', code:'V',
-    name:'Legal Descriptions', tier:'review', barPx:385,
+    name:'Legal Descriptions', tier:'lighter', barPx:608,
     flashcards:[
       {f:'Metes and Bounds', b:'A legal description using compass directions and distances from a defined point of beginning, tracing the boundary until it closes back on itself. Common for irregular parcels.'},
       {f:'Section, Township, and Range', b:'The rectangular government survey system dividing land into 6-mile-square townships, each split into 36 one-mile-square sections (640 acres each) — used to describe unplatted rural land.'},
@@ -915,7 +1029,7 @@ const CATS = [
   },
   {
     key:'transfer', section:'General Knowledge', code:'VI',
-    name:'Methods of Transfer / Conveyances', tier:'review', barPx:384,
+    name:'Methods of Transfer / Conveyances', tier:'review', barPx:434,
     flashcards:[
       {f:'Warranty Deed', b:'A deed in which the grantor makes formal guarantees (covenants of title) about the property\'s title, promising to defend the grantee against title claims — including those arising before the grantor owned the property.'},
       {f:'Quitclaim Deed', b:'A deed that conveys whatever interest the grantor has (if any), with no warranties or guarantees about the quality of title — often used to clear a title cloud or transfer between family members.'},
@@ -939,7 +1053,7 @@ const CATS = [
   },
   {
     key:'colaw', section:'State Law Specific', code:'I',
-    name:'Colorado Laws and Regulations', tier:'priority', barPx:236,
+    name:'Colorado Laws and Regulations', tier:'review', barPx:478,
     flashcards:[
       {f:'Title Insurance (CO definition)', b:'Insuring, guaranteeing, or indemnifying owners of real property against loss or damage from liens or encumbrances upon, defects in, or the unmarketability of, the title to that property.'},
       {f:'Title Insurance Agent', b:'A person authorized by a title insurance company to solicit insurance, collect premiums, or issue/countersign policies on its behalf.'},
@@ -1642,6 +1756,7 @@ CATS.forEach(cat=>{
   });
 });
 
+function isCardType(t){ return t==='flashcard' || t==='gk-flash'; }
 function escHtml(s){
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
@@ -1691,9 +1806,9 @@ function runSearch(rawQuery){
     let score = 0;
     if(rec.hay.includes(phrase)) score += 100 + countOcc(rec.hay, phrase) * 25;
     terms.forEach(t=>{ score += countOcc(rec.hay, t) * 4; });
-    const head = (rec.type === 'flashcard' ? rec.front : rec.q).toLowerCase();
+    const head = (isCardType(rec.type) ? rec.front : rec.q).toLowerCase();
     if(head.includes(phrase)) score += 60;          // term is in the headline
-    if(rec.type === 'flashcard') score += 3;        // definitions read first
+    if(isCardType(rec.type)) score += 3;             // definitions read first
     return score;
   };
 
@@ -1740,8 +1855,8 @@ function runSearch(rawQuery){
     return;
   }
 
-  const cards = hits.filter(h=>h.rec.type==='flashcard');
-  const quizzes = hits.filter(h=>h.rec.type==='quiz');
+  const cards = hits.filter(h=>isCardType(h.rec.type));
+  const quizzes = hits.filter(h=>!isCardType(h.rec.type));
   const catsHit = new Set(hits.map(h=>h.rec.catKey));
   summaryEl.innerHTML = `<b>${hits.length}</b> match${hits.length===1?'':'es'} for “${escHtml(query)}” — ` +
     `${cards.length} flashcard${cards.length===1?'':'s'}, ${quizzes.length} exam question${quizzes.length===1?'':'s'}, ` +
@@ -1758,24 +1873,32 @@ function runSearch(rawQuery){
   if(broaden) bindBroaden(terms);
 }
 
+function srLabel(r){
+  return r.catCode ? `${escHtml(r.catCode)}. ${escHtml(r.catName)}` : escHtml(r.catName);
+}
 function renderCardItem(r, terms){
+  const goType = r.type==='gk-flash' ? 'gk-fc' : 'fc';
+  const goLabel = r.type==='gk-flash' ? 'Open this card in the deck' : 'Open this card in the deck';
   return `<div class="sr-item">
-    <div class="sr-meta">${escHtml(r.catCode)}. ${escHtml(r.catName)} · Card ${r.idx+1}</div>
+    <div class="sr-meta">${srLabel(r)} · Card ${r.idx+1}</div>
     <div class="sr-q">${highlight(r.front, terms)}</div>
     <div class="sr-body">${highlight(r.back, terms)}</div>
-    <div class="sr-actions"><button class="btn ghost sm" data-go="fc" data-key="${escHtml(r.catKey)}" data-idx="${r.idx}">Open this card in the deck →</button></div>
+    <div class="sr-actions"><button class="btn ghost sm" data-go="${goType}" data-key="${escHtml(r.catKey)}" data-deck="${escHtml(r.deckKey||'')}" data-idx="${r.idx}">${goLabel} →</button></div>
   </div>`;
 }
 function renderQuizItem(r, terms){
   const choices = r.choices.map((c,ci)=>
     `<div class="sr-choice${ci===r.correct?' right':''}">${ci===r.correct?'✓ ':''}${highlight(c, terms)}</div>`
   ).join('');
+  let goType = 'quiz', goLabel = 'Quiz this category →';
+  if(r.type==='lia-quiz'){ goType='lia'; goLabel='Open this question →'; }
+  else if(r.type==='gk-quiz'){ goType='gk-quiz'; goLabel='Take the General Knowledge quiz →'; }
   return `<div class="sr-item">
-    <div class="sr-meta">${escHtml(r.catCode)}. ${escHtml(r.catName)} · Question ${r.idx+1}</div>
+    <div class="sr-meta">${srLabel(r)} · Question ${r.idx+1}</div>
     <div class="sr-q">${highlight(r.q, terms)}</div>
     ${choices}
     <div class="sr-exp"><b>Why:</b> ${highlight(r.exp, terms)}</div>
-    <div class="sr-actions"><button class="btn ghost sm" data-go="quiz" data-key="${escHtml(r.catKey)}">Quiz this category →</button></div>
+    <div class="sr-actions"><button class="btn ghost sm" data-go="${goType}" data-key="${escHtml(r.catKey)}" data-idx="${r.idx}">${goLabel}</button></div>
   </div>`;
 }
 function renderHits(cards, quizzes, terms, prefix){
@@ -1798,8 +1921,8 @@ function bindBroaden(terms){
   btn.addEventListener('click', ()=>{
     if(!pendingBroaden) return;
     const bTerms = [pendingBroaden.term];
-    const cards = pendingBroaden.extras.filter(h=>h.rec.type==='flashcard');
-    const quizzes = pendingBroaden.extras.filter(h=>h.rec.type==='quiz');
+    const cards = pendingBroaden.extras.filter(h=>isCardType(h.rec.type));
+    const quizzes = pendingBroaden.extras.filter(h=>!isCardType(h.rec.type));
     const wrap = document.getElementById('search-extra');
     wrap.innerHTML = renderHits(cards, quizzes, bTerms, `Also mentions “${escHtml(pendingBroaden.term)}”`);
     bindResultActions(wrap);
@@ -1810,16 +1933,27 @@ function bindResultActions(container){
   container.querySelectorAll('button[data-go]').forEach(btn=>{
     btn.addEventListener('click', ()=>{
       const key = btn.dataset.key;
-      if(btn.dataset.go === 'fc'){
+      const go = btn.dataset.go;
+      if(go === 'fc'){
         showView('flashcards');
         startFlashcards(key);
         state.fc.idx = parseInt(btn.dataset.idx,10) || 0;
         state.fc.flipped = false;
         renderFlashcard();
-      } else {
+      } else if(go === 'quiz'){
         showView('quiz');
         document.getElementById('quiz-cat-select').value = key;
         updateQuizNote();
+      } else if(go === 'lia'){
+        showView('lia');
+        jumpToLia(parseInt(btn.dataset.idx,10) || 0);
+      } else if(go === 'gk-fc'){
+        showView('pdfgk');
+        setGkMode('fc');
+        startGkFlashcards(btn.dataset.deck, parseInt(btn.dataset.idx,10) || 0);
+      } else if(go === 'gk-quiz'){
+        showView('pdfgk');
+        setGkMode('quiz');
       }
       window.scrollTo(0,0);
     });
@@ -1851,11 +1985,592 @@ document.getElementById('search-chips').querySelectorAll('.chip').forEach(chip=>
 });
 
 /* =========================================================
+   LIA'S NOTE QUESTIONS
+   24 questions reconstructed from Liandra's own remembered
+   Pearson VUE questions, matched against the Colorado Title
+   exam outline, Colorado statutes, and DOI regulations.
+   Browsable, not locked — jump anywhere, re-answer any time.
+   ========================================================= */
+const LIA_QUESTIONS = [
+  {q:'An interest in real property for a specific period of time is a:', choices:['Lease / leasehold estate','Life estate','Fee simple','Easement'], correct:0,
+   confidence:'Confirmed concept / most likely exact answer',
+   explanation:'A leasehold estate is an interest in real estate created by a lease and normally lasts for a specified term. A life estate, by contrast, is measured by the life of a person.',
+   rule:'Not primarily a Colorado-specific rule — Pearson\'s Colorado Title outline lists Fee Simple, Life Estate, and Leasehold under Real Estate Ownership.',
+   tip:'Specific time → LEASE. Specific person\'s lifetime → LIFE ESTATE.',
+   similar:{q:'A tenant receives the right to occupy property for five years. The tenant holds a:', choices:['Fee simple','Life estate','Leasehold estate','Easement'], correct:2}},
+  {q:'A standard township contains how many sections?', choices:['12','24','30','36'], correct:3,
+   confidence:'Confirmed',
+   explanation:'A standard township under the rectangular survey system is generally 6 miles × 6 miles, containing 36 sections.',
+   rule:'General real-property knowledge rather than a Colorado-specific rule — Pearson explicitly includes Section, Township, and Range on the Title-General exam.',
+   tip:'6 × 6 = 36 sections.',
+   similar:{q:'One standard section normally contains approximately:', choices:['40 acres','160 acres','320 acres','640 acres'], correct:3}},
+  {q:'A lot-and-block legal description is based on or found in a:', choices:['Recorded subdivision plat','Deed of trust','Tax assessment','Metes-and-bounds survey only'], correct:0,
+   confidence:'Confirmed concept',
+   explanation:'The lot-and-block method identifies land by the lot number, block number, subdivision name, and recorded plat.',
+   rule:'Pearson expressly tests Lot and Block as one of the legal-description methods, along with section-township-range and metes and bounds.',
+   tip:'Lot + Block = PLAT.',
+   similar:{q:'"Lot 8, Block 3, Mountain View Subdivision" is an example of which legal description?', choices:['Metes and bounds','Government survey','Lot and block','Street address'], correct:2}},
+  {q:'How many years after the final payment or performance due date does an unreleased recorded mortgage or deed of trust generally cease to be a lien in Colorado?', choices:['2 years','5 years','10 years','15 years'], correct:3,
+   confidence:'Confirmed',
+   explanation:'Colorado says the lien generally ceases 15 years after the date on which the final payment or performance is due, as shown by the recorded mortgage or deed of trust, subject to statutory exceptions. It\'s not simply 15 years after the borrower actually made the last payment — it\'s tied to the recorded due date.',
+   rule:'C.R.S. §38-39-201. If the final due date can\'t be determined from the recorded instrument, Colorado provides another method for determining the date.',
+   tip:'Recorded mortgage/deed of trust → 15 YEARS after the recorded final due date.',
+   similar:{q:'A recorded Colorado deed of trust states that the final payment is due June 1, 2030. Absent an exception or extension, the lien generally ceases after:', choices:['2035','2040','2045','Never'], correct:2}},
+  {q:'What would permit removal of a title exception for lack of access?', choices:['Evidence of a recorded easement/right-of-way or other established legal access','A property tax certificate','An owner\'s affidavit alone','A quitclaim deed unrelated to access'], correct:0,
+   confidence:'Most likely',
+   explanation:'The key concept is legal right of access, not just physical access — a driveway being physically present doesn\'t necessarily establish a legal right to use it. A recorded easement/right-of-way benefiting the parcel, or documented access through a dedicated public road, can give an insurer what it needs to remove a lack-of-access exception.',
+   rule:'Pearson specifically includes Easement and Right of Way in the exam outline. There\'s no Colorado statute saying any recorded easement automatically forces removal — the easement must actually establish satisfactory legal access.',
+   tip:'Access exception → prove LEGAL access, not just physical access.',
+   similar:{q:'Which document would best establish a parcel\'s legal right to cross an adjoining property?', choices:['Recorded easement','Tax bill','Appraisal','Mortgage statement'], correct:0}},
+  {q:'A title insurance policy indemnifies the insured against loss or damage suffered by reason of:', choices:['Fire and casualty damage','Liens or encumbrances, defects in title, or unmarketability of title','Declining property values','Borrower default'], correct:1,
+   confidence:'Confirmed',
+   explanation:'This comes almost directly from Colorado\'s statutory definition of title insurance.',
+   rule:'C.R.S. §10-11-102(8) defines title insurance as insuring, guaranteeing, or indemnifying owners or others interested in real property against loss or damage resulting from liens or encumbrances upon, defects in, or unmarketability of, title.',
+   tip:'Remember the three: LIENS/ENCUMBRANCES → DEFECTS → UNMARKETABILITY.',
+   similar:{q:'Which risk is normally associated with title insurance?', choices:['Roof damage','Falling market value','Previously undisclosed title lien','Borrower\'s inability to pay mortgage'], correct:2}},
+  {q:'Which form can modify or change a title insurance policy?', choices:['Deed','Codicil','Endorsement','Appendix'], correct:2,
+   confidence:'Confirmed',
+   explanation:'An endorsement modifies, adds to, restricts, or otherwise affects policy coverage or terms. A deed conveys an interest in real estate; a codicil changes a will.',
+   rule:'Pearson specifically lists Endorsement under Title Insurance Terms and Concepts, and Colorado\'s rate regulations also expressly address endorsements.',
+   tip:'Change an insurance policy = ENDORSEMENT.',
+   similar:{q:'A title insurer wishes to add additional coverage to an existing policy. What is normally used?', choices:['Codicil','Endorsement','Warranty deed','Promissory note'], correct:1}},
+  {q:'Which best defines "closing and settlement services"?', choices:['Services performed solely for the seller','Services for the benefit of all necessary parties involving a real-estate transaction and the receipt and disbursement of money','Only the examination of title','Only issuing a title insurance policy'], correct:1,
+   confidence:'Confirmed',
+   explanation:'This is very close to the exact statutory definition.',
+   rule:'C.R.S. §10-11-102(3.5) defines closing and settlement services as services for all necessary parties connected with selling, leasing, encumbering, mortgaging, or creating a secured interest in real property, including receiving and disbursing money associated with the transaction.',
+   tip:'Two phrases: ALL NECESSARY PARTIES + RECEIPT/DISBURSEMENT OF MONEY.',
+   similar:{q:'Receiving buyer funds and disbursing seller proceeds at a title closing is an example of:', choices:['Underwriting only','Closing and settlement services','Reinsurance','Appraisal'], correct:1}},
+  {q:'For how long can a Colorado mechanic\'s lien continue against the property without commencement of an enforcement action?', choices:['2 months','4 months','6 months','12 months'], correct:2,
+   confidence:'Most likely — the 6-month rule itself is confirmed',
+   explanation:'Colorado generally requires an action to enforce the lien to be commenced within 6 months after the last work/labor/materials or completion event specified by statute, along with recording notice of the action. Don\'t confuse this with the separate deadline for initially filing the mechanic\'s lien statement, or with the 13-month curative-statute period.',
+   rule:'C.R.S. §38-22-110 — action must be commenced within six months.',
+   tip:'Mechanic\'s lien ENFORCEMENT action = 6 MONTHS.',
+   similar:{q:'A mechanic\'s lien claimant fails to commence an enforcement action within the statutory six-month period. What generally happens?', choices:['The lien continues forever','The lien no longer holds the property','It becomes a mortgage','It automatically becomes a judgment lien'], correct:1}},
+  {q:'The process of enforcing a mortgage or other security interest against real estate is called:', choices:['Foreclosure','Subrogation','Reconveyance','Novation'], correct:0,
+   confidence:'Most likely',
+   explanation:'Foreclosure is the process used to enforce a mortgage or other security interest against real property. Pearson also specifically lists Foreclosure under Methods of Transfer/Conveyances.',
+   rule:'Colorado has specific foreclosure procedures (typically through the county Public Trustee for a deed of trust), but there isn\'t one universal numeric answer that defines foreclosure itself.',
+   tip:'Enforce a mortgage/deed of trust against property = FORECLOSURE.',
+   similar:{q:'A lender enforces its security interest after the borrower defaults. This process is:', choices:['Foreclosure','Probate','Conveyance','Subordination'], correct:0}},
+  {q:'Once Colorado title insurance rates are properly filed, how long do they remain in effect?', choices:['5 years','10 years','15 years','Unlimited / until replaced by another effective rate filing'], correct:3,
+   confidence:'Most likely — "Unlimited" is the likely intended answer',
+   explanation:'The precise rule isn\'t that rates last forever — it\'s that a filed rate continues to be used until it\'s replaced by a new or amended effective filing.',
+   rule:'Colorado requires new or amended title rates to be filed with the Division before their effective date, and a title entity may only charge a rate currently on file and effective. Historical Colorado rulemaking materials expressly explain that filed rates must be used until replaced by another rate filing.',
+   tip:'If choices are 5 / 10 / 15 / unlimited → UNLIMITED means "until changed/replaced," not literally forever.',
+   similar:{q:'A title company wants to charge a newly increased rate. Before using it, the rate must generally be:', choices:['Verbally approved by a customer','Properly filed and effective','Used for 10 years','Approved by the county clerk'], correct:1}},
+  {q:'What is the minimum age to obtain a Colorado resident insurance producer license?', choices:['18','21','23','25'], correct:0,
+   confidence:'Confirmed',
+   explanation:'A straightforward, exact statutory number.',
+   rule:'C.R.S. §10-2-404 requires an individual resident insurance-producer applicant to be at least 18 years old. Pearson\'s title-specific outline references this statute under licensing.',
+   tip:'Colorado producer license = 18 years old, no exceptions.',
+   similar:{q:'A 17-year-old satisfies all other licensing requirements. May Colorado issue the person a resident producer license?', choices:['Yes','No'], correct:1}},
+  {q:'After a Colorado tax lien sale, approximately how long must pass before a lawful holder may pursue a treasurer\'s deed?', choices:['3 years','6 years','9 years','12 years'], correct:0,
+   confidence:'Most likely — exact wording may vary',
+   explanation:'This is especially important because Colorado changed the treasurer\'s-deed process effective for deeds issued on or after June 1, 2026. Under the new §39-11.5-102, after August 1 of the third calendar year following the tax lien sale, the lawful holder may apply for a treasurer\'s deed.',
+   rule:'SB26-144 (2026); the statutory deed form also states that more than three years have elapsed since the tax lien sale.',
+   tip:'Tax lien sale → Treasurer\'s deed → think 3 YEARS.',
+   similar:{q:'Under Colorado\'s current treasurer\'s-deed process, the relevant waiting period after a tax lien sale is approximately:', choices:['1 year','2 years','3 years','10 years'], correct:2}},
+  {q:'Which of the following is included in the title insurance premium?', choices:['Closing and settlement service charge','Reasonable profit','An unrelated recording charge','Service charge for examining evidence of title'], correct:1,
+   confidence:'Confirmed',
+   explanation:'This tests the statutory definition of premium — risk, cost of doing business, and reasonable profit, but NOT the service charge.',
+   rule:'C.R.S. §10-11-102(5): the title insurance premium is the amount charged for assumption of the insurance risk, includes the cost of doing business and a reasonable profit, but excludes the service charge.',
+   tip:'PREMIUM = risk + cost of doing business + reasonable profit.',
+   similar:{q:'Which item is specifically excluded from Colorado\'s statutory definition of title insurance premium?', choices:['Reasonable profit','Cost of doing business','Service charge','Assumption of title risk'], correct:2}},
+  {q:'An emergency cease-and-desist order may be issued against an unauthorized person or entity when:', choices:['The person merely files a trade name','The conduct causes or threatens significant, imminent, and irreparable public injury','The person conducts ordinary authorized business','The person changes addresses'], correct:1,
+   confidence:'Confirmed rule / most likely wording',
+   explanation:'An emergency (ex parte) cease-and-desist order is reserved for urgent situations — not routine administrative matters like trade names or address changes.',
+   rule:'C.R.S. §10-3-904.5 permits an ex parte emergency cease-and-desist order where the person is engaging unlawfully in insurance or violating applicable rules, and the alleged conduct appears fraudulent, creates an immediate public-safety danger, or causes/can reasonably be expected to cause significant, imminent, and irreparable public injury.',
+   tip:'Emergency C&D → IMMINENT + IRREPARABLE harm.',
+   similar:{q:'Which circumstance best supports an emergency cease-and-desist order?', choices:['Minor clerical error','Significant imminent and irreparable public injury','Routine address change','Normal rate filing'], correct:1}},
+  {q:'A title entity\'s payment of an outside attorney\'s fee, when the attorney\'s services are required to complete a particular transaction, is:', choices:['Lawful in every case','A prohibited/unlawful inducement','Part of the premium','Required by the Commissioner'], correct:1,
+   confidence:'Needs more information, but this is the best reconstruction',
+   explanation:'There are two related rules worth knowing together. Regulation 8-1-3 prohibits a title entity from paying or offering to pay fees or charges of an outside professional — including an attorney, engineer, appraiser, or surveyor — when that professional\'s services are required by a settlement producer or consumer to structure or complete the transaction. Separately, "services rendered by an attorney" are themselves a settlement service under C.R.S. §10-11-102(6.7).',
+   rule:'3 CCR 702-8, Regulation 8-1-3.',
+   tip:'Attorney performs a service → that\'s a settlement service. Title company PAYS a required outside attorney → prohibited inducement.',
+   similar:{q:'A title company offers to pay the attorney hired by a buyer to structure a transaction, in exchange for the referral. This is generally:', choices:['Permitted','Prohibited'], correct:1}},
+  {q:'The Colorado Commissioner of Insurance is required to:', choices:['Enforce/supervise compliance with Colorado insurance law','Approve laws','Establish all insurance rates','Write insurance statutes'], correct:0,
+   confidence:'Confirmed',
+   explanation:'The Legislature makes laws; the Commissioner administers and enforces insurance laws and regulations.',
+   rule:'C.R.S. §10-1-108 makes it the Commissioner\'s duty to supervise insurance business so it is conducted according to Colorado law, and to investigate violations.',
+   tip:'Legislature MAKES law → Commissioner ENFORCES/SUPERVISES it.',
+   similar:{q:'Who supervises the insurance business in Colorado to help ensure compliance with state insurance laws?', choices:['County clerk','Commissioner of Insurance','Secretary of State alone','Local REALTOR board'], correct:1}},
+  {q:'A title company\'s wire-transfer charge is considered a:', choices:['Negotiable title premium','Incidental expense','Part of the title insurance premium','Closing and settlement fee'], correct:3,
+   confidence:'Confirmed',
+   explanation:'A service/settlement charge like a wire fee is always separate from the title insurance premium itself.',
+   rule:'Colorado\'s official Title Insurance Closing and Settlement Fee Filing form specifically lists "Wire" among closing/settlement fees, along with closing fees, electronic recording, courier/express, and cashier\'s checks.',
+   tip:'WIRE = closing/settlement fee, NOT premium.',
+   similar:{q:'A title entity charges a customer for a wire transfer associated with closing. Where should that charge generally be categorized?', choices:['Title premium','Closing/settlement fee','Insurance claim','Commission'], correct:1}},
+  {q:'Privacy notices applicable to Colorado insurance licensees are required under:', choices:['National Association of REALTORS rules','Real Estate Act','Colorado Insurance Regulations','Colorado Real Estate Commission regulation'], correct:2,
+   confidence:'Confirmed',
+   explanation:'Regulation 6-4-1 concerns privacy of consumer financial and health information and contains initial and annual privacy-notice requirements. Regulation 6-4-2 addresses safeguarding customer information. Both relate to the federal Gramm-Leach-Bliley privacy requirements.',
+   rule:'Pearson\'s Colorado Title outline lists Privacy Notices — Regulation 6-4-1 and 6-4-2.',
+   tip:'Privacy = Regulations 6-4-1 / 6-4-2.',
+   similar:{q:'Which Colorado regulation concerns privacy of consumer financial and health information?', choices:['6-4-1','8-1-3','1-2-10','2-4-1'], correct:0}},
+  {q:'Under Colorado law, a "title insurance entity" means:', choices:['A real estate broker, title agent, and insurance company','A title insurance agent, title insurance agency, or title insurance company','A title insurance agent only','A title insurance company only'], correct:1,
+   confidence:'Confirmed',
+   explanation:'A real estate broker is NOT included in that definition, even though brokers are closely involved in the same transactions.',
+   rule:'C.R.S. §10-11-102(11) defines title insurance entity exactly as a title insurance agent, title insurance agency, or title insurance company.',
+   tip:'Entity = Agent + Agency + Company (no broker).',
+   similar:{q:'Which person is NOT automatically included in Colorado\'s definition of a title insurance entity?', choices:['Title insurance agent','Title insurance agency','Title insurance company','Real estate broker'], correct:3}},
+  {q:'What must a Colorado title insurance entity make readily available for review by the public?', choices:['Its schedule of effective rates and fees','A list of every licensed employee','The location of the county clerk','Its confidential personnel records'], correct:0,
+   confidence:'Confirmed',
+   explanation:'The schedule (or a notice explaining its availability) must be displayed in a public place in the title entity\'s office, and requested copies are generally provided within 3 business days after a written request.',
+   rule:'Colorado Regulation 8-1-1 requires every title insurance entity to make its schedule of effective rates and fees readily available for public review, covering issued title policies and closing/settlement charges, including endorsements.',
+   tip:'PUBLIC → RATE & FEE SCHEDULE.',
+   similar:{q:'A consumer asks a Colorado title company to see its effective title rates and settlement fees. The company must generally:', choices:['Refuse','Make its schedule available','Obtain court permission','Refer the person to a broker'], correct:1}},
+  {q:'Which of the following is a prohibited practice for a Colorado title entity?', choices:['Properly disbursing seller\'s proceeds','Guaranteeing the performance or services of a settlement producer','Charging a properly filed fee for services','Recording a document after closing'], correct:1,
+   confidence:'Confirmed',
+   explanation:'Regulation 8-1-3 contains many other prohibited inducements too, including paying certain outside-professional fees and charging less than the actual cost of closing/settlement services. (Note: the exam choices you remembered for this one didn\'t include a 4th option, so the 4th choice here was added for realistic practice, not recalled from memory.)',
+   rule:'Colorado Regulation 8-1-3 expressly prohibits a title entity from guaranteeing or offering to guarantee the performance or services of a settlement producer.',
+   tip:'If you see "GUARANTEE performance/services of a settlement producer" → PROHIBITED.',
+   similar:{q:'A title company guarantees a real estate broker\'s performance to induce referrals. Under Colorado rules this is:', choices:['Permitted advertising','A prohibited practice','Required disclosure','A title endorsement'], correct:1}},
+  {q:'A husband and wife own property as joint tenants. One spouse conveys his or her entire interest to the other spouse. What is the resulting ownership status?', choices:['Fee simple / sole ownership','Tenants in common','Deed','Deed of trust'], correct:0,
+   confidence:'Most likely',
+   explanation:'With only two joint tenants, if one transfers their entire interest to the other, only one owner remains — the receiving spouse owns the entire estate individually (sometimes described as ownership "in severalty"). This differs from a joint tenant conveying to a third party, which severs the joint tenancy and creates a tenancy in common instead.',
+   rule:'Colorado recognizes joint tenancy with a right of survivorship and allows severance of joint-tenancy interests by conveyance.',
+   tip:'Two owners A + B. A gives ALL of A\'s interest to B → B owns 100%. If A sells to outside C instead → think severance / tenancy in common.',
+   similar:{q:'A and B own property as joint tenants. A conveys A\'s interest to unrelated C. What happens to the joint tenancy between A and B?', choices:['It necessarily remains unchanged','It is severed as to A\'s transferred interest','Property becomes a life estate','Mortgage disappears'], correct:1}},
+  {q:'When a contractual title insurance agent ceases doing business, what must happen to its closing, settlement, and escrow files?', choices:['Destroy them','Keep them personally for two years','Deposit them with the Division of Insurance, a title insurance company, or another licensed contractual agent authorized by the Division','Send copies to every former customer'], correct:2,
+   confidence:'Most likely exact question / confirmed rule',
+   explanation:'Colorado requires a licensed contractual title insurance agent to preserve its closing, settlement, and escrow files for at least 7 years after closing or completion. Files don\'t have to remain paper originals — accurate photographic, microfilm, or other durable reproductions are permitted. Upon cessation of business, those files must be deposited with the Division, a title insurance company, or another licensed contractual title agent authorized by the Division. (Separate, related rule: if an individual licensed producer stops working for an agency, the agency generally must notify the Commissioner within 10 days — don\'t mix these two numbers up.)',
+   rule:'C.R.S. §10-11-116(4) — retention = at least 7 years.',
+   tip:'TITLE FILES = 7 YEARS. Producer/agency change = 10 DAYS.',
+   similar:{q:'For what minimum period must a licensed contractual title agent preserve its closing, settlement, and escrow files after closing/completion?', choices:['2 years','3 years','5 years','7 years'], correct:3}}
+];
+
+const liaState = { idx:0, answers:new Array(LIA_QUESTIONS.length).fill(null) };
+
+function confidenceClass(conf){
+  const c = conf.toLowerCase();
+  if(c.includes('confirmed') && !c.includes('most likely')) return 'lighter';
+  if(c.includes('needs more')) return 'priority';
+  return 'review';
+}
+function renderLiaNavGrid(){
+  const grid = document.getElementById('lia-nav-grid');
+  grid.innerHTML = LIA_QUESTIONS.map((_,i)=>{
+    const answered = liaState.answers[i] !== null;
+    const isCurrent = i===liaState.idx;
+    let cls = 'nav-q';
+    if(isCurrent) cls='current'; else if(answered) cls='answered';
+    return `<button class="${cls}" data-jump="${i}" title="Question ${i+1}${answered?' — answered':''}">${i+1}</button>`;
+  }).join('');
+  grid.querySelectorAll('button[data-jump]').forEach(btn=>{
+    btn.addEventListener('click', ()=> jumpToLia(parseInt(btn.dataset.jump,10)));
+  });
+}
+function jumpToLia(i){
+  if(i<0 || i>=LIA_QUESTIONS.length) return;
+  liaState.idx = i;
+  renderLiaQuestion();
+}
+function renderLiaQuestion(){
+  const i = liaState.idx;
+  const item = LIA_QUESTIONS[i];
+  document.getElementById('lia-progress-label').textContent = `Question ${i+1} of ${LIA_QUESTIONS.length}`;
+  document.getElementById('lia-question').textContent = item.q;
+  const chosen = liaState.answers[i];
+  const wrap = document.getElementById('lia-choices');
+  wrap.innerHTML = item.choices.map((c,ci)=>{
+    let cls = 'choice';
+    if(chosen!==null){
+      cls += ' disabled';
+      if(ci===item.correct) cls += ' correct';
+      else if(ci===chosen) cls += ' incorrect';
+    }
+    return `<button class="${cls}" data-ci="${ci}">${c}</button>`;
+  }).join('');
+  wrap.querySelectorAll('.choice').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      liaState.answers[i] = parseInt(btn.dataset.ci,10);
+      renderLiaQuestion();
+      renderLiaNavGrid();
+    });
+  });
+  const exp = document.getElementById('lia-explain');
+  const confBadge = document.getElementById('lia-confidence');
+  if(chosen!==null){
+    exp.style.display='';
+    const badgeCls = confidenceClass(item.confidence);
+    let html = `<b>${chosen===item.correct?'Correct. ':'Not quite. '}</b>${item.explanation}`;
+    html += `<div style="margin-top:8px;"><b>Colorado Rule/Law:</b> ${item.rule}</div>`;
+    html += `<div style="margin-top:8px;"><b>Exam Tip:</b> ${item.tip}</div>`;
+    if(item.similar){
+      const sChosen = liaState['sim'+i];
+      html += `<div class="mini-quiz"><div class="mini-label">Practice question in a similar style (written for practice — not a leaked or actual Pearson VUE question)</div>
+        <div class="q-text">${item.similar.q}</div>
+        <div class="choices" id="lia-sim-choices-${i}">${item.similar.choices.map((c,ci)=>{
+          let cls='choice';
+          if(sChosen!==undefined && sChosen!==null){
+            cls+=' disabled';
+            if(ci===item.similar.correct) cls+=' correct';
+            else if(ci===sChosen) cls+=' incorrect';
+          }
+          return `<button class="${cls}" data-sim-ci="${ci}">${c}</button>`;
+        }).join('')}</div></div>`;
+    }
+    exp.innerHTML = html;
+    if(item.similar){
+      exp.querySelectorAll(`#lia-sim-choices-${i} .choice`).forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          liaState['sim'+i] = parseInt(btn.dataset.simCi,10);
+          renderLiaQuestion();
+        });
+      });
+    }
+    confBadge.innerHTML = `<span class="confidence-badge tag ${badgeCls}" style="margin-left:0;">${item.confidence}</span>`;
+  } else {
+    exp.style.display='none';
+    confBadge.innerHTML = '';
+  }
+  document.getElementById('lia-prev').disabled = i===0;
+  document.getElementById('lia-next').textContent = (i===LIA_QUESTIONS.length-1) ? 'Back to Q1' : 'Next →';
+  renderLiaNavGrid();
+}
+document.getElementById('lia-prev').addEventListener('click', ()=> jumpToLia(liaState.idx-1));
+document.getElementById('lia-next').addEventListener('click', ()=> jumpToLia(liaState.idx===LIA_QUESTIONS.length-1 ? 0 : liaState.idx+1));
+
+/* =========================================================
+   GENERAL KNOWLEDGE — from Liandra's "Licensing Class Review
+   — Statutes and Regs Portion" PDF handout. Self-contained
+   flashcard + quiz mode, independent of the CATS categories
+   and the calibrated Practice Exam / Dashboard weighting.
+   ========================================================= */
+const GK_DECKS = [
+  { key:'defs', name:'Definitions', cards:[
+    {f:'Title Insurance', b:'Insuring, guaranteeing, or indemnifying owners of real property against loss or damage suffered by reason of liens or encumbrances upon, defects in, or the unmarketability of the title to said property.'},
+    {f:'Business of Title Insurance', b:'The making of any contract or policy of title insurance AND the performance of closing and settlement services in conjunction with the issuance of any policy of title insurance.'},
+    {f:'Title Insurance Agent', b:'A person authorized by a title insurance company to solicit insurance, collect premiums, or to issue or countersign policies on its behalf.'},
+    {f:'Title Insurance Agency', b:'A corporation, partnership, association, or other legal entity that transacts the business of title insurance.'},
+    {f:'Title Insurance Company', b:'Has the power to insure titles to real property. May be domestic, foreign, or alien. Domestic = incorporated/formed in this state. Foreign = formed by authority of any other U.S. state or government. Alien = incorporated/organized under the laws of a foreign nation.'},
+    {f:'Title Entity', b:'Title insurance agents, title insurance agencies, AND title insurance companies — collectively.'},
+    {f:'Insurance Producer or Producer', b:'A person who solicits, negotiates, effects, procures, delivers, renews, continues, or binds policies of insurance for risks in this state.'},
+    {f:'Applicant', b:'All those who apply for title insurance, whether or not a prospective insured.'},
+    {f:'Rate or Premium', b:'The amount charged for insurance. Includes the risk assumed, the cost of doing business, and a reasonable profit. Does NOT include the service charge.'},
+    {f:'Service Charge', b:'The amount charged to cover the cost of procuring and examining evidence of title.'},
+    {f:'Fee', b:'The amount OTHER than the rate charged by a title entity for services performed pursuant to the business of title insurance.'},
+    {f:'Justification', b:'Information that establishes the rate or fee is not excessive, inadequate, or unfairly discriminatory. Must qualify, quantify, and demonstrate the facts and figures to substantiate a proposed rate or fee.'},
+    {f:'Closing and Settlement Services', b:'Providing services for all necessary parties in connection with the sale, leasing, or encumbering of real property, including receipt and disbursement of money.'},
+    {f:'Settlement Services', b:'Any service provided in connection with real estate settlement — title searches, examination, title certificates, title insurance, attorney services, document prep, surveys, credit reports, appraisals, pest/fungus inspections, real estate broker services, home inspection services, loan origination/processing, and escrow/closing services.'},
+    {f:'Closing Instructions / Written Instructions', b:'A document, signed by one or more parties to a title insurance transaction, which purports to direct a title entity in the completion of settlement services.'},
+    {f:'Generic Exceptions', b:'Broad exceptions on a commitment or policy of title insurance that do NOT refer to a specific document or recording information, and are not standard/preprinted or specific exceptions. These are prohibited on an Owner\'s Policy commitment.'},
+    {f:'Specific Exception', b:'Exceptions that are known impairments for the subject property, but the impairment does not appear in a reasonable examination of the property records for the property being insured.'},
+    {f:'Standard or Preprinted Exceptions', b:'Exceptions on title commitments and policies dealing with parties in possession, survey matters, mechanic\'s liens, unpatented mining claims, patented/unpatented mineral reservations, water rights, mineral rights, mineral leases, mineral grants, taxes, and rights or encumbrances.'},
+    {f:'Gap Coverage', b:'Insuring against loss or damage suffered due to matters appearing of record in the clerk & recorder\'s office subsequent to the date of a title insurance commitment and prior to the date of recording of closing documents.'},
+    {f:'Fair Market Value', b:'A price that represents the value of a product or service being provided, which must include cost AND profit.'},
+    {f:'Ownership and Encumbrance Report (O&E)', b:'Information identifying the last recorded owner, legal description, and recorded unreleased deeds of trust or mortgages of a particular parcel of real property, available from public records.'},
+    {f:'TBD Commitment', b:'A report, in the form of a commitment, furnished PRIOR to receipt of an application for title insurance — the buyer, sales amount, and loan amount, among other possible details, are not yet known.'},
+    {f:'Examination', b:'A formal financial examination, as well as informal examinations, conducted by the Commissioner for the purpose of determining compliance with the law.'},
+    {f:'NAIC', b:'The National Association of Insurance Commissioners — the organization of insurance regulators from the fifty states, the District of Columbia, and the four United States territories.'},
+    {f:'Settlement Producer', b:'A person in a position to refer business incident to or a part of a settlement service. Includes anyone who buys/sells an interest in real property, lends/borrows money secured by real property, acts as an agent/representative/attorney/employee of such a person, or is an associate (spouse, parent, child, controlled business, employer, officer, director, partner) of a settlement producer.'},
+    {f:'Remuneration', b:'ANY type of payment or compensation.'},
+    {f:'Reconcile', b:'The accounting process of comparing transactions and activity in order to balance accounts and resolve any discrepancies in an amount that exceeds $500.00.'},
+    {f:'Affiliated Business Arrangement', b:'An arrangement in which a settlement producer has either an affiliate relationship with, or a direct beneficial ownership interest in, a title insurance company or title insurance agent, and directly or indirectly refers settlement service business to that company or agent.'},
+    {f:'Controlled Business', b:'Insurance procured or to be procured by/through a person upon: (1) their own life, person, property, or risks, or those of their spouse; or (2) the life, person, property, or risks of the person\'s employer or their own business.'}
+  ]},
+  { key:'rules', name:'Rates, Practices, Protections & Licensing', cards:[
+    {f:'Rate Filing Requirements', b:'Must be filed electronically with the Commissioner; must not be excessive, inadequate, or unfairly discriminatory; must be supported by justification (data); must state an effective date no earlier than 30 days after receipt by the Commissioner; must charge the rate/fee on file and in effect when the order is received; cannot use a rate before its effective date; must be readily available to the public in each office.'},
+    {f:'Closing/Settlement Fees vs. Title Insurance Premiums', b:'Closing/Settlement Fees = expense + profit. Title Insurance Premiums = expense + expected LOSS + profit. (The extra "expected loss" component is what distinguishes the premium.)'},
+    {f:'Volume Discounts', b:'Different rates MAY be filed for different counties, but NOT for different risks within the same county. It is anticompetitive behavior to attempt to monopolize the business of insurance or restrain trade by conspiring to set rates.'},
+    {f:'Prohibited Practices — a title company or agent shall NOT...', b:'(1) Guarantee payment of bonds/notes/obligations. (2) Issue any insurance other than title insurance. (3) Give or receive remuneration for the REFERRAL of title business. (4) Give/receive any portion of a charge for services not actually rendered. (5) Engage in rating practices leading to excessive/inadequate/unfair rates. (6) Commingle fiduciary funds with other monies/assets. (7) Disburse funds before all conditions are met. (8) Furnish a TBD Commitment without charge. (9) Pay a title insurance cancellation fee for a settlement producer. (10) Pay/furnish/subsidize salary or services for a settlement producer except for services actually rendered. (11) Charge less than the scheduled rate/fee, or waive it. (12) Subsidize O&E Reports, farm packages, or info kits. (13) Design/produce/distribute marketing materials for a settlement producer below fair market value. (14) Contribute fees, prizes, gifts, or other value to a settlement producer. (15) Enter a marketing arrangement (Marketing Service Agreement) with a settlement producer.'},
+    {f:'What a Title Entity MAY Do', b:'Issue a TBD Commitment or O&E Report for the charge on file at the Division; provide one free copy of the last recorded vesting deed; issue a closing protection letter for the filed charge; engage in normal promotional/educational activity not conditioned on referrals; make charitable donations made directly to the charity; pay for business meals/sporting events if at least 1 title producer attends per 4 settlement producers; sponsor educational courses (1+ hour) related to title/real estate/mortgages; attend trade association events under fair-market conditions; buy coffee/donuts/bagels for settlement producers only when a title producer is present to promote the business.'},
+    {f:'Notify the Division Within 30 Days If...', b:'(1) A title agent fails to remit premiums within 45 days of the contractual due date. (2) A title agent fails to reconcile its escrow account every 45 days. (3) There\'s an escrow shortage of more than $10,000. (4) A repayment agreement is put in place for remittance/other obligations. (5) A title agent has commingled fiduciary funds. (6) A title company authorizes, cancels, or suspends a title agent.'},
+    {f:'Title Commitment Requirements (Consumer Protections)', b:'Must perform a reasonable examination of title; clearly disclose the terms on which title will be insured; disclose the record vested owner per county records; NOT contain generic exceptions in an Owner\'s Policy commitment; be updated prior to closing; include Gap Disclosure, Mechanic\'s Lien Disclosure, and Special Taxing District Disclosure; provide coverage for matters of record prior to the recording date (Gap Coverage) in an Owner\'s Policy; record documents within 7 days of closing; issue the final policy within 90 calendar days of closing.'},
+    {f:'Mineral Estate Disclosure', b:'A title commitment for an Owner\'s Policy must provide disclosure when a mineral estate has been severed, leased, or conveyed from the surface estate.'},
+    {f:'Complaints to the Division', b:'It is the Commissioner\'s duty to investigate information presented. If the Commissioner believes a violation exists, the matter may be referred to the District Attorney or the Attorney General.'},
+    {f:'Retention of Records / Response to Division Inquiries', b:'Closing/settlement/escrow files retained for 7 years; must retain all records needed to reconstruct claims processing/adjustment/settlement; must retain a record of all policies issued and producer licensing records; must respond to an Examination request within 10 calendar days, and to an Inquiry within 20 calendar days. Failure to respond can trigger a $500 fine, rising up to $5,000 for each subsequent violation.'},
+    {f:'Closing Instructions', b:'Written closing instructions must be received from all parties to the transaction. Must comply with the "good funds" law — closing funds must be available for immediate withdrawal prior to disbursement.'},
+    {f:'Search and Examination', b:'Must conduct a reasonable examination of title, and must make a determination of insurability of title in accordance with sound underwriting practices.'},
+    {f:'Privacy Notices', b:'Must provide a clear and conspicuous privacy notice, and must establish standards for administrative, technical, and physical safeguards to protect the security, confidentiality, and integrity of customer information, pursuant to the Gramm-Leach-Bliley Act.'},
+    {f:'Commissioner — Power and Duties', b:'Heads the Division of Insurance; appointed by the Governor, confirmed by the Senate; supervises the business of insurance; issues certificates of authority to title insurance companies (domestic, foreign, or alien); examines all license requests/applications; reviews insurers\' annual statements; conducts examinations and investigations; disseminates general insurance info to the public; adopts rules to ensure financial solvency and a competitive marketplace; conducts Market Conduct Exams as often as deemed appropriate; conducts Financial Exams at least once every 5 years, per NAIC and the Colorado insurance examiner\'s handbook.'},
+    {f:'Commissioner — Hearings and Penalties', b:'May place a producer on probation; suspend, revoke, or refuse to issue/continue/renew a license; order restitution; or assess a civil penalty. Producer is entitled to notice and a hearing first. Penalty for a general violation: up to $3,000/violation (cap $30,000) — or up to $30,000/violation (cap $750,000) if the violator knew or reasonably should have known. Penalty for violating a cease-and-desist order: $10,000/violation for an insurer, $500/violation for an individual. Final Commissioner action is subject to judicial review.'},
+    {f:'License Suspension/Revocation Grounds', b:'Any incorrect, misleading, incomplete, or materially untrue application info; violation of any insurance law/rule/order/subpoena; misrepresentation or fraud in the application; misappropriating client money/property; a felony or moral-turpitude misdemeanor conviction; refusal to cooperate with an examination; unfair or deceptive trade practices; cheating on the exam; failing to pay court-ordered child support; failing to pay income tax.'},
+    {f:'Records and Requests for Information', b:'A title entity must maintain records and provide timely, convenient, and FREE access to information requested.'},
+    {f:'Persons Required to be Licensed', b:'A license is required for anyone who sells, solicits, or negotiates insurance. Individual applicants must be at least 18, pass the title producer exam, pay the prescribed license fee, and be competent, trustworthy, of good moral character and good business reputation. Colorado requires NO prelicensure education and NO continuing education for a title insurance producer license — unlike most other insurance lines.'},
+    {f:'Payment and Acceptance of Commissions/Fees', b:'A producer must be duly licensed BEFORE a commission based on the sale of insurance is paid. A commission cannot be paid for the REFERRAL of business — only for services actually rendered.'},
+    {f:'Fiduciary / Commingling Rules', b:'All funds received by a producer are held in a fiduciary capacity. Fiduciary funds must be kept in an account SEPARATE from other monies/assets of the title entity, and can\'t be commingled with operating or personal accounts. Premiums are held in trust until remitted to the insurer, within 45 days of receipt (or the contracted time). All fiduciary funds must be deposited within 3 business days of receipt, and accounts must be reconciled at least every 45 days.'},
+    {f:'Unauthorized Entities', b:'No producer may solicit, negotiate, or sell insurance for any line they\'re not qualified/licensed for. The Commissioner may issue an emergency cease-and-desist order and obtain a court order to enjoin and restrain an unauthorized company from doing business in the state. Failure to obtain a certificate of authority does NOT impair the validity of the contract.'},
+    {f:'Change of Address / Assumed Names', b:'A producer must notify the Commissioner of an address change within 30 days after the change (penalty possible for failure). Any assumed or fictitious business name must be registered with the Commissioner before use. Must also notify the Commissioner of a legal name change, or the change/removal of a trade name.'},
+    {f:'Firm Naming Rule', b:'No title insurance agency may adopt a firm name containing the words "title insurance," "title guaranty," or "title guarantee" — UNLESS those words are followed by "agent" or "agency."'},
+    {f:'Responsible Producer', b:'A title insurance agency must designate a licensed producer (an officer, partner, or director) who is responsible for the agency\'s compliance with the insurance laws and rules of Colorado.'},
+    {f:'Agency Licensing Requirements', b:'To obtain a license, an entity must: disclose all officers, partners, and directors to the Commissioner; those individuals must be trustworthy, of good moral character, and good business reputation; have at least $10,000 of cash capital or net worth; pay the license fee; register at least one individual holding a valid producer license; register EACH person licensed and acting as a producer.'},
+    {f:'Coercion (Unfair Competition)', b:'Entering into any agreement to commit an act of boycott, coercion, or intimidation resulting in — or tending to result in — unreasonable restraint of, or a monopoly in, the business of insurance. Also prohibited: requiring the use of a particular insurer as a condition precedent to lending money.'},
+    {f:'Misrepresentation (Unfair Competition)', b:'Any publication, sales presentation, or comparison which misrepresents the benefits, advantages, conditions, or terms of any insurance policy; or misrepresents any insurance policy as being a security.'},
+    {f:'Unfair Discrimination', b:'Insurance companies cannot unfairly discriminate between individuals of the same class, or between neighborhoods within a municipality of essentially the same hazard — the same rates and coverages must be offered.'},
+    {f:'Controlled Business (Licensing Restriction)', b:'No producer license may be granted or extended if it\'s being/will be used for the purpose of writing controlled business — meaning the aggregate premiums written on controlled business EXCEED the aggregate premiums written on all other insurance business within a 12-month period.'},
+    {f:'Affiliated Business Arrangements (ABAs)', b:'Distinct from controlled business, and permitted where the referring investor\'s payment is ONLY a return on investment (not tied to referral volume). Ownership interest can\'t be conditioned on referral volume; nothing of value can be paid directly for a referral; the cost of ownership opportunity must be equivalent for all investors; a formal business plan is required; and an ABA disclosure is required.'},
+    {f:'Sham ABA Factors the Division Considers', b:'Is there a good-faith effort to comply with insurance laws; does the title entity maintain a separate, distinct, verifiable physical location (clearly/conspicuously identified, independently locked/secured, directly accessible to the public without entering another title entity\'s primary workspace); is minimal capitalization established/maintained; how are employees paid (W-2s issued, does the title entity control the employee, per-hour vs. per-transaction pay, is the employee physically located in the title entity\'s office); does the title entity perform CORE title services itself; has the title entity contracted out its core title/settlement services to other sources.'},
+    {f:'Defamation', b:'Making, publishing, disseminating, or circulating any oral or written statement that is FALSE, or maliciously critical or derogatory to the financial condition of any person, and which is calculated to INJURE that person.'},
+    {f:'Rebates/Remuneration (Prohibited Inducements)', b:'Offering to pay any rebate of premiums, or any valuable consideration, or anything of value not plainly expressed in the insurance contract, as an INDUCEMENT to purchase insurance. A title entity also may not: guarantee payment of bonds/notes/other obligations; transact, underwrite, or issue any insurance other than title insurance; or give remuneration in any form for the referral of title insurance business.'},
+    {f:'Unfair Claims Settlement Practices', b:'Misrepresenting pertinent facts or policy provisions relating to coverage at issue; failing to acknowledge/act reasonably promptly on communications; failing to adopt/implement reasonable standards for prompt claims investigation; refusing to pay claims without a reasonable investigation; failing to affirm/deny coverage within a reasonable time after proof of loss; not attempting in good faith to effectuate prompt, fair, and equitable settlements once liability is reasonably clear; compelling insureds to litigate by offering substantially less than what\'s ultimately recovered; making claims payments without a statement of the coverage under which they\'re paid; failing to promptly give a reasonable explanation for denying a claim or offering a compromise settlement.'}
+  ]},
+  { key:'curative', name:'Curative Statutes (A–Z)', cards:[
+    {f:'A. Acknowledgement (Defective) — CRS 38-35-106', b:'10 Years'},
+    {f:'B. Adverse Possession, possession only — CRS 38-41-101', b:'18 Years'},
+    {f:'C. Adverse Possession, under color of title — CRS 38-41-106, 108, 109, 111, 112', b:'7 Years'},
+    {f:'D. Attachment Lien — CRS 13-56-103', b:'6 Years'},
+    {f:'E. US Attachment Lien — 28 USC 3102(f)(3)', b:'No Term'},
+    {f:'F. City Liens (cannot be foreclosed out) — CRS 31-15-401(c)', b:'No Term'},
+    {f:'G. Claims Against Decedent — CRS 15-12-801', b:'1 Year'},
+    {f:'H. Purchase Land Contracts — CRS 15-12-801', b:'10 Years'},
+    {f:'I. Official Deeds — CRS 38-41-111', b:'9 Years'},
+    {f:'J. Treasurer\'s Deeds — CRS 39-12-104', b:'9 Years'},
+    {f:'K. Recitals in Deeds accepted — CRS 39-38-107', b:'20 Years'},
+    {f:'L. Deeds of Trust — no due date — CRS 38-39-201', b:'15 Years'},
+    {f:'M. Execution Lien — CRS 13-56-103', b:'6 Years'},
+    {f:'N. U.S. Execution Lien — 28 USC 3203(b)', b:'20 Years'},
+    {f:'O. Federal Tax Lien — 26 USC 6323(g)', b:'10 Years'},
+    {f:'P. Judgment Lien — CRS 13-52-102(1)', b:'6 Years'},
+    {f:'Q. U.S. Judgment Lien — 28 USC 3201', b:'20 Years'},
+    {f:'R. Judgment Lien, False Report — CRS 13-52-102(4)', b:'1 Year'},
+    {f:'S. Judgment Lien, Child Support — CRS 13-52-102(1)', b:'20 Years'},
+    {f:'T. Certificate of Levy — CRS 13-56-103', b:'6 Years'},
+    {f:'U. Lis Pendens — CRS 13-56-103', b:'6 Years'},
+    {f:'V. Mechanic\'s Liens — CRS 38-22-109(8)', b:'13 Months'},
+    {f:'W. Mineral Lease, no affidavit of production — CRS 38-42-106', b:'6 Months'},
+    {f:'X. Name Variations — CRS 38-35-116(2)', b:'20 Years'},
+    {f:'Y. Option to Purchase — CRS 38-35-111', b:'1 Year'},
+    {f:'Z. Quiet Title Decree — Rule 60(b) CRCP', b:'6 Months'}
+  ]}
+];
+
+const GK_QUIZ = [
+  {q:'Under Colorado\'s statutory definition, the "business of title insurance" includes the making of any contract or policy of title insurance and:', choices:['The sale of homeowner\'s insurance','The performance of closing and settlement services in conjunction with issuing a title policy','Real estate brokerage services','Mortgage loan origination only'], correct:1, exp:'The definition is two-part: making title insurance contracts/policies AND performing closing/settlement services connected to issuing a policy.'},
+  {q:'A title insurance company that is incorporated or organized under the laws of a foreign nation is classified as:', choices:['Domestic','Foreign','Alien','International'], correct:2, exp:'Domestic = formed in Colorado. Foreign = formed under another U.S. state\'s authority. Alien = formed under a foreign nation\'s laws.'},
+  {q:'Which of the following is specifically EXCLUDED from the definition of "rate or premium"?', choices:['The risk assumed','The cost of doing business','A reasonable profit','The service charge'], correct:3, exp:'Rate/premium = risk + cost of doing business + reasonable profit. The service charge is a separate, excluded item.'},
+  {q:'The amount charged to cover the cost of procuring and examining evidence of title is the definition of:', choices:['Premium','Fee','Service charge','Justification'], correct:2, exp:'That is the literal definition of "service charge."'},
+  {q:'"Generic exceptions" on a title commitment or policy are exceptions that:', choices:['Refer to a specific recorded document','Do not refer to a specific document or recording information, and are not standard or specific exceptions','Only apply to loan policies','Are always removed before closing'], correct:1, exp:'Generic exceptions are vague, broad exclusions with no specific document reference — and they\'re prohibited in a Colorado Owner\'s Policy commitment.'},
+  {q:'Gap coverage insures against matters appearing of record between:', choices:['The application date and the commitment date','The date of the title commitment and the date the closing documents are recorded','The recording date and the policy issue date','Closing and the first anniversary of the policy'], correct:1, exp:'Gap coverage bridges the risk window between the commitment and the actual recording of closing documents.'},
+  {q:'Colorado title insurance rates and fees cannot take effect any earlier than how many days after receipt by the Commissioner?', choices:['10 days','15 days','30 days','60 days'], correct:2, exp:'Filed rates need at least a 30-day lead time before their stated effective date.'},
+  {q:'Under Colorado\'s volume discount rule, a title entity may file different rates for:', choices:['Different risks within the same county','Different counties, but not different risks within the same county','Repeat customers only','New construction only'], correct:1, exp:'Geography (county) can justify a rate difference; risk-by-risk discounting within the same county cannot.'},
+  {q:'Which of the following is a PROHIBITED practice for a Colorado title insurance company or agent?', choices:['Issuing a TBD Commitment for the charge on file at the Division','Commingling fiduciary funds with other monies or assets of the title entity','Providing a single free copy of the last recorded vesting deed','Sponsoring an educational course at least one hour in duration'], correct:1, exp:'Commingling fiduciary funds is expressly prohibited. The other three are all things a title entity is permitted to do.'},
+  {q:'A title entity may pay for a business meal with settlement producers only when:', choices:['No title insurance producer is present','At least one title insurance producer attends for every four settlement producers','The meal is under $25 per person','It\'s approved in writing by the Commissioner in advance'], correct:1, exp:'The 1-to-4 ratio (one title producer per four settlement producers) is the specific threshold that keeps this from being a disguised inducement.'},
+  {q:'Title insurance companies must notify the Division within 30 days if a title insurance agent fails to remit premiums within how many days of the contractual due date?', choices:['15 days','30 days','45 days','60 days'], correct:2, exp:'Failure to remit within 45 days of the contractual due date is one of six triggers requiring 30-day notice to the Division.'},
+  {q:'An escrow account shortage of more than what amount triggers a required notification to the Division?', choices:['$1,000','$5,000','$10,000','$25,000'], correct:2, exp:'An escrow shortage over $10,000 is one of the listed triggers requiring notice to the Division within 30 days.'},
+  {q:'A Colorado title commitment for an Owner\'s Policy is prohibited from containing:', choices:['The record vested owner','Generic exceptions','Gap disclosure','Mechanic\'s lien disclosure'], correct:1, exp:'Generic exceptions are specifically prohibited in an Owner\'s Policy commitment — every exception must reference something specific.'},
+  {q:'A title entity must issue the final policy within how many calendar days of closing?', choices:['7 days','30 days','60 days','90 days'], correct:3, exp:'90 calendar days is the outer deadline to issue the final policy (closing documents themselves must be recorded within 7 days).'},
+  {q:'Closing, settlement, and escrow files must be retained for how many years?', choices:['3 years','5 years','7 years','10 years'], correct:2, exp:'7 years is the minimum record retention period for closing, settlement, and escrow files.'},
+  {q:'A title entity must respond to a Division examination request within how many calendar days, and to a general Division inquiry within how many?', choices:['5 days / 10 days','10 days / 20 days','20 days / 30 days','30 days / 45 days'], correct:1, exp:'Examination requests: 10 calendar days. General inquiries: 20 calendar days. Failure to respond can trigger a $500 fine, rising to $5,000 for repeat violations.'},
+  {q:'Under Colorado\'s "good funds" law, closing funds must be:', choices:['Deposited within 30 days of closing','Available for immediate withdrawal prior to disbursement','Held in an interest-bearing account for the buyer\'s benefit','Wired directly from the lender to the seller'], correct:1, exp:'Good funds must be available for immediate withdrawal before they can be disbursed — that\'s the core of the good funds law.'},
+  {q:'Colorado\'s Insurance Commissioner is:', choices:['Elected by voters','Appointed by the Governor and confirmed by the Senate','Appointed by the title insurance industry','A federal appointee'], correct:1, exp:'Gubernatorial appointment with Senate confirmation.'},
+  {q:'How often, at minimum, must the Commissioner conduct a financial examination of an insurer?', choices:['Every year','At least once every 5 years','Every 10 years','Only upon complaint'], correct:1, exp:'Financial exams: at least once every 5 years. Market conduct exams: as often as the Commissioner deems appropriate, with no fixed schedule.'},
+  {q:'The civil penalty for a violation the insurer/producer knew or reasonably should have known about can rise to $30,000 per violation, capped at:', choices:['$100,000','$250,000','$500,000','$750,000'], correct:3, exp:'That\'s the higher penalty tier — up to $30,000 per violation, capped at $750,000 overall, versus the base tier of up to $3,000 per violation capped at $30,000.'},
+  {q:'The penalty for violating a Commissioner\'s cease-and-desist order is up to $10,000 per violation for an insurer, and up to how much for an individual?', choices:['$500','$1,000','$5,000','$10,000 (same as an insurer)'], correct:0, exp:'$500 per violation for an individual — a separate, smaller figure from the insurer penalty.'},
+  {q:'How much prelicensing education and continuing education does Colorado require for a title insurance producer license?', choices:['Prelicensing only','Continuing education only','Both are required','Neither is required'], correct:3, exp:'This is a distinctive, frequently tested Colorado rule — title producers need NEITHER prelicensing NOR continuing education.'},
+  {q:'A title insurance agent must deposit fiduciary funds within how many business days of receipt?', choices:['1 business day','3 business days','5 business days','10 business days'], correct:1, exp:'3 business days to deposit; separately, 45 days to remit premiums and to reconcile the escrow account.'},
+  {q:'A producer must notify the Commissioner of a change of address within how many days?', choices:['10 days','15 days','30 days','60 days'], correct:2, exp:'30 days for an address change notification; a penalty may be assessed for failing to notify.'},
+  {q:'A title insurance agency must maintain at least how much in cash capital or net worth?', choices:['$5,000','$10,000','$25,000','$50,000'], correct:1, exp:'$10,000 minimum cash capital or net worth is one of the agency licensing requirements.'},
+  {q:'Which of the following is an example of a "controlled business" concern under Colorado licensing law?', choices:['A producer who only writes commercial policies','A producer whose aggregate premiums on their own/family/employer\'s business exceed the aggregate premiums on all other business written in a 12-month period','A producer who works for two different agencies','A producer whose office is more than 50 miles from the county seat'], correct:1, exp:'Controlled business is defined by that premium comparison over a 12-month period — self-referred business outweighing everything else.'},
+  {q:'Under Colorado\'s curative statutes, an unreleased deed of trust with no stated due date generally ceases to be a lien after:', choices:['7 years','9 years','15 years','20 years'], correct:2, exp:'CRS 38-39-201 — 15 years, matching the same rule tested elsewhere on the exam for recorded mortgages/deeds of trust.'},
+  {q:'Under Colorado\'s curative statutes, a mechanic\'s lien is cured after approximately:', choices:['6 months','13 months','6 years','9 years'], correct:1, exp:'CRS 38-22-109(8) — 13 months. Don\'t confuse this curative-statute period with the separate 6-month deadline to commence a lien enforcement action under CRS 38-22-110.'},
+  {q:'Under Colorado\'s curative statutes, adverse possession based on possession only (no color of title) requires how many years, versus adverse possession under color of title?', choices:['7 years vs. 18 years','18 years vs. 7 years','10 years vs. 20 years','20 years vs. 10 years'], correct:1, exp:'Possession only (no color of title): 18 years (CRS 38-41-101). Under color of title: 7 years (CRS 38-41-106, 108, 109, 111, 112) — color of title roughly cuts the period in half.'},
+  {q:'Which curative statute period is listed as "No Term" — meaning it never cures on its own?', choices:['Judgment Lien (Child support)','City liens that cannot be foreclosed out','Certificate of Levy','Option to Purchase'], correct:1, exp:'City liens under CRS 31-15-401(c) — and a U.S. attachment lien under 28 USC 3102(f)(3) — are both listed with "No Term."'}
+];
+
+const gkState = {
+  mode:'fc',
+  fc: { deckKey:'defs', deck:[], idx:0, flipped:false, progress:{} },
+  quiz: { order:[], idx:0, answers:[], answered:false, best:null }
+};
+GK_DECKS.forEach(d => gkState.fc.progress[d.key] = { reviewed:new Set(), known:new Set() });
+
+function setGkMode(mode){
+  gkState.mode = mode;
+  document.getElementById('gk-mode-fc').className = 'btn sm ' + (mode==='fc' ? 'gold' : 'ghost');
+  document.getElementById('gk-mode-quiz').className = 'btn sm ' + (mode==='quiz' ? 'gold' : 'ghost');
+  document.getElementById('gk-fc-card').style.display = mode==='fc' ? '' : 'none';
+  const quizVisible = mode==='quiz';
+  document.getElementById('gk-quiz-setup-card').style.display = quizVisible ? '' : 'none';
+  document.getElementById('gk-quiz-play-card').style.display = 'none';
+  document.getElementById('gk-quiz-results-card').style.display = 'none';
+  if(quizVisible) updateGkQuizNote();
+}
+document.getElementById('gk-mode-fc').addEventListener('click', ()=> setGkMode('fc'));
+document.getElementById('gk-mode-quiz').addEventListener('click', ()=> setGkMode('quiz'));
+
+/* --- GK Flashcards --- */
+const gkFcSelect = document.getElementById('gk-fc-deck-select');
+gkFcSelect.innerHTML = GK_DECKS.map(d=>`<option value="${d.key}">${d.name} (${d.cards.length})</option>`).join('');
+gkFcSelect.addEventListener('change', ()=> startGkFlashcards(gkFcSelect.value));
+document.getElementById('gk-fc-shuffle').addEventListener('click', ()=>{
+  gkState.fc.deck = shuffle(gkState.fc.deck);
+  gkState.fc.idx = 0; gkState.fc.flipped = false;
+  renderGkFlashcard();
+});
+document.getElementById('gk-fc-restart').addEventListener('click', ()=> startGkFlashcards(gkState.fc.deckKey));
+document.getElementById('gk-fc-flip').addEventListener('click', flipGkCard);
+document.getElementById('gk-flashcard').addEventListener('click', flipGkCard);
+document.getElementById('gk-fc-prev').addEventListener('click', ()=> stepGkCard(-1));
+document.getElementById('gk-fc-next').addEventListener('click', ()=> stepGkCard(1));
+document.getElementById('gk-fc-know').addEventListener('click', ()=> markGkCard(true));
+document.getElementById('gk-fc-reviewagain').addEventListener('click', ()=> markGkCard(false));
+
+function startGkFlashcards(key, jumpIdx){
+  gkFcSelect.value = key;
+  const deck = GK_DECKS.find(d=>d.key===key);
+  gkState.fc.deckKey = key;
+  gkState.fc.deck = deck.cards.map((card,i)=>({...card, id:key+'-'+i}));
+  gkState.fc.idx = (typeof jumpIdx==='number') ? jumpIdx : 0;
+  gkState.fc.flipped = false;
+  renderGkFlashcard();
+}
+function flipGkCard(){
+  gkState.fc.flipped = !gkState.fc.flipped;
+  document.getElementById('gk-flashcard').classList.toggle('flipped', gkState.fc.flipped);
+}
+function stepGkCard(dir){
+  const n = gkState.fc.deck.length;
+  gkState.fc.idx = (gkState.fc.idx + dir + n) % n;
+  gkState.fc.flipped = false;
+  renderGkFlashcard();
+}
+function markGkCard(knowIt){
+  const card = gkState.fc.deck[gkState.fc.idx];
+  const p = gkState.fc.progress[gkState.fc.deckKey];
+  p.reviewed.add(card.id);
+  if(knowIt) p.known.add(card.id); else p.known.delete(card.id);
+  stepGkCard(1);
+}
+function renderGkFlashcard(){
+  const deck = gkState.fc.deck;
+  const card = deck[gkState.fc.idx];
+  document.getElementById('gk-fc-front').textContent = card.f;
+  document.getElementById('gk-fc-back').innerHTML = card.b;
+  document.getElementById('gk-flashcard').classList.remove('flipped');
+  gkState.fc.flipped = false;
+  document.getElementById('gk-fc-progress-label').textContent = `Card ${gkState.fc.idx+1} of ${deck.length}`;
+}
+
+/* --- GK Quiz --- */
+function updateGkQuizNote(){
+  document.getElementById('gk-quiz-note').textContent =
+    `${GK_QUIZ.length} questions pulled directly from the PDF, covering definitions, rates, prohibited practices, consumer protections, standards of conduct, and the curative statutes table.` +
+    (gkState.quiz.best!==null ? ` Your best score so far: ${gkState.quiz.best}%` : '');
+}
+document.getElementById('gk-quiz-start').addEventListener('click', startGkQuiz);
+document.getElementById('gk-quiz-quit').addEventListener('click', resetGkQuizToSetup);
+document.getElementById('gk-quiz-back').addEventListener('click', resetGkQuizToSetup);
+document.getElementById('gk-quiz-retry').addEventListener('click', startGkQuiz);
+document.getElementById('gk-quiz-next').addEventListener('click', nextGkQuizQuestion);
+
+function resetGkQuizToSetup(){
+  document.getElementById('gk-quiz-setup-card').style.display='';
+  document.getElementById('gk-quiz-play-card').style.display='none';
+  document.getElementById('gk-quiz-results-card').style.display='none';
+  updateGkQuizNote();
+}
+function startGkQuiz(){
+  gkState.quiz.order = shuffle(GK_QUIZ.map((q,i)=>i));
+  gkState.quiz.idx = 0;
+  gkState.quiz.answers = [];
+  gkState.quiz.answered = false;
+  document.getElementById('gk-quiz-setup-card').style.display='none';
+  document.getElementById('gk-quiz-results-card').style.display='none';
+  document.getElementById('gk-quiz-play-card').style.display='';
+  renderGkQuizQuestion();
+}
+function renderGkQuizQuestion(){
+  const qi = gkState.quiz.order[gkState.quiz.idx];
+  const q = GK_QUIZ[qi];
+  const choiceOrder = shuffle(q.choices.map((c,i)=>i));
+  gkState.quiz._choiceOrder = choiceOrder;
+  document.getElementById('gk-quiz-progress-fill').style.width = `${(gkState.quiz.idx/GK_QUIZ.length)*100}%`;
+  document.getElementById('gk-quiz-progress-label').textContent = `Question ${gkState.quiz.idx+1} of ${GK_QUIZ.length}`;
+  document.getElementById('gk-quiz-question').textContent = q.q;
+  document.getElementById('gk-quiz-explain').style.display='none';
+  document.getElementById('gk-quiz-next').style.display='none';
+  gkState.quiz.answered = false;
+  const wrap = document.getElementById('gk-quiz-choices');
+  wrap.innerHTML = choiceOrder.map(ci=> `<button class="choice" data-ci="${ci}">${q.choices[ci]}</button>`).join('');
+  wrap.querySelectorAll('.choice').forEach(btn=>{
+    btn.addEventListener('click', ()=> answerGkQuiz(parseInt(btn.dataset.ci,10)));
+  });
+}
+function answerGkQuiz(chosenIdx){
+  if(gkState.quiz.answered) return;
+  gkState.quiz.answered = true;
+  const qi = gkState.quiz.order[gkState.quiz.idx];
+  const q = GK_QUIZ[qi];
+  const correct = chosenIdx === q.correct;
+  gkState.quiz.answers.push({qi, chosenIdx, correct});
+  document.querySelectorAll('#gk-quiz-choices .choice').forEach(btn=>{
+    const ci = parseInt(btn.dataset.ci,10);
+    btn.classList.add('disabled');
+    if(ci===q.correct) btn.classList.add('correct');
+    else if(ci===chosenIdx) btn.classList.add('incorrect');
+  });
+  const exp = document.getElementById('gk-quiz-explain');
+  exp.style.display='';
+  exp.innerHTML = `<b>${correct?'Correct. ':'Not quite. '}</b>${q.exp}`;
+  document.getElementById('gk-quiz-next').style.display='';
+  document.getElementById('gk-quiz-next').textContent = (gkState.quiz.idx === GK_QUIZ.length-1) ? 'See results →' : 'Next question →';
+}
+function nextGkQuizQuestion(){
+  if(gkState.quiz.idx < GK_QUIZ.length-1){
+    gkState.quiz.idx++;
+    renderGkQuizQuestion();
+  } else {
+    finishGkQuiz();
+  }
+}
+function finishGkQuiz(){
+  const correctCount = gkState.quiz.answers.filter(a=>a.correct).length;
+  const pct = Math.round((correctCount/GK_QUIZ.length)*100);
+  if(gkState.quiz.best===null || pct>gkState.quiz.best) gkState.quiz.best = pct;
+
+  document.getElementById('gk-quiz-play-card').style.display='none';
+  document.getElementById('gk-quiz-results-card').style.display='';
+  const big = document.getElementById('gk-quiz-score-big');
+  big.textContent = `${correctCount} / ${GK_QUIZ.length} (${pct}%)`;
+  big.className = 'big ' + (pct>=70?'pass':'fail');
+  document.getElementById('gk-quiz-score-sub').textContent = pct>=70 ? 'Nice, that clears the 70% pass line.' : 'Under 70% — worth another pass before moving on.';
+
+  const list = document.getElementById('gk-quiz-review-list');
+  list.innerHTML = gkState.quiz.answers.map(a=>{
+    const q = GK_QUIZ[a.qi];
+    return `<div class="review-item ${a.correct?'right':'wrong'}">
+      <div style="font-weight:600; margin-bottom:4px;">${q.q}</div>
+      <div style="color:var(--muted); font-size:.85rem;">Your answer: ${q.choices[a.chosenIdx]}${a.correct?'':`<br>Correct answer: ${q.choices[q.correct]}`}</div>
+      <div style="margin-top:6px; font-size:.85rem;">${q.exp}</div>
+    </div>`;
+  }).join('');
+}
+
+/* --- Fold Lia's Notes and General Knowledge into global search --- */
+LIA_QUESTIONS.forEach((item,i)=>{
+  const exp = item.explanation + ' ' + item.rule + ' ' + item.tip;
+  SEARCH_INDEX.push({
+    type:'lia-quiz', catKey:'lia', catCode:'', catName:'Lia\'s Note Questions', idx:i,
+    q:item.q, choices:item.choices, correct:item.correct, exp:exp,
+    hay:(item.q+' '+item.choices.join(' ')+' '+exp).toLowerCase()
+  });
+});
+GK_DECKS.forEach(deck=>{
+  deck.cards.forEach((c,i)=>{
+    SEARCH_INDEX.push({
+      type:'gk-flash', deckKey:deck.key, catKey:'gk', catCode:'', catName:'General Knowledge (PDF)', idx:i,
+      front:c.f, back:c.b,
+      hay:(c.f+' '+c.b+' '+deck.name).toLowerCase()
+    });
+  });
+});
+GK_QUIZ.forEach((q,i)=>{
+  SEARCH_INDEX.push({
+    type:'gk-quiz', catKey:'gk', catCode:'', catName:'General Knowledge (PDF)', idx:i,
+    q:q.q, choices:q.choices, correct:q.correct, exp:q.exp,
+    hay:(q.q+' '+q.choices.join(' ')+' '+q.exp).toLowerCase()
+  });
+});
+
+/* =========================================================
    INIT
    ========================================================= */
 renderDashboard();
 startFlashcards(CATS[0].key);
 document.getElementById('exam-qcount').textContent = CATS.reduce((s,c)=>s+c.quiz.length,0);
+renderLiaQuestion();
+startGkFlashcards('defs');
+setGkMode('fc');
 </script>
 </body>
 </html>
