@@ -610,7 +610,7 @@
           <tr><td><b>Day 4</b></td><td>Colorado Law — Part 2<br>+ General Knowledge (PDF)</td><td>Flashcards: Commissioner of Insurance, Licensing &amp; Producer Responsibility, Unfair Competition. Full Colorado Law quiz again. Then the <b>General Knowledge</b> quiz — same material in her own class's wording. This area is the largest share of the exam, so it's the difference between 63 and passing.</td></tr>
           <tr><td><b>Day 5</b></td><td>V. Legal Descriptions<br>I. Terms &amp; Concepts<br>VI. Methods of Transfer</td><td>All three slipped and all three are cheap to recover. Flashcards + quiz on each. Legal Descriptions especially — it's a small area and mostly vocabulary (lot/block, aliquot, metes and bounds, POB).</td></tr>
           <tr><td><b>Day 6</b></td><td>All of Lia's Notes</td><td>Every question in <b>Lia's Notes</b> — both sets, 42 questions — reading the explanation and the Colorado rule on each. These are the closest thing she has to the real exam. Then re-take any category quiz still under 80%.</td></tr>
-          <tr><td><b>Day 7</b></td><td>Real conditions</td><td>Practice Exam → <b>Simulate Pearson VUE</b> (70 min, no feedback until submit). Review the report. Then a 10-minute skim of Real Estate Ownership and Rights &amp; Interests just to keep them warm — no deep work, they're already at 100% and 80%.</td></tr>
+          <tr><td><b>Day 7</b></td><td>Real conditions</td><td>Practice Exam → <b>Simulate Pearson VUE</b> (75 min, all 42 Lia's Notes questions included, no feedback until submit). Review the report. Then a 10-minute skim of Real Estate Ownership and Rights &amp; Interests just to keep them warm — no deep work, they're already at 100% and 80%.</td></tr>
           <tr><td><b>Exam day</b><br><span style="color:var(--priority); font-size:.75rem; font-weight:700;">once scheduled</span></td><td>—</td><td>Flashcard skim of Title Policies and the Colorado Law numbers only. Nothing new. Get there early.</td></tr>
         </tbody>
       </table>
@@ -693,10 +693,10 @@
     <div class="card" id="exam-intro-card">
       <div class="exam-hero">
         <h2 class="section-title">Full Practice Exam</h2>
-        <p class="section-sub">A condensed simulation of the real Colorado Title exam — same 7 categories, same rough category weighting (Colorado Law is the largest single section, just like on the real test), and a results page styled like your actual Pearson VUE report.</p>
+        <p class="section-sub">A simulation of the real Colorado Title exam — <b>every one of the 42 Lia's Notes questions is in every attempt</b> (they're the closest thing we have to the real test), with the category decks filling the rest. Same 7 categories, same category weighting (Colorado Law is the largest section, just like the real test), and a results page styled like your actual Pearson VUE report.</p>
         <div class="exam-stats">
           <div class="s"><div class="n" id="exam-qcount">76</div><div class="l">Questions</div></div>
-          <div class="s"><div class="n" id="exam-minutes-stat">70</div><div class="l">Minutes</div></div>
+          <div class="s"><div class="n" id="exam-minutes-stat">75</div><div class="l">Minutes</div></div>
           <div class="s"><div class="n">70%</div><div class="l">Passing Score</div></div>
         </div>
         <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:6px;">
@@ -705,7 +705,7 @@
         </div>
         <div style="display:flex; gap:22px; justify-content:center; flex-wrap:wrap; margin-top:16px; font-size:.82rem; color:var(--muted); text-align:left;">
           <div style="max-width:260px;"><b style="color:var(--navy);">Just Studying</b> — untimed. See whether you're right and read the explanation right after each question, same as the category quizzes, but pulling from all 7 categories in real-exam proportions.</div>
-          <div style="max-width:260px;"><b style="color:var(--navy);">Simulate Pearson VUE</b> — 70-minute timer, no feedback until you submit, results page styled like your real score report. Use this closer to test day.</div>
+          <div style="max-width:260px;"><b style="color:var(--navy);">Simulate Pearson VUE</b> — 75-minute timer, no feedback until you submit, results page styled like your real score report. Use this closer to test day.</div>
         </div>
         <p class="note" style="text-align:left; margin-top:18px;">This is <b>not</b> a leaked or verbatim copy of the real licensing exam — Pearson VUE doesn't publish its bank. It's built from the official Colorado Title exam content outline plus real study material, weighted the same way the real exam is weighted, so the experience (pacing, category mix, scoring, and the results report) closely mirrors what you'll see on retake day.</p>
       </div>
@@ -714,7 +714,7 @@
     <div class="card" id="exam-play-card" style="display:none;">
       <div class="timer" id="exam-timer">
         <span id="exam-timer-label">Question 1 of 76</span>
-        <span class="clock" id="exam-clock">70:00</span>
+        <span class="clock" id="exam-clock">75:00</span>
       </div>
       <div class="q-progress-bar"><div class="fill" id="exam-progress-fill"></div></div>
       <div class="exam-nav-grid" id="exam-nav-grid"></div>
@@ -745,6 +745,7 @@
         <div class="results-summary">
           <div class="big" id="exam-result-word"></div>
           <div id="exam-result-score" style="margin-top:6px; font-size:1rem;"></div>
+          <div id="exam-result-lia" style="margin-top:8px; font-size:.9rem; color:var(--navy);"></div>
         </div>
       </div>
       <div class="chart-row" id="exam-result-chart" style="margin-top:18px;"></div>
@@ -1452,15 +1453,51 @@ function resetExamToIntro(){
 }
 document.getElementById('exam-download').addEventListener('click', downloadExamResults);
 
-const EXAM_SECONDS = 70*60;
+const EXAM_SECONDS = 75*60;
+const EXAM_TOTAL = 76;
+
+/* Lia's Notes are the closest thing we have to the real exam, so EVERY
+   simulation includes all 42 of them. The category decks only fill the
+   remaining seats, keeping the real-exam category weighting (10/10/8/8/8/8/24).
+   Deck questions that duplicate a Lia's Notes question are left out of the
+   simulation so she never sees the same concept twice in one sitting. */
+const EXAM_CAT_TARGET = {terms:10, policies:10, ownership:8, rights:8, legal:8, transfer:8, colaw:24};
+const LIA_EXAM_CAT = [
+  'ownership','legal','legal','rights','policies','policies','terms','terms','rights','transfer',   // 0-9
+  'colaw','colaw','transfer','colaw','colaw','colaw','colaw','colaw','colaw','colaw',               // 10-19
+  'colaw','colaw','ownership','colaw','colaw','policies','rights','rights','legal','terms',         // 20-29
+  'terms','colaw','colaw','terms','colaw','colaw','transfer','colaw','colaw','transfer',            // 30-39
+  'colaw','colaw'                                                                                    // 40-41
+];
+const EXAM_SKIP_DUPES = {
+  terms:[3,8,9],      // endorsement, closing & settlement, commitment — covered by Lia's Notes
+  ownership:[5],      // leasehold estate
+  legal:[1,2,3],      // 36 sections, lot & block, "Lots 1 to 6"
+  transfer:[6],       // probate
+  colaw:[0]           // "title entity" definition
+};
+
+function examQ(item){
+  if(item.src==='lia'){
+    const L = LIA_QUESTIONS[item.qi];
+    const exp = [L.explanation, L.tip ? `<b>Tip:</b> ${L.tip}` : ''].filter(Boolean).join(' ');
+    return {q:L.q, choices:L.choices, correct:L.correct, exp};
+  }
+  return CATS.find(c=>c.key===item.catKey).quiz[item.qi];
+}
 
 function buildExamQuestions(){
-  // Full bank, tagged with category, presented in category (real-exam) order,
-  // shuffled within each category.
+  // All of Lia's Notes + category-deck fill, presented in category (real-exam)
+  // order and shuffled within each category.
   let all = [];
   CATS.forEach(cat=>{
-    const idxs = shuffle(cat.quiz.map((q,i)=>i));
-    idxs.forEach(i=> all.push({catKey:cat.key, qi:i}));
+    const lia = LIA_QUESTIONS.map((q,i)=>i).filter(i=>LIA_EXAM_CAT[i]===cat.key)
+      .map(i=>({catKey:cat.key, qi:i, src:'lia'}));
+    const skip = EXAM_SKIP_DUPES[cat.key] || [];
+    const need = Math.max(0, (EXAM_CAT_TARGET[cat.key]||0) - lia.length);
+    const deck = shuffle(cat.quiz.map((q,i)=>i).filter(i=>!skip.includes(i))).slice(0, need)
+      .map(i=>({catKey:cat.key, qi:i, src:'deck'}));
+    shuffle(lia.concat(deck)).forEach(x=> all.push(x));
   });
   return all;
 }
@@ -1508,7 +1545,7 @@ function renderExamQuestion(){
   const total = state.exam.questions.length;
   const item = state.exam.questions[state.exam.idx];
   const cat = CATS.find(c=>c.key===item.catKey);
-  const q = cat.quiz[item.qi];
+  const q = examQ(item);
   const isStudy = state.exam.mode==='study';
   document.getElementById('exam-timer-label').textContent = `Question ${state.exam.idx+1} of ${total}` + (isStudy ? ' · Study Mode' : '');
   document.getElementById('exam-progress-fill').style.width = `${(state.exam.idx/total)*100}%`;
@@ -1609,19 +1646,20 @@ function submitExam(){
 
   const perCat = {};
   CATS.forEach(c=> perCat[c.key] = {correct:0, total:0});
-  let totalCorrect = 0;
+  let totalCorrect = 0, liaCorrect = 0, liaTotal = 0;
   state.exam.questions.forEach((item,i)=>{
-    const cat = CATS.find(c=>c.key===item.catKey);
-    const q = cat.quiz[item.qi];
+    const q = examQ(item);
     const ans = state.exam.answers[i];
     const correct = ans && ans.chosenIdx===q.correct;
     perCat[item.catKey].total++;
     if(correct){ perCat[item.catKey].correct++; totalCorrect++; }
+    if(item.src==='lia'){ liaTotal++; if(correct) liaCorrect++; }
   });
   const totalQ = state.exam.questions.length;
   const scorePct = Math.round((totalCorrect/totalQ)*100);
   state.exam.score = scorePct;
   state.exam.resultChart = perCat;
+  state.exam.liaResult = {correct:liaCorrect, total:liaTotal};
   recordAttempt({
     id: Date.now() + '-' + Math.random().toString(36).slice(2,8),
     date: new Date().toISOString(),
@@ -1643,6 +1681,8 @@ function submitExam(){
   word.className = 'big ' + (pass?'pass':'fail');
   const modeLabel = state.exam.mode==='study' ? 'Just Studying (untimed)' : 'Simulate Pearson VUE (timed)';
   document.getElementById('exam-result-score').textContent = `${modeLabel}   ·   Passing Score: 70   ·   Your Score: ${scorePct}   (${totalCorrect} of ${totalQ} correct)`;
+  const liaPct = liaTotal ? Math.round((liaCorrect/liaTotal)*100) : 0;
+  document.getElementById('exam-result-lia').innerHTML = `<b>Lia's Notes questions:</b> ${liaCorrect} of ${liaTotal} correct (${liaPct}%) — the questions closest to the real exam.`;
 
   const chartWrap = document.getElementById('exam-result-chart');
   chartWrap.innerHTML = CATS.map(c=>{
@@ -1659,13 +1699,13 @@ function submitExam(){
   const list = document.getElementById('exam-review-list');
   list.innerHTML = state.exam.questions.map((item,i)=>{
     const cat = CATS.find(c=>c.key===item.catKey);
-    const q = cat.quiz[item.qi];
+    const q = examQ(item);
     const ans = state.exam.answers[i];
     const chosenIdx = ans ? ans.chosenIdx : null;
     const correct = chosenIdx===q.correct;
     const chosenText = chosenIdx===null ? '(no answer)' : q.choices[chosenIdx];
     return `<div class="review-item ${correct?'right':'wrong'}">
-      <div style="font-size:.72rem; color:var(--muted); text-transform:uppercase;">${cat.code}. ${cat.name}</div>
+      <div style="font-size:.72rem; color:var(--muted); text-transform:uppercase;">${cat.code}. ${cat.name}${item.src==='lia'?' · <span style="color:var(--gold, #b8860b); font-weight:700;">Lia\'s Notes</span>':''}</div>
       <div style="font-weight:600; margin:3px 0 4px;">${i+1}. ${q.q}</div>
       <div style="color:var(--muted); font-size:.85rem;">Your answer: ${chosenText}${correct?'':`<br>Correct answer: ${q.choices[q.correct]}`}</div>
       <div style="margin-top:6px; font-size:.85rem;">${q.exp}</div>
@@ -1687,6 +1727,7 @@ function downloadExamResults(){
     const d = perCat[c.key];
     lines.push(`  ${c.code}. ${c.name}: ${d.correct}/${d.total}`);
   });
+  if(state.exam.liaResult) lines.push(`  Lia's Notes questions: ${state.exam.liaResult.correct}/${state.exam.liaResult.total}`);
   lines.push('');
   lines.push('Generated by the Colorado Title Exam Study Tool.');
   const blob = new Blob([lines.join('\n')], {type:'text/plain'});
